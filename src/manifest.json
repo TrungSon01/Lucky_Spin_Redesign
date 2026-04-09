@@ -1,0 +1,9 @@
+{
+  "name": "Lucky Spin",
+  "description": "A simple app to help you find everything you need and relax with a mini game at the end.",
+  "handle": "lucky-spin-handle",
+  "privacy_policy_url": "https://privacy-terms-lucky-spin-shopify.vercel.app",
+  "terms_url": "https://privacy-terms-lucky-spin-shopify.vercel.app",
+  "permissions": [],
+  "scopes": []
+}

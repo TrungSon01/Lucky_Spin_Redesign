@@ -5,5 +5,5 @@
   "privacy_policy_url": "https://privacy-terms-lucky-spin-shopify.vercel.app",
   "terms_url": "https://privacy-terms-lucky-spin-shopify.vercel.app",
   "permissions": [],
-  "scopes": []
+  "scopes": ["user_settings:read"]
 }

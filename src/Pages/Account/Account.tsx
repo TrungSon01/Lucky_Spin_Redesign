@@ -1,81 +1,163 @@
-import { useState } from "react";
-import {
-  ChevronRight,
-  User,
-  Settings,
-  Bell,
-  Shield,
-  LogOut,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { ChevronRight } from "lucide-react";
+import "./Account.css";
+import { useAsyncStorage, useCurrentUser } from "@shopify/shop-minis-react";
+import { process_name } from "../../lib/function";
+import { TIER_CONFIG } from "./Data/level";
 
 export default function Account() {
-  const [notifications, setNotifications] = useState(true);
+  const { currentUser } = useCurrentUser();
+  const { getItem, setItem } = useAsyncStorage();
+  const [userRank, setUserRank] = useState("0");
+  useEffect(() => {
+    const check_user_rank = async () => {
+      const user_rank = await getItem({ key: "user_rank" });
+      if (!user_rank) {
+        setItem({
+          key: "user_rank",
+          value: "0",
+        });
+      }
+    };
+    const fetchUserRank = async () => {
+      const rank = await getItem({ key: "user_rank" });
+      setUserRank(rank || "1000");
+    };
+    check_user_rank();
+    fetchUserRank();
+  }, [getItem, setItem]);
+  const rank = +userRank;
+  let tier;
+  if (rank <= 3) {
+    tier = TIER_CONFIG.bronze;
+  } else if (rank <= 10) {
+    tier = TIER_CONFIG.silver;
+  } else if (rank <= 20) {
+    tier = TIER_CONFIG.gold;
+  } else if (rank <= 50) {
+    tier = TIER_CONFIG.ruby;
+  } else if (rank > 50 && rank <= 100) {
+    tier = { ...TIER_CONFIG.diamond };
+    const level = Math.ceil((rank - 50) / 10);
+    const roman = ["I", "II", "III", "IV", "V"];
+    tier.label = `Diamond ${roman[level - 1]}`;
+  } else if (rank > 100) {
+    tier = TIER_CONFIG.Ultimate_diamond;
+
+    tier.label = `Ultimate Diamond`;
+  }
 
   return (
-    <div className="h-screen w-full bg-gray-50 flex flex-col">
-      {/* Header - native iOS style */}
-      <div className="px-4 pt-6 pb-3 bg-white">
-        <h1 className="text-xl font-semibold">Account</h1>
+    <div className="account-root">
+      <div className="account-header">
+        <h1 className="account-title">Account</h1>
       </div>
 
-      {/* Profile Section */}
-      <div className="bg-white px-4 py-4 flex items-center gap-3 border-b">
-        <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
-          <User size={20} />
-        </div>
-        <div className="flex-1">
-          <p className="font-medium text-base">Nguyễn Trung Sơn</p>
-          <p className="text-sm text-gray-500">son@email.com</p>
-        </div>
-        <ChevronRight size={20} className="text-gray-400" />
-      </div>
+      <div className="account-scroll">
+        <button className="profile-card">
+          <div className="avatar">
+            {currentUser?.avatarImage?.url ? (
+              <img src={currentUser.avatarImage.url} alt="avatar" />
+            ) : (
+              <span className="avatar-placeholder">
+                {process_name(currentUser?.displayName || "")}
+              </span>
+            )}
+          </div>
+          <div className="profile-info">
+            <p className="profile-name">{currentUser?.displayName}</p>
+          </div>
 
-      {/* Settings List */}
-      <div className="mt-4 bg-white divide-y">
-        <Row icon={<Bell size={18} />} label="Notifications">
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input
-              type="checkbox"
-              checked={notifications}
-              onChange={() => setNotifications(!notifications)}
-              className="sr-only peer"
-            />
-            <div className="w-10 h-6 bg-gray-200 rounded-full peer peer-checked:bg-black transition" />
-          </label>
-        </Row>
+          {tier?.animationClass === "tier-anim-hkd" ? (
+            <div className="hkd-outer">
+              <div className="hkd-rays">
+                <div className="hkd-ray r-top" />
+                <div className="hkd-ray r-tl1" />
+                <div className="hkd-ray r-tr1" />
+                <div className="hkd-ray r-tl2" />
+                <div className="hkd-ray r-tr2" />
+                <div className="hkd-ray r-tl3" />
+                <div className="hkd-ray r-tr3" />
+              </div>
+              <div className="hkd-sp sp-top">
+                <svg width="10" height="10" viewBox="0 0 10 10">
+                  <path
+                    d="M5 0L6 3.8L10 5L6 6.2L5 10L4 6.2L0 5L4 3.8Z"
+                    fill="#FFE566"
+                  />
+                </svg>
+              </div>
+              <div className="hkd-sp sp-tl">
+                <svg width="8" height="8" viewBox="0 0 10 10">
+                  <path
+                    d="M5 0L6 3.8L10 5L6 6.2L5 10L4 6.2L0 5L4 3.8Z"
+                    fill="#FFD700"
+                  />
+                </svg>
+              </div>
+              <div className="hkd-sp sp-tr">
+                <svg width="8" height="8" viewBox="0 0 10 10">
+                  <path
+                    d="M5 0L6 3.8L10 5L6 6.2L5 10L4 6.2L0 5L4 3.8Z"
+                    fill="#FFF0A0"
+                  />
+                </svg>
+              </div>
+              <div className="hkd-sp sp-bot">
+                <svg width="7" height="7" viewBox="0 0 10 10">
+                  <path
+                    d="M5 0L6 3.8L10 5L6 6.2L5 10L4 6.2L0 5L4 3.8Z"
+                    fill="#FFB300"
+                  />
+                </svg>
+              </div>
+              <div className="hkd-sp sp-far-tl">
+                <svg width="7" height="7" viewBox="0 0 10 10">
+                  <path
+                    d="M5 0L6 3.8L10 5L6 6.2L5 10L4 6.2L0 5L4 3.8Z"
+                    fill="#FFD700"
+                  />
+                </svg>
+              </div>
+              <div className="hkd-sp sp-far-tr">
+                <svg width="6" height="6" viewBox="0 0 10 10">
+                  <path
+                    d="M5 0L6 3.8L10 5L6 6.2L5 10L4 6.2L0 5L4 3.8Z"
+                    fill="#FFFACD"
+                  />
+                </svg>
+              </div>
+              <div className="hkd-sp sp-far-r">
+                <svg width="6" height="6" viewBox="0 0 10 10">
+                  <path
+                    d="M5 0L6 3.8L10 5L6 6.2L5 10L4 6.2L0 5L4 3.8Z"
+                    fill="#FFC200"
+                  />
+                </svg>
+              </div>
+              <span className="profile-badge tier-anim-hkd">
+                <span className="badge-inner">{tier?.label}</span>
+              </span>
+            </div>
+          ) : (
+            <span
+              className={`profile-badge ${tier?.animationClass ?? ""}`}
+              style={{
+                backgroundColor: tier?.bg,
+                border: `2px solid ${tier?.border}`,
+              }}
+            >
+              <span className="badge-inner">{tier?.label}</span>
+            </span>
+          )}
 
-        <Row icon={<Settings size={18} />} label="General" />
-        <Row icon={<Shield size={18} />} label="Privacy & Security" />
-      </div>
-
-      {/* Logout Button fixed bottom (no hidden CTA) */}
-      <div className="mt-auto p-4 bg-white border-t">
-        <button className="w-full py-3 rounded-xl bg-black text-white font-medium flex items-center justify-center gap-2">
-          <LogOut size={18} />
-          Log out
+          <ChevronRight size={18} className="row-chev" />
         </button>
-      </div>
-    </div>
-  );
-}
 
-function Row({
-  icon,
-  label,
-  children,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  children?: React.ReactNode;
-}) {
-  return (
-    <div className="flex items-center justify-between px-4 py-4">
-      <div className="flex items-center gap-3">
-        <div className="text-gray-600">{icon}</div>
-        <span className="text-base">{label}</span>
-      </div>
-      <div className="flex items-center gap-2 text-gray-400">
-        {children || <ChevronRight size={18} />}
+        {/* Preferences group */}
+        <p className="section-label">Preferences</p>
+
+        <p className="version-text">LuckySpinner</p>
       </div>
     </div>
   );

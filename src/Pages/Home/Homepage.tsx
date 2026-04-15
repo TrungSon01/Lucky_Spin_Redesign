@@ -1,9 +1,34 @@
 import "./Homepage.css";
-import { useNavigateWithTransition } from "@shopify/shop-minis-react";
+import {
+  useAsyncStorage,
+  useCurrentUser,
+  useNavigateWithTransition,
+} from "@shopify/shop-minis-react";
 import { STEPS, TRUST } from "./Data/Data";
+import { useEffect } from "react";
 
 export default function Homepage() {
   const navigateWithTransition = useNavigateWithTransition();
+  const { currentUser } = useCurrentUser();
+  const { setItem } = useAsyncStorage();
+  const data = {
+    name: currentUser?.displayName || "Guest",
+    avatar: currentUser?.avatarImage?.url || "",
+  };
+  useEffect(() => {
+    async function handleStorageOperations() {
+      await setItem({
+        key: "user_name",
+        value: data.name,
+      });
+      await setItem({
+        key: "user_avatar",
+        value: data.avatar,
+      });
+    }
+
+    handleStorageOperations();
+  }, [setItem]);
 
   return (
     <div className="homepage">

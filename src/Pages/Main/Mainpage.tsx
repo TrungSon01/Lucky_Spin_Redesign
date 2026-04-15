@@ -1,45 +1,140 @@
+import {
+  useAsyncStorage,
+  useNavigateWithTransition,
+} from "@shopify/shop-minis-react";
+import useDataMainpage from "./Data/useDataMainpage";
+import { useState, useEffect } from "react";
+import { process_name } from "../../lib/function";
+
 export default function Mainpage() {
-  const categories = [
-    "Home Essentials",
-    "Clothing",
-    "Beauty",
-    "Daily Needs",
-    "Electronics",
-    "Accessories",
-  ];
+  const navigate = useNavigateWithTransition();
+  const { getItem } = useAsyncStorage();
+  const CATEGORIES = useDataMainpage().CATEGORIES;
+  const { TAG_STYLES, s, press } = useDataMainpage();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const user_infor = {
+    user_name: "",
+    user_avatar: "",
+  };
+
+  useEffect(() => {
+    async function fetchUserInfo() {
+      const userName = await getItem({ key: "user_name" });
+      const userAvatar = await getItem({ key: "user_avatar" });
+      user_infor.user_name = userName || "Guest";
+      user_infor.user_avatar = userAvatar || "";
+    }
+
+    fetchUserInfo();
+  }, [getItem]);
+
+  const filteredCategories = CATEGORIES.filter((item) =>
+    item.label.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
+  const displayedCategories = searchQuery
+    ? filteredCategories
+    : CATEGORIES.slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col pb-20">
-      {/* Search Bar */}
-      <div className="px-4 pt-6 pb-3">
-        <div className="bg-gray-100 rounded-xl px-4 py-3 flex items-center">
-          <span className="text-gray-400 mr-2">🔍</span>
+    <div style={s.root}>
+      {/* Top bar */}
+      <div style={s.topBar}>
+        <div>
+          <div style={s.greeting}>Good morning 👋</div>
+          <div style={s.greetingBold}>What are you looking for?</div>
+        </div>
+        <button style={s.avatar} onClick={() => navigate("/account")}>
+          {process_name(user_infor.user_name)}
+        </button>
+      </div>
+
+      {/* Search */}
+      <div style={s.searchWrap}>
+        <div style={s.searchBox}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="8" stroke="#6B7280" strokeWidth="1.8" />
+            <line
+              x1="21"
+              y1="21"
+              x2="16.65"
+              y2="16.65"
+              stroke="#6B7280"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+            />
+          </svg>
           <input
+            style={s.searchInput}
             type="text"
-            placeholder="Search"
-            className="bg-transparent outline-none flex-1 text-gray-900 placeholder-gray-400"
+            placeholder="Search categories…"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 px-4">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">
-          What are you looking for?
-        </h2>
+      {/* Body */}
+      <div style={s.body}>
+        {/* LuckySpinner promo banner */}
+        <div style={s.banner} onClick={() => navigate("/lucky-spin")}>
+          <div style={s.bannerRing}>
+            <div style={s.bannerRingInner}>🎰</div>
+          </div>
+          <div style={s.bannerText}>
+            <div style={s.bannerTitle}>Your lucky deal is waiting</div>
+            <div style={s.bannerSub}>Spin to win a personalized reward</div>
+          </div>
+          <div style={s.bannerCta}>Try →</div>
+        </div>
 
-        <div className="space-y-3">
-          {categories.map((item, index) => (
+        {/* Categories */}
+        <div style={s.sectionRow}>
+          <h2 style={s.sectionTitle}>Categories</h2>
+          <span style={s.sectionCount}>
+            {searchQuery
+              ? `${filteredCategories.length} results`
+              : `${CATEGORIES.length} items`}
+          </span>
+        </div>
+
+        <div style={s.list}>
+          {displayedCategories.map((item) => (
             <div
-              key={index}
-              className="bg-white rounded-2xl px-4 py-4 flex items-center justify-between active:scale-95 transition"
+              key={item.label}
+              style={s.card}
+              onClick={(e) =>
+                press(
+                  e,
+                  `/questions/${item.label.toLowerCase().replace(/\s+/g, "-")}`,
+                )
+              }
             >
-              <span className="text-base text-gray-900 font-medium">
-                {item}
-              </span>
-              <span className="text-gray-400">›</span>
+              <div style={{ ...s.iconWrap, backgroundColor: item.bg }}>
+                {item.icon}
+              </div>
+              <span style={s.cardLabel}>{item.label}</span>
+              {item.tag && (
+                <span style={{ ...s.tag, ...TAG_STYLES[item.tag] }}>
+                  {item.tag.toUpperCase()}
+                </span>
+              )}
+              <span style={s.chevron}>›</span>
             </div>
           ))}
+
+          {searchQuery && filteredCategories.length === 0 && (
+            <div
+              style={{
+                padding: "16px",
+                color: "#6B7280",
+                textAlign: "center",
+              }}
+            >
+              No categories found
+            </div>
+          )}
         </div>
       </div>
     </div>

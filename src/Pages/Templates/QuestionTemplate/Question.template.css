@@ -1,0 +1,536 @@
+/*
+ * QuizTemplate.css
+ * ─────────────────────────────────────────────────────────────────
+ * Single shared stylesheet for ALL quiz category pages.
+ * Each category can override the CSS custom-properties block below
+ * by adding a theme class to .quiz-root, e.g.:
+ *
+ *   .quiz-theme--electronic { --accent: #00c2ff; --accent-dim: ... }
+ *
+ * Available tokens
+ * ─────────────────────────────────────────────────────────────────
+ *  --accent         main accent / gold colour
+ *  --accent-dim     semi-transparent accent for glows & badges
+ *  --accent-border  accent border colour
+ *  --purple         secondary accent (checkmark, progress, badge ring)
+ *  --purple-dim     semi-transparent purple
+ *  --bg             page background
+ *  --card-bg        option card background
+ * ─────────────────────────────────────────────────────────────────
+ */
+
+/* ── Default theme (mirrors original Beauty palette) ── */
+.quiz-root {
+  --accent: #e8a030;
+  --accent-dim: rgba(232, 160, 48, 0.13);
+  --accent-border: rgba(232, 160, 48, 0.28);
+  --accent-glow: rgba(232, 160, 48, 0.13);
+
+  --purple: #7c3aed;
+  --purple-dim: rgba(124, 58, 237, 0.14);
+  --purple-border: rgba(124, 58, 237, 0.3);
+  --purple-glow-top: rgba(110, 50, 220, 0.22);
+
+  --bg: #0c0b14;
+  --card-bg: #18162a;
+}
+
+/* ── Electronic theme ── */
+.quiz-theme--electronic {
+  --accent: #00c2ff;
+  --accent-dim: rgba(0, 194, 255, 0.12);
+  --accent-border: rgba(0, 194, 255, 0.3);
+  --accent-glow: rgba(0, 194, 255, 0.12);
+
+  --purple: #0ea5e9;
+  --purple-dim: rgba(14, 165, 233, 0.14);
+  --purple-border: rgba(14, 165, 233, 0.32);
+  --purple-glow-top: rgba(0, 100, 220, 0.22);
+
+  --bg: #080c14;
+  --card-bg: #0f1521;
+}
+
+/* ── Clothing theme ── */
+.quiz-them--beauty {
+  --accent: #ec4899; /* hồng chủ đạo (rose pink) */
+  --accent-dim: rgba(236, 72, 153, 0.12);
+  --accent-border: rgba(236, 72, 153, 0.3);
+  --accent-glow: rgba(236, 72, 153, 0.18);
+
+  --purple: #db2777; /* hồng đậm hơn, hơi ngả đỏ */
+  --purple-dim: rgba(219, 39, 119, 0.14);
+  --purple-border: rgba(219, 39, 119, 0.34);
+  --purple-glow-top: rgba(240, 80, 140, 0.22);
+
+  --bg: #130a10; /* nền hồng tím rất nhẹ */
+  --card-bg: #22121b;
+}
+
+.quiz-theme--clothing {
+  --accent: #8b5cf6;
+  --accent-dim: rgba(139, 92, 246, 0.12);
+  --accent-border: rgba(139, 92, 246, 0.3);
+  --accent-glow: rgba(139, 92, 246, 0.15);
+
+  --purple: #7c3aed;
+  --purple-dim: rgba(124, 58, 237, 0.14);
+  --purple-border: rgba(124, 58, 237, 0.32);
+  --purple-glow-top: rgba(110, 50, 220, 0.22);
+
+  --bg: #0e0b14;
+  --card-bg: #18162a;
+}
+
+/* ── Accessory theme ── */
+.quiz-theme--accessory {
+  --accent: #f97316;
+  --accent-dim: rgba(249, 115, 22, 0.12);
+  --accent-border: rgba(249, 115, 22, 0.3);
+  --accent-glow: rgba(249, 115, 22, 0.15);
+
+  --purple: #ea580c;
+  --purple-dim: rgba(234, 88, 12, 0.14);
+  --purple-border: rgba(234, 88, 12, 0.32);
+  --purple-glow-top: rgba(200, 80, 20, 0.22);
+
+  --bg: #140c08;
+  --card-bg: #1f140e;
+}
+
+.quiz-theme--homeEssential {
+  --accent: #eab308; /* vàng chủ đạo */
+  --accent-dim: rgba(234, 179, 8, 0.12);
+  --accent-border: rgba(234, 179, 8, 0.3);
+  --accent-glow: rgba(234, 179, 8, 0.18);
+
+  --purple: #f59e0b; /* vàng cam đậm hơn để tạo chiều sâu */
+  --purple-dim: rgba(245, 158, 11, 0.14);
+  --purple-border: rgba(245, 158, 11, 0.32);
+  --purple-glow-top: rgba(245, 158, 11, 0.22);
+
+  --bg: #1a1405; /* nền nâu tối ấm */
+  --card-bg: #2a210a; /* card ấm, nổi nhẹ */
+}
+
+/* ─────────────────────────────────────────────
+   Reset
+───────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ─────────────────────────────────────────────
+   Root shell
+───────────────────────────────────────────── */
+.quiz-root {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+
+  font-family:
+    -apple-system, "SF Pro Display", "SF Pro Text", BlinkMacSystemFont,
+    "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* ─────────────────────────────────────────────
+   Ambient glows
+───────────────────────────────────────────── */
+.quiz-glows {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.quiz-glow-top {
+  position: absolute;
+  top: -80px;
+  left: 20%;
+  width: min(380px, 80vw);
+  height: min(380px, 80vw);
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    var(--purple-glow-top) 0%,
+    transparent 70%
+  );
+}
+
+.quiz-glow-bottom {
+  position: absolute;
+  bottom: 30px;
+  right: -60px;
+  width: min(260px, 60vw);
+  height: min(260px, 60vw);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 70%);
+}
+
+/* ─────────────────────────────────────────────
+   Header
+───────────────────────────────────────────── */
+.quiz-header {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 0;
+}
+
+.quiz-logo {
+  display: flex;
+  align-items: baseline;
+}
+
+.quiz-logo-white {
+  font-size: 19px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.quiz-logo-accent {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.5px;
+}
+
+.quiz-live-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-border);
+  border-radius: 20px;
+  padding: 4px 11px;
+}
+
+.quiz-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: livePulse 1.8s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(0.85);
+  }
+}
+
+.quiz-live-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.3px;
+}
+
+/* ─────────────────────────────────────────────
+   Progress bar
+───────────────────────────────────────────── */
+.quiz-progress {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  padding: 14px 20px 0;
+}
+
+.quiz-progress-track {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.quiz-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--purple), var(--accent));
+  border-radius: 2px;
+  transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.quiz-progress-labels {
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.quiz-progress-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.28);
+}
+
+/* ─────────────────────────────────────────────
+   Question section
+───────────────────────────────────────────── */
+.quiz-question {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  padding: 16px 20px 12px;
+}
+
+.quiz-badge {
+  display: inline-flex;
+  align-items: center;
+  background: var(--purple-dim);
+  border: 1px solid var(--purple-border);
+  border-radius: 20px;
+  padding: 3px 11px;
+  margin-bottom: 10px;
+}
+
+.quiz-badge-text {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--purple);
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+}
+
+/* override badge text colour with accent on electronic/accessory etc. */
+.quiz-theme--electronic .quiz-badge-text,
+.quiz-theme--clothing .quiz-badge-text,
+.quiz-theme--accessory .quiz-badge-text {
+  color: var(--accent);
+}
+
+.quiz-question-text {
+  font-size: clamp(20px, 5vw, 24px);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+  letter-spacing: -0.4px;
+}
+
+.quiz-word-accent {
+  color: var(--accent);
+}
+
+.quiz-hint {
+  margin-top: 6px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.35);
+  line-height: 1.4;
+}
+
+/* ─────────────────────────────────────────────
+   Option grid
+───────────────────────────────────────────── */
+.quiz-grid {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-height: 0;
+  padding: 0 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.quiz-row {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── Option card ── */
+.quiz-option {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1.5px solid rgba(255, 255, 255, 0.07);
+  background: var(--card-bg);
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  transition:
+    transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.15s ease;
+}
+
+.quiz-option:active {
+  transform: scale(0.95);
+}
+
+.quiz-option--selecting {
+  border-color: var(--purple);
+  border-width: 2px;
+  transform: scale(0.96);
+}
+
+/* ── Card image ── */
+.quiz-option-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+.quiz-option--selecting .quiz-option-img {
+  opacity: 0.58;
+}
+
+/* ── Fallback gradient (no image) ── */
+.quiz-option-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    var(--purple-dim) 0%,
+    var(--accent-dim) 100%
+  );
+  opacity: 0.75;
+  transition: opacity 0.2s;
+}
+
+.quiz-option--selecting .quiz-option-gradient {
+  opacity: 1;
+}
+
+/* ── Dark overlay at bottom ── */
+.quiz-option-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(12, 11, 20, 0.9) 0%,
+    rgba(12, 11, 20, 0.18) 55%,
+    transparent 100%
+  );
+}
+
+/* ── Selection flash ── */
+.quiz-option-highlight {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  background: var(--purple-dim);
+  animation: highlightFade 0.38s ease forwards;
+}
+
+@keyframes highlightFade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* ── Checkmark badge ── */
+.quiz-check {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: checkPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes checkPop {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ── Footer row ── */
+.quiz-option-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 13px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.quiz-option-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.2px;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.quiz-option-arrow {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.quiz-option--selecting .quiz-option-arrow {
+  background: var(--purple-dim);
+  border-color: var(--purple-border);
+}
+
+/* ── Tap ripple ── */
+.quiz-option::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.quiz-option:active::after {
+  opacity: 1;
+}

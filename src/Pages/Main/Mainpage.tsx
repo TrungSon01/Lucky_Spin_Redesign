@@ -1,10 +1,11 @@
 import {
+  Image,
   useAsyncStorage,
   useNavigateWithTransition,
 } from "@shopify/shop-minis-react";
 import useDataMainpage from "./Data/useDataMainpage";
 import { useState, useEffect } from "react";
-
+import DefaultAvatar from "../../images/Avatar/DefaultAvatar.jpg";
 export default function Mainpage() {
   const navigate = useNavigateWithTransition();
   const { getItem } = useAsyncStorage();
@@ -45,16 +46,19 @@ export default function Mainpage() {
           <div style={s.greetingBold}>What are you looking for?</div>
         </div>
         <button style={s.avatar} onClick={() => navigate("/account")}>
-          <img
-            src={user_infor.user_avatar}
-            alt="avatar"
-            style={{
-              width: "100%",
-              height: "100%",
-              borderRadius: "50%",
-              objectFit: "cover",
-            }}
-          />
+          {user_infor.user_avatar ? (
+            <Image src={user_infor.user_avatar} alt="avatar"></Image>
+          ) : (
+            <Image
+              src={DefaultAvatar}
+              style={{
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
+                objectFit: "cover",
+              }}
+            ></Image>
+          )}
         </button>
       </div>
 

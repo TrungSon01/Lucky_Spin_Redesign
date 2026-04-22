@@ -2,25 +2,27 @@ import { useQuizStore } from "../../../../zustand/useQuizStore";
 import useResult from "../../../Templates/ResultTemplate/Hooks/useResult";
 import ResultTemplate from "../../../Templates/ResultTemplate/Result.template";
 
-export default function BeautyResult() {
+export default function ClothingResult() {
   const { products, isLoading, error, refetch } = useResult({
-    category: "beauty",
+    category: "clothing",
     first: 12,
   });
 
-  const resetAnswers = () => useQuizStore.getState().resetCategory("beauty");
+  const getAnswers = () => useQuizStore.getState().answers.clothing;
+  const resetAnswers = () => useQuizStore.getState().resetCategory("clothing");
 
   return (
     <ResultTemplate
-      category="beauty"
-      categoryName="Beauty"
-      themeClass="result-theme--beauty"
-      badgeText="Picks"
+      category="clothing"
+      categoryName="Fashion"
+      themeClass="result-theme--clothing"
+      badgeText="Finds"
       appName="LuckySpinner"
       products={products}
       isLoading={isLoading}
       error={error}
       onRetry={refetch}
+      getAnswers={getAnswers}
       resetAnswers={resetAnswers}
     />
   );

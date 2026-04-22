@@ -2,7 +2,7 @@ import { useNavigateWithTransition } from "@shopify/shop-minis-react";
 import QuestionTemplate, {
   RawAnswer,
 } from "../../Templates/QuestionTemplate/Question.template";
-import { useElectronicStore } from "../../../zustand/useElectronicZustand";
+import { useQuizStore } from "../../../zustand/useQuizStore";
 import Male from "../../../images/Clothing/Gender/Male.jpg";
 import Female from "../../../images/Clothing/Gender/Female.jpg";
 import { OPTION_BUDGET_IMAGES } from "../Interfaces/Budget.interface";
@@ -31,10 +31,10 @@ const GOLD_WORDS = new Set([
 
 export default function Clothing() {
   const navigate = useNavigateWithTransition();
-  const { setElectronicAnswers } = useElectronicStore();
+  const { setAnswers } = useQuizStore();
 
   const handleComplete = (answers: RawAnswer[]) => {
-    setElectronicAnswers(answers);
+    setAnswers("clothing", answers);
     navigate("/clothing/result");
   };
 
@@ -45,7 +45,7 @@ export default function Clothing() {
       budgetImages={BUDGET_IMAGES}
       genderImages={GENDER_IMAGES}
       goldWords={GOLD_WORDS}
-      badgeText="Tech Deals"
+      badgeText="Fashion Finds"
       appName="LuckySpinner"
       themeClass="quiz-theme--clothing"
       onComplete={handleComplete}

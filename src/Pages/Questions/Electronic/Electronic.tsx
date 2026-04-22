@@ -2,7 +2,7 @@ import { useNavigateWithTransition } from "@shopify/shop-minis-react";
 import QuestionTemplate, {
   RawAnswer,
 } from "../../Templates/QuestionTemplate/Question.template";
-import { useElectronicStore } from "../../../zustand/useElectronicZustand";
+import { useQuizStore } from "../../../zustand/useQuizStore";
 import { Data_Electronic } from "./Data/Electronic.data";
 import {
   ELECTRONIC_IMAGES,
@@ -25,10 +25,10 @@ const GOLD_WORDS = new Set([
 
 export default function Electronic() {
   const navigate = useNavigateWithTransition();
-  const { setElectronicAnswers } = useElectronicStore();
+  const { setAnswers } = useQuizStore();
 
   const handleComplete = (answers: RawAnswer[]) => {
-    setElectronicAnswers(answers);
+    setAnswers("electronic", answers);
     navigate("/electronic/result");
   };
 

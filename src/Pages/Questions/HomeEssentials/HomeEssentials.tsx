@@ -7,7 +7,7 @@ import {
 import QuestionTemplate, {
   RawAnswer,
 } from "../../Templates/QuestionTemplate/Question.template";
-import { useHomeEssentialStore } from "../../../zustand/useHomeEssentialsZustand";
+import { useQuizStore } from "../../../zustand/useQuizStore";
 import { Data_Home_Essential } from "./Data/HomeEssentials.data";
 
 const OPTION_IMAGES: I_HOME_ESSENTIALS_IMAGES = HOME_ESSENTIALS_IMAGES;
@@ -25,9 +25,9 @@ const GOLD_WORDS = new Set([
 ]);
 export default function HomeEssentials() {
   const navigate = useNavigateWithTransition();
-  const { setHomeEssentialAnswers } = useHomeEssentialStore();
+  const { setAnswers } = useQuizStore();
   const handleComplete = (answers: RawAnswer[]) => {
-    setHomeEssentialAnswers(answers);
+    setAnswers("homeEssential", answers);
     navigate("/home-essentials/result");
   };
   return (

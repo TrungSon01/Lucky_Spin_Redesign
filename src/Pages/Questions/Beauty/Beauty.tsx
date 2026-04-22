@@ -1,7 +1,7 @@
 import { useNavigateWithTransition } from "@shopify/shop-minis-react";
 import { RawAnswer } from "../../Templates/QuestionTemplate//Question.template";
 import { Data_Beauty } from "./Data/Beauty.data";
-import { useBeautyStore } from "../../../zustand/useBeautyZustand";
+import { useQuizStore } from "../../../zustand/useQuizStore";
 
 import QuestionTemplate from "../../Templates/QuestionTemplate//Question.template";
 import {
@@ -16,10 +16,10 @@ const GOLD_WORDS = new Set(["interested", "spend?", "willing", "lucky"]);
 
 export default function Beauty() {
   const navigate = useNavigateWithTransition();
-  const { setBeautyAnswers } = useBeautyStore();
+  const { setAnswers } = useQuizStore();
 
   const handleComplete = (answers: RawAnswer[]) => {
-    setBeautyAnswers(answers);
+    setAnswers("beauty", answers);
     navigate("/beauty/result");
   };
 

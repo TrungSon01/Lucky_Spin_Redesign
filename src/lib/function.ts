@@ -12,3 +12,7 @@ export function process_name(name: string): string {
 
   return (first + last).toUpperCase();
 }
+
+export const transfer_to_vnd = (amount: number) => {
+  return amount * 26400;
+};

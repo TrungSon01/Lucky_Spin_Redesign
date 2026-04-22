@@ -4,7 +4,6 @@ import {
 } from "@shopify/shop-minis-react";
 import useDataMainpage from "./Data/useDataMainpage";
 import { useState, useEffect } from "react";
-import { process_name } from "../../lib/function";
 
 export default function Mainpage() {
   const navigate = useNavigateWithTransition();
@@ -46,7 +45,16 @@ export default function Mainpage() {
           <div style={s.greetingBold}>What are you looking for?</div>
         </div>
         <button style={s.avatar} onClick={() => navigate("/account")}>
-          {process_name(user_infor.user_name)}
+          <img
+            src={user_infor.user_avatar}
+            alt="avatar"
+            style={{
+              width: "100%",
+              height: "100%",
+              borderRadius: "50%",
+              objectFit: "cover",
+            }}
+          />
         </button>
       </div>
 

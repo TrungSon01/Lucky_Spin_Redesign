@@ -9,16 +9,61 @@
 /* ── Large title header ── */
 .account-header {
   flex-shrink: 0;
-  padding: 52px 20px 12px;
+  padding: calc(env(safe-area-inset-top, 20px) + 32px) 20px 12px;
   background: #12101f;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+/* Header back button - navigation */
+.header-back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(40px, 11vw, 52px);
+  height: clamp(40px, 11vw, 52px);
+  border-radius: clamp(8px, 2.5vw, 12px);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.2s ease;
+  transition-property: background, border-color, transform;
+  flex-shrink: 0;
+}
+
+.header-back-btn:hover,
+.header-back-btn:active {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.header-back-btn:active {
+  transform: scale(0.95);
+}
+
+.header-back-btn svg {
+  width: clamp(18px, 5vw, 24px);
+  height: clamp(18px, 5vw, 24px);
 }
 
 .account-title {
   font-family: -apple-system, "SF Pro Display", "Helvetica Neue", sans-serif;
-  font-size: 28px;
+  font-size: clamp(24px, 5vw, 28px);
   font-weight: 700;
   color: #ffffff;
   letter-spacing: -0.4px;
+  line-height: 1.2;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  /* Prevent text overflow on small screens */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* ── Scroll container ── */
@@ -58,8 +103,9 @@
 .avatar {
   width: 52px;
   height: 52px;
-  border-radius: 16px;
+  border-radius: 30%;
   flex-shrink: 0;
+  overflow: hidden;
   background: linear-gradient(135deg, #7c3aed, #c05aff);
   display: flex;
   align-items: center;
@@ -256,45 +302,6 @@
 
 .ios-toggle input:checked ~ .toggle-track ~ .toggle-thumb {
   transform: translateX(20px);
-}
-
-/* ── Logout group ── */
-.logout-group {
-  background: #1e1b32;
-  border: 1px solid rgba(255, 80, 80, 0.18);
-  border-radius: 16px;
-  overflow: hidden;
-  margin-bottom: 16px;
-}
-
-.logout-btn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 15px 16px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition: background 0.12s;
-  color: #ff6b6b;
-}
-.logout-btn:active {
-  background: rgba(255, 80, 80, 0.08);
-}
-
-.logout-btn svg {
-  stroke: #ff6b6b;
-}
-
-.logout-btn span {
-  font-family: -apple-system, "SF Pro Text", sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  color: #ff6b6b;
-  letter-spacing: -0.1px;
 }
 
 /* ── Version ── */
@@ -586,13 +593,13 @@
       0 0 28px 8px rgba(255, 160, 0, 0.2),
       inset 0 0 14px rgba(255, 220, 80, 0.15);
   }
-  50% {
+  /* 50% {
     box-shadow:
       0 0 24px 8px rgba(255, 220, 80, 0.7),
       0 0 50px 16px rgba(255, 180, 0, 0.35),
       0 0 80px 24px rgba(255, 140, 0, 0.15),
       inset 0 0 24px rgba(255, 230, 100, 0.3);
-  }
+  } */
 }
 @keyframes hkd-float {
   0%,
@@ -678,19 +685,15 @@
   }
 }
 @keyframes hkd-glow {
-  0%,
+  0% {
+    box-shadow:
+      0 0 10px 3px rgba(255, 210, 60, 0.4),
+      0 0 20px 6px rgba(255, 160, 0, 0.2);
+  }
   100% {
     box-shadow:
-      0 0 12px 4px rgba(255, 210, 60, 0.4),
-      0 0 28px 8px rgba(255, 160, 0, 0.2),
-      inset 0 0 14px rgba(255, 220, 80, 0.15);
-  }
-  50% {
-    box-shadow:
-      0 0 24px 8px rgba(255, 220, 80, 0.7),
-      0 0 50px 16px rgba(255, 180, 0, 0.35),
-      0 0 80px 24px rgba(255, 140, 0, 0.15),
-      inset 0 0 24px rgba(255, 230, 100, 0.3);
+      0 0 18px 6px rgba(255, 220, 80, 0.7),
+      0 0 36px 12px rgba(255, 180, 0, 0.35);
   }
 }
 @keyframes hkd-float {
@@ -916,12 +919,14 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 12px 4px 10px; /* giảm từ 7px 20px 7px 14px */
+  padding: 4px 12px 4px 10px;
   border-radius: 999px;
   background: linear-gradient(135deg, #1a1200, #2a1e00, #1a1200);
   background-clip: padding-box;
   border: 2px solid transparent !important;
-  animation: hkd-glow 2.5s ease-in-out infinite;
+
+  animation: hkd-glow 1.5s ease-in-out infinite alternate;
+
   z-index: 2;
 }
 .tier-anim-hkd::before {

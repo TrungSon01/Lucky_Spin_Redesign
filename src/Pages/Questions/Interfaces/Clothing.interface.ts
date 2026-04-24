@@ -19,7 +19,7 @@ export const CLOTHING_IMAGES: I_CLOTHING_IMAGES = {
   Shirt: Shirt,
   Pant: Pant,
   Short: Short,
-  Pajama: Skirt,
-  Skirt: Pajama,
+  Pajama: Pajama,
+  Skirt: Skirt,
   Dress: Dress,
 };

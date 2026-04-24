@@ -8,7 +8,6 @@ export default function ClothingResult() {
     first: 12,
   });
 
-  const getAnswers = () => useQuizStore.getState().answers.clothing;
   const resetAnswers = () => useQuizStore.getState().resetCategory("clothing");
 
   return (
@@ -22,7 +21,6 @@ export default function ClothingResult() {
       isLoading={isLoading}
       error={error}
       onRetry={refetch}
-      getAnswers={getAnswers}
       resetAnswers={resetAnswers}
     />
   );

@@ -1,16 +1,38 @@
 import { useEffect, useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ArrowLeft } from "lucide-react";
 import "./Account.css";
-import { useAsyncStorage, useCurrentUser } from "@shopify/shop-minis-react";
+import {
+  Image,
+  useAsyncStorage,
+  useCurrentUser,
+  useNavigateWithTransition,
+  useSavedProducts,
+} from "@shopify/shop-minis-react";
 import { process_name } from "../../lib/function";
 import { TIER_CONFIG } from "./Data/level";
-
+import DefaultAvatar from "../../images/Avatar/DefaultAvatar.jpg";
 export default function Account() {
   const { currentUser } = useCurrentUser();
+  const navigate = useNavigateWithTransition();
   const { getItem, setItem } = useAsyncStorage();
+  const { products } = useSavedProducts({
+    first: 9999,
+    fetchPolicy: "cache-first",
+  });
   const [userRank, setUserRank] = useState("0");
+  const [current_streak, set_current_streak] = useState<string>("0");
+  const [last_online, set_last_online] = useState<string>("0");
+  const [rounds_played, set_rounds_played] = useState<string>("0");
   useEffect(() => {
     const check_user_rank = async () => {
+      const [last_online, current_streak, rounds_played] = await Promise.all([
+        getItem({ key: "last_online" }),
+        getItem({ key: "current_streak" }),
+        getItem({ key: "rounds_played" }),
+      ]);
+      set_current_streak(current_streak as string);
+      set_last_online(last_online as string);
+      set_rounds_played(rounds_played as string);
       const user_rank = await getItem({ key: "user_rank" });
       if (!user_rank) {
         setItem({
@@ -19,9 +41,10 @@ export default function Account() {
         });
       }
     };
+
     const fetchUserRank = async () => {
       const rank = await getItem({ key: "user_rank" });
-      setUserRank(rank || "1000");
+      setUserRank(rank || "1");
     };
     check_user_rank();
     fetchUserRank();
@@ -50,14 +73,25 @@ export default function Account() {
   return (
     <div className="account-root">
       <div className="account-header">
-        <h1 className="account-title">Account</h1>
+        <button
+          className="header-back-btn"
+          onClick={() => navigate(-1)}
+          aria-label="Go back"
+        >
+          <ArrowLeft size={24} />
+        </button>
+        <h1 className="account-title">My profile</h1>
       </div>
 
       <div className="account-scroll">
         <button className="profile-card">
           <div className="avatar">
             {currentUser?.avatarImage?.url ? (
-              <img src={currentUser.avatarImage.url} alt="avatar" />
+              <Image
+                src={currentUser?.avatarImage?.url || DefaultAvatar}
+                alt="Avatar"
+                className="rounded-lg "
+              ></Image>
             ) : (
               <span className="avatar-placeholder">
                 {process_name(currentUser?.displayName || "")}

@@ -193,6 +193,7 @@ export default function useDataMainpage() {
       width: "36px",
       height: "36px",
       borderRadius: "50%",
+      overflow: "hidden",
       backgroundColor: "#1C1A3A",
       border: "1.5px solid #252340",
       display: "flex",

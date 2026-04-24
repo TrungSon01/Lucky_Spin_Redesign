@@ -1,6 +1,7 @@
 import {
   Image,
   useAsyncStorage,
+  useCurrentUser,
   useNavigateWithTransition,
 } from "@shopify/shop-minis-react";
 import useDataMainpage from "./Data/useDataMainpage";
@@ -12,7 +13,7 @@ export default function Mainpage() {
   const CATEGORIES = useDataMainpage().CATEGORIES;
   const { TAG_STYLES, s, press } = useDataMainpage();
   const [searchQuery, setSearchQuery] = useState("");
-
+  const { currentUser } = useCurrentUser();
   const user_infor = {
     user_name: "",
     user_avatar: "",
@@ -22,8 +23,9 @@ export default function Mainpage() {
     async function fetchUserInfo() {
       const userName = await getItem({ key: "user_name" });
       const userAvatar = await getItem({ key: "user_avatar" });
-      user_infor.user_name = userName || "Guest";
-      user_infor.user_avatar = userAvatar || "";
+      user_infor.user_name = userName || currentUser?.displayName || "Guest";
+      user_infor.user_avatar =
+        userAvatar || currentUser?.avatarImage?.url || "";
     }
 
     fetchUserInfo();
@@ -47,7 +49,16 @@ export default function Mainpage() {
         </div>
         <button style={s.avatar} onClick={() => navigate("/account")}>
           {user_infor.user_avatar ? (
-            <Image src={user_infor.user_avatar} alt="avatar"></Image>
+            <Image
+              src={currentUser?.avatarImage?.url || user_infor.user_avatar}
+              alt="avatar"
+              style={{
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
+                objectFit: "cover",
+              }}
+            ></Image>
           ) : (
             <Image
               src={DefaultAvatar}

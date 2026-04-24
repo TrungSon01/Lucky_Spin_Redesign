@@ -10,21 +10,56 @@ import { useEffect } from "react";
 export default function Homepage() {
   const navigateWithTransition = useNavigateWithTransition();
   const { currentUser } = useCurrentUser();
-  const { setItem } = useAsyncStorage();
-  const data = {
+  const { setItem, getItem } = useAsyncStorage();
+
+  const user_data = {
     name: currentUser?.displayName || "Guest",
     avatar: currentUser?.avatarImage?.url || "",
   };
+
   useEffect(() => {
     async function handleStorageOperations() {
-      await setItem({
-        key: "user_name",
-        value: data.name,
-      });
-      await setItem({
-        key: "user_avatar",
-        value: data.avatar,
-      });
+      const [
+        check_user_name,
+        check_user_avatar,
+        check_current_streak,
+        check_rounds_played,
+        check_first_time_join,
+      ] = await Promise.all([
+        getItem({ key: "user_name" }),
+        getItem({ key: "user_avatar" }),
+        getItem({ key: "current_streak" }),
+        getItem({ key: "rounds_played" }),
+        getItem({ key: "last_online" }),
+      ]);
+      if (!check_user_avatar && !check_user_name) {
+        await setItem({
+          key: "user_name",
+          value: user_data.name,
+        });
+        await setItem({
+          key: "user_avatar",
+          value: user_data.avatar,
+        });
+      }
+      if (!check_current_streak) {
+        await setItem({
+          key: "current_streak",
+          value: "0",
+        });
+      }
+      if (!check_rounds_played) {
+        await setItem({
+          key: "rounds_played",
+          value: "0",
+        });
+      }
+      if (!check_first_time_join) {
+        await setItem({
+          key: "last_online",
+          value: `${Date.now()}`,
+        });
+      }
     }
 
     handleStorageOperations();

@@ -2,6 +2,7 @@ import {
   useNavigateWithTransition,
   ProductCard,
   Product,
+  useSavedProductsActions,
 } from "@shopify/shop-minis-react";
 import { RefreshCw } from "lucide-react";
 import "./Result.template.css";
@@ -37,7 +38,7 @@ export default function ResultTemplate({
   resetAnswers,
 }: ResultTemplateProps) {
   const navigate = useNavigateWithTransition();
-
+  const { saveProduct, unsaveProduct } = useSavedProductsActions();
   const handleStartOver = () => {
     resetAnswers();
     navigate(`/questions/${category}`);
@@ -118,7 +119,21 @@ export default function ResultTemplate({
                   <ProductCard
                     variant="priceOverlay"
                     product={product}
-                    onFavoriteToggled={() => {}}
+                    onFavoriteToggled={async () => {
+                      try {
+                        await saveProduct({
+                          productId: product.id,
+                          shopId: product.shop.id,
+                          productVariantId: product.defaultVariantId,
+                        });
+                      } catch (error) {
+                        await unsaveProduct({
+                          productId: product.id,
+                          shopId: product.shop.id,
+                          productVariantId: product.defaultVariantId,
+                        });
+                      }
+                    }}
                   />
                 </div>
               </div>

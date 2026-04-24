@@ -8,13 +8,13 @@ export const Data_Home_Essential = [
       "Kitchenware",
       "Bedding",
       "Cleaning Supplies",
-      "Storage & Organization",
+      "Storage Organization",
       "Home Decor",
       "Appliances",
     ],
   },
   {
-    question: "how much are you willing to spend?",
+    question: "How much are you willing to spend?",
     options: [
       { label: "Under $50", value_min: 0, value_max: transfer_to_vnd(50) },
       {

@@ -8,8 +8,8 @@ export default function HomeEssentialsResult() {
     first: 12,
   });
 
-  const getAnswers = () => useQuizStore.getState().answers.homeEssential;
-  const resetAnswers = () => useQuizStore.getState().resetCategory("homeEssential");
+  const resetAnswers = () =>
+    useQuizStore.getState().resetCategory("homeEssential");
 
   return (
     <ResultTemplate
@@ -22,7 +22,6 @@ export default function HomeEssentialsResult() {
       isLoading={isLoading}
       error={error}
       onRetry={refetch}
-      getAnswers={getAnswers}
       resetAnswers={resetAnswers}
     />
   );

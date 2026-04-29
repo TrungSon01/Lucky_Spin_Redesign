@@ -37,7 +37,7 @@ export default function Mainpage() {
 
   const displayedCategories = searchQuery
     ? filteredCategories
-    : CATEGORIES.slice(0, 3);
+    : CATEGORIES.slice(0, 5);
 
   return (
     <div style={s.root}>

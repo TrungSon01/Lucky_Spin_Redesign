@@ -134,6 +134,181 @@ export default function useDataMainpage() {
       bg: "#28180D",
       tag: null,
     },
+    {
+      label: "Sport",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="#38BDF8" strokeWidth="1.8" />
+          <path
+            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+            stroke="#38BDF8"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M2 12h20"
+            stroke="#38BDF8"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+          <path
+            d="M4.93 7h14.14M4.93 17h14.14"
+            stroke="#38BDF8"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeDasharray="2 2"
+          />
+        </svg>
+      ),
+      bg: "#0A1A28",
+      tag: "New",
+    },
+    {
+      label: "Jewelry",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M12 22L2 9l3-5h14l3 5-10 13z"
+            stroke="#E879F9"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M2 9h20"
+            stroke="#E879F9"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+          <path
+            d="M7 4L5 9l7 13 7-13-2-5"
+            stroke="#E879F9"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+            strokeDasharray="2 1.5"
+            opacity="0.5"
+          />
+          <path
+            d="M9 4l-2 5M15 4l2 5M9 4h6"
+            stroke="#E879F9"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      ),
+      bg: "#240D2A",
+      tag: "Hot",
+    },
+    {
+      label: "Pets",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          {/* Đầu */}
+          <circle cx="12" cy="13" r="5" stroke="#FBBF24" strokeWidth="1.8" />
+          {/* Tai trái */}
+          <path
+            d="M8 9.5L7 5.5l3.5 3"
+            stroke="#FBBF24"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          {/* Tai phải */}
+          <path
+            d="M16 9.5l1-4-3.5 3"
+            stroke="#FBBF24"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          {/* Mắt trái */}
+          <circle cx="10" cy="12.5" r="0.8" fill="#FBBF24" />
+          {/* Mắt phải */}
+          <circle cx="14" cy="12.5" r="0.8" fill="#FBBF24" />
+          {/* Mũi */}
+          <path
+            d="M11 14.5h2"
+            stroke="#FBBF24"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          {/* Miệng */}
+          <path
+            d="M10.5 15.5c.5.6 1 .8 1.5.8s1-.2 1.5-.8"
+            stroke="#FBBF24"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          {/* Râu trái */}
+          <path
+            d="M7 13.5l3 .5"
+            stroke="#FBBF24"
+            strokeWidth="1.3"
+            strokeLinecap="round"
+            opacity="0.7"
+          />
+          {/* Râu phải */}
+          <path
+            d="M17 13.5l-3 .5"
+            stroke="#FBBF24"
+            strokeWidth="1.3"
+            strokeLinecap="round"
+            opacity="0.7"
+          />
+        </svg>
+      ),
+      bg: "#28200A",
+      tag: "Popular",
+    },
+    {
+      label: "Food & Drink",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M18 8h1a4 4 0 0 1 0 8h-1"
+            stroke="#F87171"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M3 8h15v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"
+            stroke="#F87171"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+          />
+          <line
+            x1="6"
+            y1="2"
+            x2="6"
+            y2="6"
+            stroke="#F87171"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+          <line
+            x1="10"
+            y1="2"
+            x2="10"
+            y2="6"
+            stroke="#F87171"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+          <line
+            x1="14"
+            y1="2"
+            x2="14"
+            y2="6"
+            stroke="#F87171"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+        </svg>
+      ),
+      bg: "#280E0E",
+      tag: null,
+    },
   ];
   useEffect(() => {
     const data = CATEGORIES;

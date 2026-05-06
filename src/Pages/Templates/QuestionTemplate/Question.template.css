@@ -113,6 +113,70 @@
   --card-bg: #2a210a; /* card ấm, nổi nhẹ */
 }
 
+/* ── FoodDrink theme (green) ── */
+.quiz-theme--fooddrink {
+  --accent: #10b981;
+  --accent-dim: rgba(16, 185, 129, 0.12);
+  --accent-border: rgba(16, 185, 129, 0.3);
+  --accent-glow: rgba(16, 185, 129, 0.15);
+
+  --purple: #059669;
+  --purple-dim: rgba(5, 150, 105, 0.14);
+  --purple-border: rgba(5, 150, 105, 0.32);
+  --purple-glow-top: rgba(10, 120, 80, 0.22);
+
+  --bg: #0a1410;
+  --card-bg: #0f1d15;
+}
+
+/* ── Sport theme (orange/red) ── */
+.quiz-theme--sport {
+  --accent: #f59e0b;
+  --accent-dim: rgba(245, 158, 11, 0.12);
+  --accent-border: rgba(245, 158, 11, 0.3);
+  --accent-glow: rgba(245, 158, 11, 0.18);
+
+  --purple: #dc2626;
+  --purple-dim: rgba(220, 38, 38, 0.14);
+  --purple-border: rgba(220, 38, 38, 0.32);
+  --purple-glow-top: rgba(200, 30, 30, 0.22);
+
+  --bg: #1a0e0a;
+  --card-bg: #2a1a15;
+}
+
+/* ── Jewelry theme (gold) ── */
+.quiz-theme--jewelry {
+  --accent: #fbbf24;
+  --accent-dim: rgba(251, 191, 36, 0.12);
+  --accent-border: rgba(251, 191, 36, 0.3);
+  --accent-glow: rgba(251, 191, 36, 0.18);
+
+  --purple: #d97706;
+  --purple-dim: rgba(217, 119, 6, 0.14);
+  --purple-border: rgba(217, 119, 6, 0.32);
+  --purple-glow-top: rgba(200, 100, 10, 0.22);
+
+  --bg: #1a1405;
+  --card-bg: #2a210a;
+}
+
+/* ── Pets theme (cyan) ── */
+.quiz-theme--pets {
+  --accent: #06b6d4;
+  --accent-dim: rgba(6, 182, 212, 0.12);
+  --accent-border: rgba(6, 182, 212, 0.3);
+  --accent-glow: rgba(6, 182, 212, 0.15);
+
+  --purple: #0891b2;
+  --purple-dim: rgba(8, 145, 178, 0.14);
+  --purple-border: rgba(8, 145, 178, 0.32);
+  --purple-glow-top: rgba(0, 120, 180, 0.22);
+
+  --bg: #0a1016;
+  --card-bg: #0f1c24;
+}
+
 /* ─────────────────────────────────────────────
    Reset
 ───────────────────────────────────────────── */
@@ -319,7 +383,11 @@
 /* override badge text colour with accent on electronic/accessory etc. */
 .quiz-theme--electronic .quiz-badge-text,
 .quiz-theme--clothing .quiz-badge-text,
-.quiz-theme--accessory .quiz-badge-text {
+.quiz-theme--accessory .quiz-badge-text,
+.quiz-theme--fooddrink .quiz-badge-text,
+.quiz-theme--sport .quiz-badge-text,
+.quiz-theme--jewelry .quiz-badge-text,
+.quiz-theme--pets .quiz-badge-text {
   color: var(--accent);
 }
 

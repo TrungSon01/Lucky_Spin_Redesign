@@ -2,7 +2,7 @@ import { useNavigateWithTransition } from "@shopify/shop-minis-react";
 import QuestionTemplate, {
   RawAnswer,
 } from "../../Templates/QuestionTemplate/Question.template";
-import { useAccessoryStore } from "../../../zustand/useAccessoryZustand";
+import { useQuizStore } from "../../../zustand/useQuizStore";
 import { Data_Accessory } from "./Data/Accessory.data";
 import {
   ACCESSORY_IMAGES,
@@ -25,10 +25,10 @@ const GOLD_WORDS = new Set([
 
 export default function Accessory() {
   const navigate = useNavigateWithTransition();
-  const { setAccessoryAnswers } = useAccessoryStore();
+  const { setAnswers } = useQuizStore();
 
   const handleComplete = (answers: RawAnswer[]) => {
-    setAccessoryAnswers(answers);
+    setAnswers("accessory", answers);
     navigate("/accessory/result");
   };
 

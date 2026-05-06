@@ -1,16 +1,27 @@
-import { ProductCard } from "@shopify/shop-minis-react";
-import useBeautyResult from "./Hooks/useBeautyResult";
+import { useQuizStore } from "../../../../zustand/useQuizStore";
+import useResult from "../../../Templates/ResultTemplate/Hooks/useResult";
+import ResultTemplate from "../../../Templates/ResultTemplate/Result.template";
 
 export default function BeautyResult() {
-  const { beauty_result } = useBeautyResult();
+  const { products, isLoading, error, refetch } = useResult({
+    category: "beauty",
+    first: 12,
+  });
+
+  const resetAnswers = () => useQuizStore.getState().resetCategory("beauty");
+
   return (
-    <div>
-      <h1>Beauty Result</h1>
-      <ul>
-        {beauty_result.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </ul>
-    </div>
+    <ResultTemplate
+      category="beauty"
+      categoryName="Beauty"
+      themeClass="result-theme--beauty"
+      badgeText="Picks"
+      appName="LuckySpinner"
+      products={products}
+      isLoading={isLoading}
+      error={error}
+      onRetry={refetch}
+      resetAnswers={resetAnswers}
+    />
   );
 }

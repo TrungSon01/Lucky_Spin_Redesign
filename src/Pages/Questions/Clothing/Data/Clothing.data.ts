@@ -7,7 +7,7 @@ export const Data_Clothing = [
   },
   {
     question: "What are you interested in?",
-    options: ["Shirt", "Pant", "Short", "Underwear", "Skirt", "Dress"],
+    options: ["Shirt", "Pant", "Short", "Pajama", "Skirt", "Dress"],
   },
   {
     question: "how much are you willing to spend?",

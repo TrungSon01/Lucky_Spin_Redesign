@@ -1,17 +1,21 @@
 import {
+  Image,
   useAsyncStorage,
+  useCurrentUser,
   useNavigateWithTransition,
 } from "@shopify/shop-minis-react";
 import useDataMainpage from "./Data/useDataMainpage";
 import { useState, useEffect } from "react";
-
+import DefaultAvatar from "../../images/Avatar/DefaultAvatar.jpg";
+import "./Mainpage.css";
 export default function Mainpage() {
   const navigate = useNavigateWithTransition();
-  const { getItem } = useAsyncStorage();
+  const { getItem, setItem } = useAsyncStorage();
   const CATEGORIES = useDataMainpage().CATEGORIES;
   const { TAG_STYLES, s, press } = useDataMainpage();
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [showAll, setShowAll] = useState(false);
+  const { currentUser } = useCurrentUser();
   const user_infor = {
     user_name: "",
     user_avatar: "",
@@ -21,8 +25,9 @@ export default function Mainpage() {
     async function fetchUserInfo() {
       const userName = await getItem({ key: "user_name" });
       const userAvatar = await getItem({ key: "user_avatar" });
-      user_infor.user_name = userName || "Guest";
-      user_infor.user_avatar = userAvatar || "";
+      user_infor.user_name = userName || currentUser?.displayName || "Guest";
+      user_infor.user_avatar =
+        userAvatar || currentUser?.avatarImage?.url || "";
     }
 
     fetchUserInfo();
@@ -34,59 +39,65 @@ export default function Mainpage() {
 
   const displayedCategories = searchQuery
     ? filteredCategories
-    : CATEGORIES.slice(0, 3);
+    : showAll
+      ? CATEGORIES
+      : CATEGORIES.slice(0, 5);
 
+  const handleTestStreak = async () => {
+    const [current_streak, rounds_played] = await Promise.all([
+      getItem({ key: "current_streak" }),
+      getItem({ key: "rounds_played" }),
+    ]);
+    const newStreak = (Number(current_streak) || 0) + 1;
+    const newRound = (Number(rounds_played) || 0) + 1;
+    await setItem({
+      key: "current_streak",
+      value: String(newStreak),
+    });
+    await setItem({
+      key: "rounds_played",
+      value: String(newRound),
+    });
+  };
   return (
     <div style={s.root}>
       {/* Top bar */}
       <div style={s.topBar}>
-        <div>
-          <div style={s.greeting}>Good morning 👋</div>
-          <div style={s.greetingBold}>What are you looking for?</div>
-        </div>
+        <header className="header-logo-mainpage">
+          <div className="logo">
+            Lucky<span className="logo__accent">Spinner</span>
+          </div>
+        </header>
         <button style={s.avatar} onClick={() => navigate("/account")}>
-          <img
-            src={user_infor.user_avatar}
-            alt="avatar"
-            style={{
-              width: "100%",
-              height: "100%",
-              borderRadius: "50%",
-              objectFit: "cover",
-            }}
-          />
+          {user_infor.user_avatar ? (
+            <Image
+              src={currentUser?.avatarImage?.url || user_infor.user_avatar}
+              alt="avatar"
+              style={{
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
+                objectFit: "cover",
+              }}
+            ></Image>
+          ) : (
+            <Image
+              src={DefaultAvatar}
+              style={{
+                width: "100%",
+                height: "100%",
+                borderRadius: "50%",
+                objectFit: "cover",
+              }}
+            ></Image>
+          )}
         </button>
-      </div>
-
-      {/* Search */}
-      <div style={s.searchWrap}>
-        <div style={s.searchBox}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <circle cx="11" cy="11" r="8" stroke="#6B7280" strokeWidth="1.8" />
-            <line
-              x1="21"
-              y1="21"
-              x2="16.65"
-              y2="16.65"
-              stroke="#6B7280"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-            />
-          </svg>
-          <input
-            style={s.searchInput}
-            type="text"
-            placeholder="Search categories…"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
       </div>
 
       {/* Body */}
       <div style={s.body}>
         {/* LuckySpinner promo banner */}
-        <div style={s.banner} onClick={() => navigate("/lucky-spin")}>
+        <div style={s.banner} onClick={() => handleTestStreak()}>
           <div style={s.bannerRing}>
             <div style={s.bannerRingInner}>🎰</div>
           </div>
@@ -131,6 +142,22 @@ export default function Mainpage() {
               <span style={s.chevron}>›</span>
             </div>
           ))}
+          <button
+            className="text-stone-50"
+            onClick={() => {
+              if (searchQuery) {
+                setSearchQuery("");
+              } else {
+                setShowAll(!showAll);
+              }
+            }}
+          >
+            {searchQuery
+              ? "Clear Search"
+              : showAll
+                ? "Show Less"
+                : "View All Categories"}
+          </button>
 
           {searchQuery && filteredCategories.length === 0 && (
             <div

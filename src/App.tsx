@@ -13,6 +13,14 @@ import Clothing from "./Pages/Questions/Clothing/Clothing";
 import ClothingResult from "./Pages/Questions/Clothing/ClothingResult/ClothingResult";
 import HomeEssentials from "./Pages/Questions/HomeEssentials/HomeEssentials";
 import HomeEssentialsResult from "./Pages/Questions/HomeEssentials/HomeEssentialsResult/HomeEssentialsResult";
+import FoodDrink from "./Pages/Questions/FoodDrink/FoodDrink";
+import FoodDrinkResult from "./Pages/Questions/FoodDrink/FoodDrinkResult/FoodDrinkResult";
+import Sport from "./Pages/Questions/Sport/Sport";
+import SportResult from "./Pages/Questions/Sport/SportResult/SportResult";
+import Toy from "./Pages/Questions/Toy/Toy";
+import ToyResult from "./Pages/Questions/Toy/ToyResult/ToyResult";
+import Pets from "./Pages/Questions/Pets/Pets";
+import PetsResult from "./Pages/Questions/Pets/PetsResult/PetsResult";
 
 export function App() {
   return (
@@ -51,6 +59,22 @@ export function App() {
             path="/home-essentials/result"
             element={<HomeEssentialsResult />}
           />
+
+          {/* FoodDrink path  */}
+          <Route path="/questions/food-drink" element={<FoodDrink />} />
+          <Route path="/fooddrink/result" element={<FoodDrinkResult />} />
+
+          {/* Sport path  */}
+          <Route path="/questions/sport" element={<Sport />} />
+          <Route path="/sport/result" element={<SportResult />} />
+
+          {/* Jewelry path  */}
+          <Route path="/questions/toy" element={<Toy />} />
+          <Route path="/toy/result" element={<ToyResult />} />
+
+          {/* Pets path  */}
+          <Route path="/questions/pets" element={<Pets />} />
+          <Route path="/pets/result" element={<PetsResult />} />
         </Routes>
       </MinisRouter>
     </div>

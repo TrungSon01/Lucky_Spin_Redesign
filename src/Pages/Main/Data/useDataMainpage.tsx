@@ -8,41 +8,20 @@ export default function useDataMainpage() {
 
   const CATEGORIES = [
     {
-      label: "Home Essentials",
+      label: "Accessories",
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="3" stroke="#FB923C" strokeWidth="1.8" />
           <path
-            d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"
-            stroke="#C8A84B"
-            strokeWidth="1.8"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M9 21V12h6v9"
-            stroke="#C8A84B"
+            d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"
+            stroke="#FB923C"
             strokeWidth="1.8"
             strokeLinecap="round"
-            strokeLinejoin="round"
           />
         </svg>
       ),
-      bg: "#1C1A0E",
-      tag: "Popular",
-    },
-    {
-      label: "Clothing",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"
-            stroke="#A78BFA"
-            strokeWidth="1.8"
-            strokeLinejoin="round"
-          />
-        </svg>
-      ),
-      bg: "#1A1630",
-      tag: "Hot",
+      bg: "#28180D",
+      tag: "Elegant",
     },
     {
       label: "Beauty",
@@ -83,6 +62,21 @@ export default function useDataMainpage() {
       tag: "New",
     },
     {
+      label: "Clothing",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"
+            stroke="#A78BFA"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+          />
+        </svg>
+      ),
+      bg: "#1A1630",
+      tag: "Hot",
+    },
+    {
       label: "Electronics",
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -116,149 +110,7 @@ export default function useDataMainpage() {
         </svg>
       ),
       bg: "#0D1A28",
-      tag: null,
-    },
-    {
-      label: "Accessories",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="3" stroke="#FB923C" strokeWidth="1.8" />
-          <path
-            d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"
-            stroke="#FB923C"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-          />
-        </svg>
-      ),
-      bg: "#28180D",
-      tag: null,
-    },
-    {
-      label: "Sport",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="10" stroke="#38BDF8" strokeWidth="1.8" />
-          <path
-            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
-            stroke="#38BDF8"
-            strokeWidth="1.8"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M2 12h20"
-            stroke="#38BDF8"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-          />
-          <path
-            d="M4.93 7h14.14M4.93 17h14.14"
-            stroke="#38BDF8"
-            strokeWidth="1.4"
-            strokeLinecap="round"
-            strokeDasharray="2 2"
-          />
-        </svg>
-      ),
-      bg: "#0A1A28",
-      tag: "New",
-    },
-    {
-      label: "Jewelry",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M12 22L2 9l3-5h14l3 5-10 13z"
-            stroke="#E879F9"
-            strokeWidth="1.8"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M2 9h20"
-            stroke="#E879F9"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-          />
-          <path
-            d="M7 4L5 9l7 13 7-13-2-5"
-            stroke="#E879F9"
-            strokeWidth="1.5"
-            strokeLinejoin="round"
-            strokeDasharray="2 1.5"
-            opacity="0.5"
-          />
-          <path
-            d="M9 4l-2 5M15 4l2 5M9 4h6"
-            stroke="#E879F9"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      ),
-      bg: "#240D2A",
-      tag: "Hot",
-    },
-    {
-      label: "Pets",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          {/* Đầu */}
-          <circle cx="12" cy="13" r="5" stroke="#FBBF24" strokeWidth="1.8" />
-          {/* Tai trái */}
-          <path
-            d="M8 9.5L7 5.5l3.5 3"
-            stroke="#FBBF24"
-            strokeWidth="1.7"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          {/* Tai phải */}
-          <path
-            d="M16 9.5l1-4-3.5 3"
-            stroke="#FBBF24"
-            strokeWidth="1.7"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          {/* Mắt trái */}
-          <circle cx="10" cy="12.5" r="0.8" fill="#FBBF24" />
-          {/* Mắt phải */}
-          <circle cx="14" cy="12.5" r="0.8" fill="#FBBF24" />
-          {/* Mũi */}
-          <path
-            d="M11 14.5h2"
-            stroke="#FBBF24"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-          {/* Miệng */}
-          <path
-            d="M10.5 15.5c.5.6 1 .8 1.5.8s1-.2 1.5-.8"
-            stroke="#FBBF24"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-          {/* Râu trái */}
-          <path
-            d="M7 13.5l3 .5"
-            stroke="#FBBF24"
-            strokeWidth="1.3"
-            strokeLinecap="round"
-            opacity="0.7"
-          />
-          {/* Râu phải */}
-          <path
-            d="M17 13.5l-3 .5"
-            stroke="#FBBF24"
-            strokeWidth="1.3"
-            strokeLinecap="round"
-            opacity="0.7"
-          />
-        </svg>
-      ),
-      bg: "#28200A",
-      tag: "Popular",
+      tag: "Technology",
     },
     {
       label: "Food & Drink",
@@ -309,6 +161,174 @@ export default function useDataMainpage() {
       bg: "#280E0E",
       tag: null,
     },
+    {
+      label: "Home Essentials",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"
+            stroke="#C8A84B"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M9 21V12h6v9"
+            stroke="#C8A84B"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      ),
+      bg: "#1C1A0E",
+      tag: "Popular",
+    },
+    {
+      label: "Pets",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="13" r="5" stroke="#FBBF24" strokeWidth="1.8" />
+          <path
+            d="M8 9.5L7 5.5l3.5 3"
+            stroke="#FBBF24"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M16 9.5l1-4-3.5 3"
+            stroke="#FBBF24"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <circle cx="10" cy="12.5" r="0.8" fill="#FBBF24" />
+          <circle cx="14" cy="12.5" r="0.8" fill="#FBBF24" />
+          <path
+            d="M11 14.5h2"
+            stroke="#FBBF24"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          <path
+            d="M10.5 15.5c.5.6 1 .8 1.5.8s1-.2 1.5-.8"
+            stroke="#FBBF24"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          <path
+            d="M7 13.5l3 .5"
+            stroke="#FBBF24"
+            strokeWidth="1.3"
+            strokeLinecap="round"
+            opacity="0.7"
+          />
+          <path
+            d="M17 13.5l-3 .5"
+            stroke="#FBBF24"
+            strokeWidth="1.3"
+            strokeLinecap="round"
+            opacity="0.7"
+          />
+        </svg>
+      ),
+      bg: "#28200A",
+      tag: null,
+    },
+    {
+      label: "Sport",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="#38BDF8" strokeWidth="1.8" />
+          <path
+            d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+            stroke="#38BDF8"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M2 12h20"
+            stroke="#38BDF8"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+          <path
+            d="M4.93 7h14.14M4.93 17h14.14"
+            stroke="#38BDF8"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeDasharray="2 2"
+          />
+        </svg>
+      ),
+      bg: "#0A1A28",
+      tag: "Healthy",
+    },
+    {
+      label: "Toy",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 110 80" fill="none">
+          <rect
+            x="10"
+            y="38"
+            width="90"
+            height="28"
+            rx="6"
+            stroke="#E879F9"
+            strokeWidth="1.8"
+          />
+          <path
+            d="M22 38 L30 15 L80 15 L88 38Z"
+            stroke="#E879F9"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M33 38 L39 18 L71 18 L77 38"
+            stroke="#E879F9"
+            strokeWidth="1.3"
+            strokeLinejoin="round"
+            opacity="0.6"
+          />
+          <line
+            x1="55"
+            y1="18"
+            x2="55"
+            y2="38"
+            stroke="#E879F9"
+            strokeWidth="1.3"
+            opacity="0.5"
+          />
+          <circle cx="30" cy="68" r="10" stroke="#E879F9" strokeWidth="1.8" />
+          <circle cx="30" cy="68" r="4" fill="#E879F9" opacity="0.4" />
+          <circle cx="80" cy="68" r="10" stroke="#E879F9" strokeWidth="1.8" />
+          <circle cx="80" cy="68" r="4" fill="#E879F9" opacity="0.4" />
+          <path
+            d="M14 52 Q18 44 30 44 Q42 44 46 52"
+            stroke="#E879F9"
+            strokeWidth="1.3"
+            opacity="0.5"
+          />
+          <path
+            d="M64 52 Q68 44 80 44 Q92 44 96 52"
+            stroke="#E879F9"
+            strokeWidth="1.3"
+            opacity="0.5"
+          />
+          <rect
+            x="97"
+            y="44"
+            width="7"
+            height="5"
+            rx="2"
+            fill="#E879F9"
+            opacity="0.8"
+          />
+        </svg>
+      ),
+      bg: "#240D2A",
+      tag: "Baby",
+    },
   ];
   useEffect(() => {
     const data = CATEGORIES;
@@ -329,6 +349,27 @@ export default function useDataMainpage() {
       backgroundColor: "#1A1630",
       color: "#AD8BFE",
       border: "1px solid #A27AFE",
+    },
+    Baby: {
+      backgroundColor: "#240D2A",
+      color: "#E879F9",
+      border: "1px solid #A23A7C",
+    },
+    Technology: {
+      backgroundColor: "#0D1A28",
+      color: "#60A5FA",
+      border: "1px solid #1E3A8A",
+    },
+
+    Healthy: {
+      backgroundColor: "#0A1A28",
+      color: "#38BDF8",
+      border: "1px solid #1E3A8A",
+    },
+    Elegant: {
+      backgroundColor: "#28180D",
+      color: "#C8A84B",
+      border: "1px solid #3A3010",
     },
   };
   const press = (e: React.MouseEvent<HTMLDivElement>, to: string) => {
@@ -352,17 +393,26 @@ export default function useDataMainpage() {
       WebkitFontSmoothing: "antialiased",
     },
     topBar: {
-      padding: "18px 20px 0",
+      padding: "24px 20px 16px",
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
     },
-    greeting: { fontSize: "13px", color: "#6B7280", fontWeight: 500 },
+    greeting: {
+      fontSize: "14px",
+      color: "#C8A84B",
+      fontWeight: 600,
+      textAlign: "center" as const,
+      marginBottom: "4px",
+    },
     greetingBold: {
-      fontSize: "20px",
-      fontWeight: 700,
+      fontSize: "28px",
+      fontWeight: 800,
       color: "#FFFFFF",
-      letterSpacing: "-0.4px",
+      letterSpacing: "-0.5px",
+      textAlign: "center" as const,
+      lineHeight: "34px",
+      textShadow: "0 2px 10px rgba(200, 168, 75, 0.3)",
     },
     avatar: {
       width: "36px",

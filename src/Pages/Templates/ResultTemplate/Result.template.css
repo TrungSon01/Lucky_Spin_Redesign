@@ -116,6 +116,86 @@
   --border-subtle: rgba(0, 0, 0, 0.06);
 }
 
+/* ── FoodDrink theme (green) ── */
+.result-theme--fooddrink {
+  --accent: #10b981;
+  --accent-dim: rgba(16, 185, 129, 0.12);
+  --accent-border: rgba(16, 185, 129, 0.3);
+  --accent-glow: rgba(16, 185, 129, 0.12);
+
+  --purple: #059669;
+  --purple-dim: rgba(5, 150, 105, 0.14);
+  --purple-border: rgba(5, 150, 105, 0.32);
+  --purple-glow-top: rgba(10, 120, 80, 0.22);
+
+  --bg: #e0f7f1;
+  --card-bg: #ffffff;
+
+  --text-primary: #0c4a3a;
+  --text-secondary: rgba(12, 74, 58, 0.6);
+  --border-subtle: rgba(16, 185, 129, 0.15);
+}
+
+/* ── Sport theme (orange/red) ── */
+.result-theme--sport {
+  --accent: #f59e0b;
+  --accent-dim: rgba(245, 158, 11, 0.12);
+  --accent-border: rgba(245, 158, 11, 0.3);
+  --accent-glow: rgba(245, 158, 11, 0.18);
+
+  --purple: #dc2626;
+  --purple-dim: rgba(220, 38, 38, 0.14);
+  --purple-border: rgba(220, 38, 38, 0.32);
+  --purple-glow-top: rgba(200, 30, 30, 0.22);
+
+  --bg: #fff7ed;
+  --card-bg: #ffffff;
+
+  --text-primary: #1c1917;
+  --text-secondary: rgba(28, 25, 23, 0.6);
+  --border-subtle: rgba(245, 158, 11, 0.15);
+}
+
+/* ── Jewelry theme (gold) ── */
+.result-theme--jewelry {
+  --accent: #fbbf24;
+  --accent-dim: rgba(251, 191, 36, 0.12);
+  --accent-border: rgba(251, 191, 36, 0.3);
+  --accent-glow: rgba(251, 191, 36, 0.18);
+
+  --purple: #d97706;
+  --purple-dim: rgba(217, 119, 6, 0.14);
+  --purple-border: rgba(217, 119, 6, 0.32);
+  --purple-glow-top: rgba(200, 100, 10, 0.22);
+
+  --bg: #fefce8;
+  --card-bg: #ffffff;
+
+  --text-primary: #1c1917;
+  --text-secondary: rgba(28, 25, 23, 0.6);
+  --border-subtle: rgba(0, 0, 0, 0.06);
+}
+
+/* ── Pets theme (cyan) ── */
+.result-theme--pets {
+  --accent: #06b6d4;
+  --accent-dim: rgba(6, 182, 212, 0.12);
+  --accent-border: rgba(6, 182, 212, 0.3);
+  --accent-glow: rgba(6, 182, 212, 0.12);
+
+  --purple: #0891b2;
+  --purple-dim: rgba(8, 145, 178, 0.14);
+  --purple-border: rgba(8, 145, 178, 0.32);
+  --purple-glow-top: rgba(0, 120, 180, 0.22);
+
+  --bg: #e0f7fa;
+  --card-bg: #ffffff;
+
+  --text-primary: #0c4a6e;
+  --text-secondary: rgba(12, 74, 110, 0.6);
+  --border-subtle: rgba(6, 182, 212, 0.15);
+}
+
 /* ─────────────────────────────────────────────
    Reset
    ───────────────────────────────────────────── */
@@ -291,7 +371,11 @@
 
 .result-theme--electronic .result-badge,
 .result-theme--clothing .result-badge,
-.result-theme--accessory .result-badge {
+.result-theme--accessory .result-badge,
+.result-theme--fooddrink .result-badge,
+.result-theme--sport .result-badge,
+.result-theme--jewelry .result-badge,
+.result-theme--pets .result-badge {
   color: var(--accent);
 }
 

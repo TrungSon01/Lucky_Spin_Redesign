@@ -13,7 +13,11 @@ export interface ResultTemplateProps {
     | "electronic"
     | "accessory"
     | "clothing"
-    | "homeEssential";
+    | "homeEssential"
+    | "foodDrink"
+    | "sport"
+    | "toy"
+    | "pets";
   categoryName: string;
   themeClass: string;
   badgeText?: string;

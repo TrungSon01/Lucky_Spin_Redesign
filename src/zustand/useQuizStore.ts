@@ -6,7 +6,11 @@ export type QuizCategory =
   | "electronic"
   | "accessory"
   | "clothing"
-  | "homeEssential";
+  | "homeEssential"
+  | "foodDrink"
+  | "sport"
+  | "toy"
+  | "pets";
 
 interface QuizAnswers {
   [category: string]: RawAnswer[];
@@ -26,6 +30,10 @@ const initialAnswers: QuizAnswers = {
   accessory: [],
   clothing: [],
   homeEssential: [],
+  foodDrink: [],
+  sport: [],
+  toy: [],
+  pets: [],
 };
 
 export const useQuizStore = create<QuizState>((set, get) => ({

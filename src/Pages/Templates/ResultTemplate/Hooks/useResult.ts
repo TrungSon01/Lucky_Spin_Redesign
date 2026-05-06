@@ -9,7 +9,12 @@ interface UseResultOptions {
     | "electronic"
     | "accessory"
     | "clothing"
-    | "homeEssential";
+    | "homeEssential"
+    | "foodDrink"
+    | "sport"
+    | "toy"
+    | "pets";
+
   first?: number;
 }
 

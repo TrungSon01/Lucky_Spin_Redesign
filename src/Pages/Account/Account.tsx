@@ -1,5 +1,13 @@
 import { useEffect, useState, useMemo } from "react";
-import { ChevronRight, ArrowLeft, Flame, Target, Clock } from "lucide-react";
+import {
+  ChevronRight,
+  ArrowLeft,
+  Flame,
+  Target,
+  Calendar,
+  Trophy,
+  Star,
+} from "lucide-react";
 import "./Account.css";
 import {
   Image,
@@ -9,48 +17,13 @@ import {
   useSavedProducts,
   ProductCard,
 } from "@shopify/shop-minis-react";
-import { TIER_CONFIG } from "./Data/level";
 import DefaultAvatar from "../../images/Avatar/DefaultAvatar.jpg";
-
-// Helper: format last_online timestamp to relative time
-function formatLastOnline(timestamp: string | null): string {
-  if (!timestamp) return "Never";
-  const now = Date.now();
-  const diff = now - parseInt(timestamp, 10);
-  const minutes = Math.floor(diff / 60000);
-  const hours = Math.floor(diff / 3600000);
-  const days = Math.floor(diff / 86400000);
-
-  if (minutes < 1) return "Just now";
-  if (minutes < 60) return `${minutes}m ago`;
-  if (hours < 24) return `${hours}h ago`;
-  if (days < 7) return `${days}d ago`;
-  return `${Math.floor(days / 7)}w ago`;
-}
-
-// Helper: calculate tier from rank
-function getTierByRank(rank: number) {
-  if (rank <= 3) return TIER_CONFIG.bronze;
-  if (rank <= 10) return TIER_CONFIG.silver;
-  if (rank <= 20) return TIER_CONFIG.gold;
-  if (rank <= 50) return TIER_CONFIG.ruby;
-  if (rank > 50 && rank <= 100) {
-    const tier = { ...TIER_CONFIG.diamond };
-    const level = Math.ceil((rank - 50) / 10);
-    const roman = ["I", "II", "III", "IV", "V"];
-    tier.label = `Diamond ${roman[level - 1]}`;
-    return tier;
-  }
-  if (rank > 100) {
-    return { ...TIER_CONFIG.Ultimate_diamond, label: "Ultimate" };
-  }
-  return null;
-}
+import { getTierByRank } from "../../lib/function";
 
 export default function Account() {
   const { currentUser } = useCurrentUser();
   const navigate = useNavigateWithTransition();
-  const { getItem, setItem } = useAsyncStorage();
+  const { getItem } = useAsyncStorage();
   const { products: wishlist } = useSavedProducts({
     first: 9999,
     fetchPolicy: "network-only",
@@ -58,39 +31,37 @@ export default function Account() {
 
   const [userRank, setUserRank] = useState<number>(0);
   const [currentStreak, setCurrentStreak] = useState<string>("0");
-  const [lastOnline, setLastOnline] = useState<string>("");
+  const [firstJoin, setFirstJoin] = useState<string>("");
   const [roundsPlayed, setRoundsPlayed] = useState<string>("0");
   const [isLoading, setIsLoading] = useState(true);
+  const [showAllWishlist, setShowAllWishlist] = useState(false);
 
   useEffect(() => {
     async function fetchAllUserData() {
       setIsLoading(true);
       try {
-        // Fetch all data in parallel
-        const [rankStr, streak, rounds, lastOnlineRaw] = await Promise.all([
-          getItem({ key: "user_rank" }),
+        const [streak, rounds, firstJoinRaw] = await Promise.all([
           getItem({ key: "current_streak" }),
           getItem({ key: "rounds_played" }),
-          getItem({ key: "last_online" }),
+          getItem({ key: "first_join" }),
         ]);
 
-        // Ensure rank exists (initialize if needed)
-        if (!rankStr) {
-          await setItem({ key: "user_rank", value: "0" });
-        }
-        const rank = rankStr ? parseInt(rankStr, 10) : 0;
-        setUserRank(isNaN(rank) ? 0 : 101);
-
-        // Streak
+        // parse số
         const streakVal = streak ? parseInt(streak, 10) : 0;
-        setCurrentStreak(isNaN(streakVal) ? "0" : String(streakVal));
-
-        // Rounds
         const roundsVal = rounds ? parseInt(rounds, 10) : 0;
-        setRoundsPlayed(isNaN(roundsVal) ? "0" : String(roundsVal));
 
-        // Last online
-        setLastOnline(lastOnlineRaw || "");
+        const safeStreak = isNaN(streakVal) ? 0 : streakVal;
+        const safeRounds = isNaN(roundsVal) ? 0 : roundsVal;
+
+        setCurrentStreak(String(safeStreak));
+        setRoundsPlayed(String(safeRounds));
+
+        const rank = Math.floor(
+          safeStreak < 100 ? safeStreak / 10 + safeRounds : 15 + safeRounds,
+        );
+
+        setUserRank(rank);
+        setFirstJoin(firstJoinRaw || "");
       } catch (error) {
         console.error("Error fetching user data:", error);
       } finally {
@@ -99,9 +70,102 @@ export default function Account() {
     }
 
     fetchAllUserData();
-  }, [getItem, setItem]);
-
+  }, [getItem]);
   const tier = useMemo(() => getTierByRank(userRank), [userRank]);
+
+  // Calculate points needed for next tier
+  const rankProgress = useMemo(() => {
+    if (userRank >= 101) {
+      return {
+        currentRank: userRank,
+        nextTier: null,
+        pointsNeeded: 0,
+        isMaxTier: true,
+      };
+    }
+
+    let nextThreshold: number;
+    let nextTierName: string;
+
+    if (userRank < 4) {
+      nextThreshold = 4;
+      nextTierName = "Silver";
+    } else if (userRank < 11) {
+      nextThreshold = 11;
+      nextTierName = "Gold";
+    } else if (userRank < 21) {
+      nextThreshold = 21;
+      nextTierName = "Ruby";
+    } else if (userRank < 51) {
+      nextThreshold = 51;
+      nextTierName = "Diamond";
+    } else {
+      // userRank < 101 at this point
+      nextThreshold = 101;
+      nextTierName = "Ultimate Diamond";
+    }
+
+    return {
+      currentRank: userRank,
+      nextTier: nextTierName,
+      pointsNeeded: nextThreshold - userRank,
+      isMaxTier: false,
+    };
+  }, [userRank]);
+
+  // Calculate current season (updates every 3 months: Jan 1, Apr 1, Jul 1, Oct 1)
+  const seasonInfo = useMemo(() => {
+    const now = new Date();
+    const month = now.getMonth(); // 0-11
+    const year = now.getFullYear();
+
+    let seasonNumber: number;
+    let seasonName: string;
+    let nextSeasonStart: Date;
+
+    // Determine current season based on month
+    // Season 1: Jan - Mar (starts Jan 1)
+    // Season 2: Apr - Jun (starts Apr 1)
+    // Season 3: Jul - Sep (starts Jul 1)
+    // Season 4: Oct - Dec (starts Oct 1)
+    if (month >= 0 && month <= 2) {
+      // Jan-Mar
+      seasonNumber = 1;
+      seasonName = "Spring";
+      nextSeasonStart = new Date(year, 3, 1); // Apr 1
+    } else if (month >= 3 && month <= 5) {
+      // Apr-Jun
+      seasonNumber = 2;
+      seasonName = "Summer";
+      nextSeasonStart = new Date(year, 6, 1); // Jul 1
+    } else if (month >= 6 && month <= 8) {
+      // Jul-Sep
+      seasonNumber = 3;
+      seasonName = "Autumn";
+      nextSeasonStart = new Date(year, 9, 1); // Oct 1
+    } else {
+      // Oct-Dec
+      seasonNumber = 4;
+      seasonName = "Winter";
+      nextSeasonStart = new Date(year + 1, 0, 1); // Jan 1 next year
+    }
+
+    // Calculate days until next season
+    const daysRemaining = Math.ceil(
+      (nextSeasonStart.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+    );
+
+    return {
+      number: seasonNumber,
+      name: seasonName,
+      nextStart: nextSeasonStart.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+      daysRemaining: Math.max(0, daysRemaining),
+    };
+  }, []);
 
   // Format stats
   const formattedStreak = useMemo(() => {
@@ -114,9 +178,9 @@ export default function Account() {
     return isNaN(num) ? 0 : num;
   }, [roundsPlayed]);
 
-  const formattedLastOnline = useMemo(() => {
-    return formatLastOnline(lastOnline);
-  }, [lastOnline]);
+  const formattedFirstJoin = useMemo(() => {
+    return firstJoin || "N/A";
+  }, [firstJoin]);
 
   // Avatar display
   const displayName = currentUser?.displayName || "Guest";
@@ -291,6 +355,21 @@ export default function Account() {
 
         {/* Stats Section */}
         <section className="stats-section">
+          {/* Next Rank - standalone top card */}
+          <div className="stat-card stat-card--next-rank">
+            <div className="stat-icon trophy">
+              <Trophy size={18} />
+            </div>
+            <div className="stat-content">
+              <div className="stat-label">
+                {rankProgress.isMaxTier
+                  ? "Max Tier"
+                  : `${rankProgress.pointsNeeded} pts to ${rankProgress.nextTier}`}
+              </div>
+            </div>
+          </div>
+
+          {/* Grid: Day Streak, Rounds Played, First Join */}
           <div className="stats-grid">
             <div className="stat-card">
               <div className="stat-icon flame">
@@ -313,12 +392,33 @@ export default function Account() {
             </div>
 
             <div className="stat-card">
-              <div className="stat-icon clock">
-                <Clock size={18} />
+              <div className="stat-icon calendar">
+                <Star size={18} />
               </div>
               <div className="stat-content">
-                <div className="stat-value">{formattedLastOnline}</div>
-                <div className="stat-label">Last Active</div>
+                <div className="stat-value">{rankProgress.currentRank}</div>
+                <div className="stat-label">rank count</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Season Section */}
+        <section className="season-section">
+          <div className="season-card">
+            <div className="season-header">
+              <Trophy size={20} className="season-icon" />
+              <h3 className="season-title">Current Season</h3>
+            </div>
+            <div className="season-content">
+              <div className="season-name">{seasonInfo.name} Season</div>
+              <div className="season-number">Season {seasonInfo.number}</div>
+              <div className="season-timer">
+                <span className="timer-label">Next season starts:</span>
+                <span className="timer-date">{seasonInfo.nextStart}</span>
+                <span className="timer-days">
+                  {seasonInfo.daysRemaining} days remaining
+                </span>
               </div>
             </div>
           </div>
@@ -328,7 +428,17 @@ export default function Account() {
         <section className="wishlist-section">
           <div className="section-header">
             <h2 className="section-title">My Wishlist</h2>
-            <span className="section-count">{wishlist?.length || 0} items</span>
+            <div className="section-actions">
+              <span className="section-count">{wishlist?.length || 0} items</span>
+              {wishlist && wishlist.length > 6 && (
+                <button
+                  className="toggle-btn"
+                  onClick={() => setShowAllWishlist(!showAllWishlist)}
+                >
+                  {showAllWishlist ? "Show Less" : "Show More"}
+                </button>
+              )}
+            </div>
           </div>
 
           {isLoading ? (
@@ -338,15 +448,17 @@ export default function Account() {
             </div>
           ) : wishlist && wishlist.length > 0 ? (
             <div className="wishlist-grid">
-              {wishlist.map((product, index) => (
-                <div
-                  key={product.id}
-                  className="wishlist-item"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <ProductCard variant="priceOverlay" product={product} />
-                </div>
-              ))}
+              {(showAllWishlist ? wishlist : wishlist.slice(0, 6)).map(
+                (product, index) => (
+                  <div
+                    key={product.id}
+                    className="wishlist-item"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <ProductCard variant="priceOverlay" product={product} />
+                  </div>
+                ),
+              )}
             </div>
           ) : (
             <div className="wishlist-empty">
@@ -357,36 +469,6 @@ export default function Account() {
             </div>
           )}
         </section>
-
-        {/* Preferences / App Info */}
-        <section className="preferences-section">
-          <div className="settings-group">
-            <div className="settings-row">
-              <div className="row-icon ic-star" />
-              <span className="row-label">Rate LuckySpinner</span>
-              <ChevronRight size={18} className="row-chev" />
-            </div>
-            <div className="row-divider" />
-            <div className="settings-row">
-              <div className="row-icon ic-gear" />
-              <span className="row-label">Settings</span>
-              <ChevronRight size={18} className="row-chev" />
-            </div>
-            <div className="row-divider" />
-            <div className="settings-row">
-              <div className="row-icon ic-shield" />
-              <span className="row-label">Privacy Policy</span>
-              <ChevronRight size={18} className="row-chev" />
-            </div>
-            <div className="row-divider" />
-            <div className="settings-row">
-              <div className="row-icon ic-help" />
-              <span className="row-label">Help & Support</span>
-              <ChevronRight size={18} className="row-chev" />
-            </div>
-          </div>
-        </section>
-
         {/* Version */}
         <p className="version-text">LuckySpinner v1.0.0</p>
       </div>

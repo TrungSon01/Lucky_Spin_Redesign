@@ -1,11 +1,13 @@
 import "./Homepage.css";
 import {
+  Button,
   useAsyncStorage,
   useCurrentUser,
   useNavigateWithTransition,
 } from "@shopify/shop-minis-react";
 import { STEPS, TRUST } from "./Data/Data";
 import { useEffect } from "react";
+import { formatDate } from "../../lib/function";
 
 export default function Homepage() {
   const navigateWithTransition = useNavigateWithTransition();
@@ -24,13 +26,16 @@ export default function Homepage() {
         check_user_avatar,
         check_current_streak,
         check_rounds_played,
-        check_first_time_join,
+        check_first_join,
+        check_last_date,
       ] = await Promise.all([
         getItem({ key: "user_name" }),
         getItem({ key: "user_avatar" }),
         getItem({ key: "current_streak" }),
         getItem({ key: "rounds_played" }),
-        getItem({ key: "last_online" }),
+        getItem({ key: "first_join" }),
+
+        getItem({ key: "last_date" }),
       ]);
       if (!check_user_avatar && !check_user_name) {
         await setItem({
@@ -54,10 +59,19 @@ export default function Homepage() {
           value: "0",
         });
       }
-      if (!check_first_time_join) {
+      // first join thì ko cập nhật
+      if (!check_first_join) {
         await setItem({
-          key: "last_online",
-          value: `${Date.now()}`,
+          key: "first_join",
+          value: `${formatDate(new Date() as any)}`,
+        });
+      }
+      // last date so sánh rồi cập nhật khi người dùng vào app
+      const current_date = new Date();
+      if (!check_last_date) {
+        setItem({
+          key: "last_date",
+          value: `${formatDate(current_date as any)}`,
         });
       }
     }
@@ -137,6 +151,7 @@ export default function Homepage() {
           </div>
           <div className="cta-icon">🎲</div>
         </button>
+        <Button onClick={() => alert(new Date())}>check</Button>
       </div>
     </div>
   );

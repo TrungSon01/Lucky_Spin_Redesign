@@ -214,6 +214,95 @@
   gap: 10px;
 }
 
+/* First Join card (standalone) */
+.stat-card--first-join {
+  background: rgba(30, 27, 50, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.stat-card--first-join::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.stat-card--first-join:active::before {
+  left: 100%;
+  transition: left 0.3s;
+}
+
+.stat-card--first-join .stat-icon.calendar {
+  background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+/* Next Rank card (standalone - top) */
+.stat-card--next-rank {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(251, 191, 36, 0.08) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 16px;
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.stat-card--next-rank::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.stat-card--next-rank:active::before {
+  left: 100%;
+  transition: left 0.3s;
+}
+
+.stat-card--next-rank .stat-icon.trophy {
+  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+/* Regular stat cards (grid items) */
 .stat-card {
   background: rgba(30, 27, 50, 0.5);
   backdrop-filter: blur(12px);
@@ -271,9 +360,19 @@
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
-.stat-icon.clock {
-  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+.stat-icon.calendar {
+  background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+.stat-icon.trophy {
+  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.stat-icon.activity {
+  background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
 }
 
 .stat-icon svg {
@@ -329,6 +428,33 @@
   letter-spacing: 0.02em;
 }
 
+.section-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toggle-btn {
+  padding: 6px 12px;
+  background: rgba(124, 58, 237, 0.15);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  border-radius: 8px;
+  color: #a78bfa;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toggle-btn:hover,
+.toggle-btn:active {
+  background: rgba(124, 58, 237, 0.25);
+  border-color: rgba(124, 58, 237, 0.5);
+  transform: scale(0.96);
+}
+
 .section-label {
   font-size: 12px;
   font-weight: 700;
@@ -336,6 +462,139 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin: 0 4px 12px;
+}
+
+/* ── Season Section ── */
+.season-section {
+  margin-bottom: 28px;
+}
+
+.season-card {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.12) 0%, rgba(167, 139, 250, 0.08) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  border-radius: 20px;
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(124, 58, 237, 0.15);
+}
+
+.season-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.08) 0%, transparent 60%);
+  animation: rotate 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.season-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.season-icon {
+  color: #a78bfa;
+  filter: drop-shadow(0 0 8px rgba(124, 58, 237, 0.4));
+}
+
+.season-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.season-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.season-name {
+  font-size: 24px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #c4b5fd, #a78bfa, #8b5cf6, #a78bfa, #c4b5fd);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s ease-in-out infinite;
+  letter-spacing: -0.5px;
+}
+
+.season-number {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.season-timer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 6px;
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.timer-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.timer-date {
+  font-size: 13px;
+  font-weight: 700;
+  color: #a78bfa;
+  letter-spacing: -0.1px;
+}
+
+.timer-days {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 2px;
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 /* ── Wishlist Section ── */
@@ -939,10 +1198,6 @@
   animation: diamond-text-shift 3s linear infinite;
   font-weight: 700;
 }
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   HOÀNG KIM DIAMOND — Ultimate Rank
-═══════════════════════════════════════════════════════════════════════════ */
 
 @keyframes hkd-border-spin {
   0% {

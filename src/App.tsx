@@ -21,6 +21,7 @@ import Toy from "./Pages/Questions/Toy/Toy";
 import ToyResult from "./Pages/Questions/Toy/ToyResult/ToyResult";
 import Pets from "./Pages/Questions/Pets/Pets";
 import PetsResult from "./Pages/Questions/Pets/PetsResult/PetsResult";
+import LuckySpin from "./Pages/LuckySpin/LuckySpin";
 
 export function App() {
   return (
@@ -69,6 +70,9 @@ export function App() {
           {/* Pets path  */}
           <Route path="/questions/pets" element={<Pets />} />
           <Route path="/pets/result" element={<PetsResult />} />
+
+          <Route path="/lucky-spin" element={<LuckySpin />} />
+          <Route path="*" element={<div>Page Not Found</div>} />
         </Routes>
       </MinisRouter>
     </div>

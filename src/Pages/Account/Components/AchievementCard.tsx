@@ -1,75 +1,135 @@
-// import {
-//   Award,
-//   Flame,
-//   Play,
-//   TrendingUp,
-//   Trophy,
-//   type LucideIcon,
-// } from "lucide-react";
-// import type { DerivedAchievement } from "../Hooks/useDataAccount";
+import React from "react";
+import {
+  Play,
+  TrendingUp,
+  Award,
+  Flame,
+  Target,
+  Trophy,
+  Star,
+  Zap,
+  Crown,
+  type LucideIcon,
+} from "lucide-react";
+import "../Account.css";
 
-// const ICON_MAP: Record<string, LucideIcon> = {
-//   Award,
-//   Flame,
-//   Play,
-//   TrendingUp,
-//   Trophy,
-// };
+const ICON_MAP: Record<string, LucideIcon> = {
+  Play,
+  TrendingUp,
+  Award,
+  Flame,
+  Target,
+  Trophy,
+  Star,
+  Zap,
+  Crown,
+};
 
-// interface AchievementCardProps {
-//   achievement: DerivedAchievement;
-//   compact?: boolean;
-// }
+interface AchievementCardProps {
+  achievement: {
+    id: string;
+    title: string;
+    description: string;
+    icon: string;
+    category: "rounds" | "streak" | "rank" | "tier";
+    target: number | string;
+  };
+  isUnlocked: boolean;
+  progress?: { current: number; target: number | string };
+  onLongPress?: () => void;
+  animationDelay?: number;
+}
 
-// export default function AchievementCard({
-//   achievement,
-//   compact = false,
-// }: AchievementCardProps) {
-//   const Icon = ICON_MAP[achievement.icon] ?? Award;
+function useLongPress(
+  callback: () => void,
+  delay: number = 500,
+): React.HTMLAttributes<HTMLDivElement> {
+  const timerRef = React.useRef<number | null>(null);
+  const movedRef = React.useRef(false);
+  const startX = React.useRef(0);
+  const startY = React.useRef(0);
 
-//   return (
-//     <article
-//       className={`achievement-card achievement-card--${achievement.status} ${compact ? "achievement-card--compact" : ""}`}
-//       aria-label={`${achievement.title}: ${achievement.isUnlocked ? "Unlocked" : "In progress"}`}
-//     >
-//       <div className="achievement-card-top">
-//         <div className={`achievement-icon achievement-icon--${achievement.status}`}>
-//           <Icon size={compact ? 18 : 20} />
-//         </div>
-//         <div className="achievement-copy">
-//           <div className="achievement-title-row">
-//             <h3 className="achievement-title">{achievement.title}</h3>
-//             {achievement.isNew && (
-//               <span className="achievement-new-badge">New</span>
-//             )}
-//           </div>
-//           <p className="achievement-description">{achievement.description}</p>
-//         </div>
-//       </div>
+  const clearTimer = React.useCallback(() => {
+    if (timerRef.current) {
+      window.clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+  }, []);
 
-//       <div className="achievement-progress-block">
-//         <div className="achievement-progress-meta">
-//           <span className="achievement-status-text">
-//             {achievement.isUnlocked
-//               ? "Unlocked"
-//               : `${achievement.currentValue}/${achievement.threshold}`}
-//           </span>
-//           {!achievement.isUnlocked && achievement.remainingToUnlock > 0 && (
-//             <span className="achievement-remaining-text">
-//               {achievement.remainingToUnlock} to go
-//             </span>
-//           )}
-//         </div>
-//         <div
-//           className="achievement-progress-track"
-//           aria-hidden="true"
-//         >
-//           <div
-//             className="achievement-progress-fill"
-//             style={{ width: `${achievement.progressPercent}%` }}
-//           />
-//         </div>
-//       </div>
-//     </article>
-//   );
-// }
+  const onTouchStart = React.useCallback(
+    (e: React.TouchEvent<HTMLDivElement>) => {
+      clearTimer();
+      movedRef.current = false;
+      startX.current = e.touches[0]?.clientX ?? 0;
+      startY.current = e.touches[0]?.clientY ?? 0;
+      timerRef.current = window.setTimeout(() => {
+        if (!movedRef.current) callback();
+      }, delay);
+    },
+    [callback, clearTimer, delay],
+  );
+
+  const onTouchMove = React.useCallback(
+    (e: React.TouchEvent<HTMLDivElement>) => {
+      const dx = Math.abs((e.touches[0]?.clientX ?? 0) - startX.current);
+      const dy = Math.abs((e.touches[0]?.clientY ?? 0) - startY.current);
+      if (dx > 10 || dy > 10) {
+        movedRef.current = true;
+        clearTimer();
+      }
+    },
+    [clearTimer],
+  );
+
+  React.useEffect(() => clearTimer, [clearTimer]);
+
+  return {
+    onTouchStart,
+    onTouchMove,
+    onTouchEnd: clearTimer,
+    onTouchCancel: clearTimer,
+  };
+}
+
+export default function AchievementCard({
+  achievement,
+  isUnlocked,
+  progress,
+  onLongPress,
+  animationDelay = 0,
+}: AchievementCardProps) {
+  const longPressAttrs = useLongPress(() => {
+    onLongPress?.();
+  }, 600);
+
+  const IconComponent = ICON_MAP[achievement.icon] ?? Trophy;
+
+  return (
+    <div
+      className={`achievement-card ${isUnlocked ? "unlocked" : "locked"}`}
+      style={{ animationDelay: `${animationDelay}ms` }}
+      {...longPressAttrs}
+      role="button"
+      aria-label={`Achievement: ${achievement.title}`}
+      tabIndex={0}
+    >
+      <div className="achievement-icon">
+        <IconComponent size={20} />
+      </div>
+      <div className="achievement-info">
+        <div className="achievement-title">{achievement.title}</div>
+        <div className="achievement-description">{achievement.description}</div>
+        {!isUnlocked && progress && (
+          <div className="achievement-progress">
+            {progress.current} / {progress.target}
+          </div>
+        )}
+        {isUnlocked && (
+          <div className="achievement-unlocked-badge">
+            <Crown size={12} /> Unlocked
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

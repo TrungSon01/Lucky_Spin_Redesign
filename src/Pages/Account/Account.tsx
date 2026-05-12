@@ -14,6 +14,7 @@ import {
 } from "@shopify/shop-minis-react";
 import DefaultAvatar from "../../images/Avatar/DefaultAvatar.jpg";
 import useDataAccount from "./Hooks/useDataAccount";
+import AchievementsSection from "./Components/AchievementsSection";
 
 export default function Account() {
   const navigate = useNavigateWithTransition();
@@ -267,6 +268,13 @@ export default function Account() {
             </div>
           </div>
         </section>
+
+        {/* Achievements Section */}
+        <AchievementsSection
+          rounds={formattedRounds}
+          streak={formattedStreak}
+          rank={rankProgress.currentRank}
+        />
 
         {/* Wishlist Section */}
         <section className="wishlist-section">

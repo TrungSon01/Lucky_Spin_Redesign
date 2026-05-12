@@ -48,6 +48,7 @@ export default function Mainpage() {
       key: "rounds_played",
       value: String(newRound),
     });
+    navigate("/lucky-spin");
   };
   return (
     <div style={s.root}>
@@ -95,7 +96,7 @@ export default function Mainpage() {
             <div style={s.bannerTitle}>Your lucky deal is waiting</div>
             <div style={s.bannerSub}>Spin to win a personalized reward</div>
           </div>
-          <div style={s.bannerCta}>Try →</div>
+          <div style={s.bannerCta}>Let try</div>
         </div>
 
         {/* Categories */}

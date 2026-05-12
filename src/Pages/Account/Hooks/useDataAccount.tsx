@@ -24,13 +24,7 @@ export default function useDataAccount() {
     async function fetchAllUserData() {
       setIsLoading(true);
       try {
-        const [
-          streak,
-          rounds,
-          highest_tier,
-          highest_rank_count,
-          highest_streak,
-        ] = await Promise.all([
+        const [streak, rounds] = await Promise.all([
           getItem({ key: "current_streak" }),
           getItem({ key: "rounds_played" }),
           getItem({ key: "achivement_highest_tier" }),

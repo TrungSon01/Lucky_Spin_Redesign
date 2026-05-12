@@ -28,14 +28,19 @@ export default function Homepage() {
         check_rounds_played,
         check_first_join,
         check_last_date,
+        achivement_highest_tier,
+        achivement_highest_rank_count,
+        achivement_highest_streak,
       ] = await Promise.all([
         getItem({ key: "user_name" }),
         getItem({ key: "user_avatar" }),
         getItem({ key: "current_streak" }),
         getItem({ key: "rounds_played" }),
         getItem({ key: "first_join" }),
-
         getItem({ key: "last_date" }),
+        getItem({ key: "achivement_highest_tier" }),
+        getItem({ key: "achivement_highest_rank_count" }),
+        getItem({ key: "achivement_highest_streak" }),
       ]);
       if (!check_user_avatar && !check_user_name) {
         await setItem({
@@ -59,6 +64,25 @@ export default function Homepage() {
           value: "0",
         });
       }
+      if (!achivement_highest_tier) {
+        await setItem({
+          key: "achivement_highest_tier",
+          value: "Bronze",
+        });
+      }
+      if (!achivement_highest_rank_count) {
+        await setItem({
+          key: "achivement_highest_rank_count",
+          value: "0",
+        });
+      }
+      if (!achivement_highest_streak) {
+        await setItem({
+          key: "achivement_highest_streak",
+          value: "0",
+        });
+      }
+
       // first join thì ko cập nhật
       if (!check_first_join) {
         await setItem({

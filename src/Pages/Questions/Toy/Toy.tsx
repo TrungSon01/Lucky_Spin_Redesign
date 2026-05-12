@@ -3,14 +3,11 @@ import QuestionTemplate, {
   RawAnswer,
 } from "../../Templates/QuestionTemplate/Question.template";
 import { useQuizStore } from "../../../zustand/useQuizStore";
-import { Data_Jewelry } from "./Data/Toy.data";
-import {
-  JEWELRY_IMAGES,
-  I_JEWELRY_IMAGES,
-} from "../Interfaces/Jewelry.interface";
+import { Data_Toy } from "./Data/Toy.data";
+import { I_TOY_IMAGES, TOY_IMAGES } from "../Interfaces/Toy.interface";
 import { OPTION_BUDGET_IMAGES } from "../Interfaces/Budget.interface";
 
-const OPTION_IMAGES: I_JEWELRY_IMAGES = JEWELRY_IMAGES;
+const OPTION_IMAGES: I_TOY_IMAGES = TOY_IMAGES;
 
 const BUDGET_IMAGES: Record<string, string> = OPTION_BUDGET_IMAGES;
 
@@ -34,7 +31,7 @@ export default function Toy() {
 
   return (
     <QuestionTemplate
-      data={Data_Jewelry}
+      data={Data_Toy}
       optionImages={OPTION_IMAGES}
       budgetImages={BUDGET_IMAGES}
       goldWords={GOLD_WORDS}

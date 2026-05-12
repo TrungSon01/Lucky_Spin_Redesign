@@ -4,7 +4,10 @@ import QuestionTemplate, {
 } from "../../Templates/QuestionTemplate/Question.template";
 import { useQuizStore } from "../../../zustand/useQuizStore";
 import { Data_FoodDrink } from "./Data/FoodDrink.data";
-import { FOODDRINK_IMAGES, I_FOODDRINK_IMAGES } from "../Interfaces/FoodDrink.interface";
+import {
+  FOODDRINK_IMAGES,
+  I_FOODDRINK_IMAGES,
+} from "../Interfaces/FoodDrink.interface";
 import { OPTION_BUDGET_IMAGES } from "../Interfaces/Budget.interface";
 
 const OPTION_IMAGES: I_FOODDRINK_IMAGES = FOODDRINK_IMAGES;
@@ -27,7 +30,7 @@ export default function FoodDrink() {
 
   const handleComplete = (answers: RawAnswer[]) => {
     setAnswers("foodDrink", answers);
-    navigate("/fooddrink/result");
+    navigate("/food/result");
   };
 
   return (

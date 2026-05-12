@@ -11,7 +11,7 @@ export const Data_Sport = [
       "Tennis",
       "Swimming",
       "Running",
-      "Yoga",
+      "Pickleball",
     ],
   },
   {

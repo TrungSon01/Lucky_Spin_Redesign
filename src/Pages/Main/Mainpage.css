@@ -5,3 +5,87 @@
   position: relative;
   z-index: 10;
 }
+
+.logo {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
+.logo__accent {
+  color: #f5c842;
+}
+
+.btn-mainpage {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  border-radius: 16px;
+  background: rgba(245, 200, 66, 0.12);
+  border: 1px solid rgba(245, 200, 66, 0.3);
+  color: #f5c842;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  width: 100%;
+  text-align: center;
+}
+
+.btn-mainpage:active {
+  transform: scale(0.95);
+  opacity: 0.7;
+}
+
+/* Grid responsive */
+@media (max-width: 374px) {
+  /* Very small screens (iPhone SE, etc.) */
+  .grid-card-custom {
+    padding: 12px 4px 10px;
+  }
+  .grid-card-custom .grid-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+  .grid-card-custom .grid-label {
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 375px) and (max-width: 428px) {
+  /* Standard iPhones: 12, 13, 14, 15, 16 */
+  .grid-card-custom .grid-icon {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+@media (min-width: 429px) {
+  /* Larger screens: iPhone Pro Max, Android large */
+  .grid-card-custom .grid-icon {
+    width: 52px;
+    height: 52px;
+  }
+  .grid-card-custom .grid-label {
+    font-size: 13px;
+  }
+}
+
+/* iOS native feel: smooth momentum scrolling */
+.body-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Haptic-like feedback for grid cards */
+.grid-card-custom {
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    opacity 0.15s ease;
+}
+
+.grid-card-custom:active {
+  transform: scale(0.92);
+  opacity: 0.65;
+}

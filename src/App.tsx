@@ -51,24 +51,18 @@ export function App() {
           <Route path="/clothing/result" element={<ClothingResult />} />
 
           {/* HomeEssentials path  */}
-          <Route
-            path="/questions/home-essentials"
-            element={<HomeEssentials />}
-          />
-          <Route
-            path="/home-essentials/result"
-            element={<HomeEssentialsResult />}
-          />
+          <Route path="/questions/home" element={<HomeEssentials />} />
+          <Route path="/home/result" element={<HomeEssentialsResult />} />
 
           {/* FoodDrink path  */}
-          <Route path="/questions/food-drink" element={<FoodDrink />} />
-          <Route path="/fooddrink/result" element={<FoodDrinkResult />} />
+          <Route path="/questions/food" element={<FoodDrink />} />
+          <Route path="/food/result" element={<FoodDrinkResult />} />
 
           {/* Sport path  */}
           <Route path="/questions/sport" element={<Sport />} />
           <Route path="/sport/result" element={<SportResult />} />
 
-          {/* Jewelry path  */}
+          {/* Toy path  */}
           <Route path="/questions/toy" element={<Toy />} />
           <Route path="/toy/result" element={<ToyResult />} />
 

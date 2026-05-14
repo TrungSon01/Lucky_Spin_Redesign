@@ -23,7 +23,9 @@ export default function useDataMainpage() {
       bg: "#28180D",
       tag: "Elegant",
     },
-    {
+
+
+     {
       label: "Beauty",
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -138,7 +140,7 @@ export default function useDataMainpage() {
           />
         </svg>
       ),
-      bg: "#0A1A28",
+      bg: "#07131f",
       tag: "Healthy",
     },
 
@@ -222,14 +224,14 @@ export default function useDataMainpage() {
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <path
             d="M18 8h1a4 4 0 0 1 0 8h-1"
-            stroke="#F87171"
+            stroke="#4ADE80"
             strokeWidth="1.8"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
           <path
             d="M3 8h15v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"
-            stroke="#F87171"
+            stroke="#4ADE80"
             strokeWidth="1.8"
             strokeLinejoin="round"
           />
@@ -238,7 +240,7 @@ export default function useDataMainpage() {
             y1="2"
             x2="6"
             y2="6"
-            stroke="#F87171"
+            stroke="#4ADE80"
             strokeWidth="1.8"
             strokeLinecap="round"
           />
@@ -247,7 +249,7 @@ export default function useDataMainpage() {
             y1="2"
             x2="10"
             y2="6"
-            stroke="#F87171"
+            stroke="#4ADE80"
             strokeWidth="1.8"
             strokeLinecap="round"
           />
@@ -256,13 +258,13 @@ export default function useDataMainpage() {
             y1="2"
             x2="14"
             y2="6"
-            stroke="#F87171"
+            stroke="#4ADE80"
             strokeWidth="1.8"
             strokeLinecap="round"
           />
         </svg>
       ),
-      bg: "#280E0E",
+      bg: "#0B1F14",
       tag: null,
     },
     {
@@ -368,9 +370,9 @@ export default function useDataMainpage() {
       border: "1px solid #1E3A8A",
     },
     Elegant: {
-      backgroundColor: "#28180D",
-      color: "#C8A84B",
-      border: "1px solid #3A3010",
+      backgroundColor: "#33200F",
+      color: "#E7C96A",
+      border: "1px solid #4A3A16",
     },
   };
   const press = (e: React.MouseEvent<HTMLDivElement>, to: string) => {

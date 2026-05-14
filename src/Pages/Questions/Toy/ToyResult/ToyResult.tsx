@@ -13,8 +13,8 @@ export default function ToyResult() {
   return (
     <ResultTemplate
       category="toy"
-      categoryName="toys"
-      themeClass="result-theme--jewelry"
+      categoryName="Toys"
+      themeClass="result-theme--toy"
       badgeText="Picks"
       appName="LuckySpinner"
       products={products}

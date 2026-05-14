@@ -138,42 +138,42 @@
 
 /* ── Sport theme (orange/red) ── */
 .result-theme--sport {
-  --accent: #f59e0b;
-  --accent-dim: rgba(245, 158, 11, 0.12);
-  --accent-border: rgba(245, 158, 11, 0.3);
-  --accent-glow: rgba(245, 158, 11, 0.18);
+  --accent: #38bdf8;
+  --accent-dim: rgba(56, 189, 248, 0.14);
+  --accent-border: rgba(56, 189, 248, 0.34);
+  --accent-glow: rgba(56, 189, 248, 0.16);
 
-  --purple: #dc2626;
-  --purple-dim: rgba(220, 38, 38, 0.14);
-  --purple-border: rgba(220, 38, 38, 0.32);
-  --purple-glow-top: rgba(200, 30, 30, 0.22);
+  --purple: #60a5fa;
+  --purple-dim: rgba(96, 165, 250, 0.16);
+  --purple-border: rgba(96, 165, 250, 0.34);
+  --purple-glow-top: rgba(96, 165, 250, 0.22);
 
-  --bg: #fff7ed;
+  --bg: #eff8ff;
   --card-bg: #ffffff;
 
-  --text-primary: #1c1917;
-  --text-secondary: rgba(28, 25, 23, 0.6);
-  --border-subtle: rgba(245, 158, 11, 0.15);
+  --text-primary: #0f172a;
+  --text-secondary: rgba(15, 23, 42, 0.65);
+  --border-subtle: rgba(56, 189, 248, 0.18);
 }
 
-/* ── Jewelry theme (gold) ── */
-.result-theme--jewelry {
-  --accent: #fbbf24;
-  --accent-dim: rgba(251, 191, 36, 0.12);
-  --accent-border: rgba(251, 191, 36, 0.3);
-  --accent-glow: rgba(251, 191, 36, 0.18);
+/* ── toy theme (gold) ── */
+.result-theme--toy {
+  --accent: #e879f9;
+  --accent-dim: rgba(232, 121, 249, 0.12);
+  --accent-border: rgba(232, 121, 249, 0.3);
+  --accent-glow: rgba(232, 121, 249, 0.18);
 
-  --purple: #d97706;
-  --purple-dim: rgba(217, 119, 6, 0.14);
-  --purple-border: rgba(217, 119, 6, 0.32);
-  --purple-glow-top: rgba(200, 100, 10, 0.22);
+  --purple: #c084fc;
+  --purple-dim: rgba(192, 132, 252, 0.14);
+  --purple-border: rgba(192, 132, 252, 0.32);
+  --purple-glow-top: rgba(192, 132, 252, 0.22);
 
-  --bg: #fefce8;
+  --bg: #fdf4ff;
   --card-bg: #ffffff;
 
-  --text-primary: #1c1917;
-  --text-secondary: rgba(28, 25, 23, 0.6);
-  --border-subtle: rgba(0, 0, 0, 0.06);
+  --text-primary: #3b0764;
+  --text-secondary: rgba(59, 7, 100, 0.6);
+  --border-subtle: rgba(232, 121, 249, 0.12);
 }
 
 /* ── Pets theme (cyan) ── */
@@ -374,7 +374,7 @@
 .result-theme--accessory .result-badge,
 .result-theme--fooddrink .result-badge,
 .result-theme--sport .result-badge,
-.result-theme--jewelry .result-badge,
+.result-theme--toy .result-badge,
 .result-theme--pets .result-badge {
   color: var(--accent);
 }
@@ -735,8 +735,9 @@
 }
 
 .result-start-over {
-  width: 100%;
-  padding: 14px;
+  width: 98%;
+  padding: 4.5% 2.5%;
+  margin: 0 auto;
   border-radius: 14px;
   background: var(--accent-dim);
   border: 1px solid var(--accent-border);

@@ -12,13 +12,7 @@ const OPTION_IMAGES: I_TOY_IMAGES = TOY_IMAGES;
 const BUDGET_IMAGES: Record<string, string> = OPTION_BUDGET_IMAGES;
 
 // Words that should be highlighted with the accent colour
-const GOLD_WORDS = new Set([
-  "interested",
-  "spend?",
-  "willing",
-  "lucky",
-  "jewelry",
-]);
+const GOLD_WORDS = new Set(["interested", "spend?", "willing", "lucky", "toy"]);
 
 export default function Toy() {
   const navigate = useNavigateWithTransition();
@@ -35,9 +29,9 @@ export default function Toy() {
       optionImages={OPTION_IMAGES}
       budgetImages={BUDGET_IMAGES}
       goldWords={GOLD_WORDS}
-      badgeText="Jewelry Picks"
+      badgeText="Toy Picks"
       appName="LuckySpinner"
-      themeClass="quiz-theme--jewelry"
+      themeClass="quiz-theme--toy"
       onComplete={handleComplete}
     />
   );

@@ -5,7 +5,12 @@ export interface Achievement {
   icon: string; // lucide icon name
   category: "rounds" | "streak" | "rank" | "tier";
   target: number | string; // target value (e.g., 10 rounds, 20 streak, rank >= 50)
-  condition: (streak: number, rounds: number, rank: number) => boolean;
+  condition: (
+    streak: number,
+    rounds: number,
+    rank: number,
+    purchase?: number,
+  ) => boolean;
   storageKey: string; // key to track if unlocked
 }
 
@@ -23,7 +28,7 @@ export const ACHIEVEMENTS: Achievement[] = [
   {
     id: "rounds_100",
     title: "100 Rounds Played",
-    description: "Complete 100 Lucky Spin rounds to reach Diamond tier.",
+    description: "Complete 100 Lucky Spin rounds",
     icon: "Play",
     category: "rounds",
     target: 100,
@@ -58,7 +63,7 @@ export const ACHIEVEMENTS: Achievement[] = [
   {
     id: "highest_tier",
     title: "Ultimate Diamond",
-    description: "Reach the highest tier in Lucky Spin.",
+    description: "Reach the highest tier",
     icon: "Award",
     category: "tier",
     target: "Ultimate Diamond",
@@ -84,6 +89,16 @@ export const ACHIEVEMENTS: Achievement[] = [
     target: 20,
     condition: (streak) => streak >= 20,
     storageKey: "achievement_highest_streak",
+  },
+  {
+    id: "Buy first product",
+    title: "First Purchase",
+    description: "Buy your first product from the shop",
+    icon: "ShoppingCart",
+    category: "rounds",
+    target: 1,
+    condition: (_streak, rounds) => rounds >= 1,
+    storageKey: "achievement_first_purchase",
   },
 ];
 

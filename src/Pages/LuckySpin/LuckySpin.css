@@ -2,7 +2,11 @@
   min-height: 100vh;
   background:
     radial-gradient(circle at top, rgba(245, 200, 66, 0.14), transparent 30%),
-    radial-gradient(circle at bottom, rgba(139, 92, 246, 0.14), transparent 35%),
+    radial-gradient(
+      circle at bottom,
+      rgba(139, 92, 246, 0.14),
+      transparent 35%
+    ),
     linear-gradient(180deg, #0f1020 0%, #121326 45%, #0b0c17 100%);
   color: #ffffff;
   position: relative;
@@ -114,7 +118,11 @@
   max-width: 430px;
   padding: 14px;
   border-radius: 28px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.03)
+  );
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
     0 22px 60px rgba(0, 0, 0, 0.32),
@@ -138,7 +146,11 @@
   position: relative;
   overflow: hidden;
   padding: 8px;
-  background: linear-gradient(180deg, rgba(22, 24, 45, 0.96), rgba(13, 15, 29, 0.98));
+  background: linear-gradient(
+    180deg,
+    rgba(22, 24, 45, 0.96),
+    rgba(13, 15, 29, 0.98)
+  );
   border: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   flex-direction: column;
@@ -202,7 +214,11 @@
   align-items: center;
   justify-content: center;
   color: rgba(255, 255, 255, 0.76);
-  background: linear-gradient(180deg, rgba(245, 200, 66, 0.16), rgba(124, 58, 237, 0.12));
+  background: linear-gradient(
+    180deg,
+    rgba(245, 200, 66, 0.16),
+    rgba(124, 58, 237, 0.12)
+  );
 }
 
 .lucky-spin-tile-info {
@@ -246,6 +262,33 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
+.lucky-spin-center.is-clickable {
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.lucky-spin-center.is-clickable:active {
+  transform: scale(0.97);
+}
+
+.lucky-spin-center.is-clickable:hover {
+  border-color: rgba(245, 200, 66, 0.42);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 14px 28px rgba(245, 200, 66, 0.16);
+}
+
+.lucky-spin-center:disabled {
+  opacity: 1;
+}
+
+.lucky-spin-center.is-spinning {
+  border-color: rgba(245, 200, 66, 0.5);
+}
+
 .lucky-spin-center-ring {
   width: 46px;
   height: 46px;
@@ -256,6 +299,15 @@
   color: #111827;
   background: linear-gradient(180deg, #f7d96f 0%, #f5c842 100%);
   box-shadow: 0 10px 24px rgba(245, 200, 66, 0.28);
+}
+
+.lucky-spin-center-loader {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 2px solid rgba(17, 24, 39, 0.25);
+  border-top-color: #111827;
+  animation: lucky-spin-rotate 0.8s linear infinite;
 }
 
 .lucky-spin-center-copy {
@@ -381,7 +433,8 @@
 }
 
 .lucky-spin-primary-btn,
-.lucky-spin-secondary-btn {
+.lucky-spin-secondary-btn,
+.lucky-spin-popup-btn {
   width: 100%;
   min-height: 52px;
   border-radius: 18px;
@@ -390,7 +443,8 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.lucky-spin-primary-btn {
+.lucky-spin-primary-btn,
+.lucky-spin-popup-btn {
   box-shadow: 0 16px 30px rgba(245, 200, 66, 0.16);
 }
 
@@ -403,6 +457,154 @@
 .lucky-spin-secondary-btn:active {
   transform: scale(0.98);
   opacity: 0.85;
+}
+
+.lucky-spin-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(4, 6, 17, 0.68);
+  backdrop-filter: blur(10px);
+}
+
+.lucky-spin-popup-content {
+  position: relative;
+  width: min(100%, 380px);
+  border-radius: 28px;
+  padding: 22px 18px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background:
+    radial-gradient(circle at top, rgba(245, 200, 66, 0.16), transparent 40%),
+    linear-gradient(180deg, rgba(24, 27, 48, 0.98), rgba(12, 14, 28, 0.98));
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+}
+
+.lucky-spin-popup-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lucky-spin-popup-badge {
+  margin-bottom: 12px;
+}
+
+.lucky-spin-popup-title {
+  margin: 0 0 16px;
+  font-size: 24px;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.lucky-spin-popup-product {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.lucky-spin-popup-image {
+  border-radius: 22px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.lucky-spin-popup-image img,
+.lucky-spin-popup-image picture,
+.lucky-spin-popup-image > div {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.lucky-spin-popup-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.72);
+  background: linear-gradient(
+    180deg,
+    rgba(245, 200, 66, 0.18),
+    rgba(124, 58, 237, 0.14)
+  );
+}
+
+.lucky-spin-popup-placeholder svg {
+  width: 40px;
+  height: 40px;
+}
+
+.lucky-spin-popup-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lucky-spin-popup-product-title {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.lucky-spin-popup-pricing {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lucky-spin-popup-price {
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.lucky-spin-popup-compare {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: line-through;
+}
+
+.lucky-spin-popup-discount {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(245, 200, 66, 0.14);
+  color: #f5c842;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.lucky-spin-popup-savings {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+@keyframes lucky-spin-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 374px) {
@@ -441,6 +643,14 @@
   .lucky-spin-tile-title,
   .lucky-spin-tile-discount {
     font-size: 10px;
+  }
+
+  .lucky-spin-popup-content {
+    padding: 20px 16px 16px;
+  }
+
+  .lucky-spin-popup-title {
+    font-size: 22px;
   }
 }
 

@@ -51,10 +51,8 @@ export function Popup({ open, show, product, onClose, onBuy }: PopupProps) {
         className={`lsp-sheet${show ? " is-visible" : " is-hiding"}`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Drag handle */}
         <div className="lsp-handle" />
 
-        {/* Close button */}
         <button
           className="lsp-close"
           onClick={handleCloseClick}
@@ -63,7 +61,6 @@ export function Popup({ open, show, product, onClose, onBuy }: PopupProps) {
           <X size={16} strokeWidth={2.5} />
         </button>
 
-        {/* Confetti / celebration header */}
         <div className="lsp-celebration">
           <span className="lsp-emoji" aria-hidden="true">
             🎉
@@ -74,7 +71,6 @@ export function Popup({ open, show, product, onClose, onBuy }: PopupProps) {
           </div>
         </div>
 
-        {/* Product card */}
         <div className="lsp-card">
           <div className="lsp-image-wrap">
             {product.featuredImage?.url ? (
@@ -95,9 +91,6 @@ export function Popup({ open, show, product, onClose, onBuy }: PopupProps) {
                 </svg>
               </div>
             )}
-
-            {/* Discount badge floating on image */}
-            <div className="lsp-badge">−{discountPercent}%</div>
           </div>
 
           <div className="lsp-product-info">
@@ -108,11 +101,11 @@ export function Popup({ open, show, product, onClose, onBuy }: PopupProps) {
             <div className="lsp-pricing">
               <span className="lsp-sale-price">{salePrice}</span>
               <span className="lsp-original-price">{originalPrice}</span>
+              <span className="lsp-discount-pill">−{discountPercent}%</span>
             </div>
           </div>
         </div>
 
-        {/* CTA */}
         <div className="lsp-actions">
           <Button className="lsp-buy-btn" onClick={handleBuyClick}>
             Mua ngay
@@ -122,7 +115,6 @@ export function Popup({ open, show, product, onClose, onBuy }: PopupProps) {
           </button>
         </div>
 
-        {/* Safe area spacer */}
         <div className="lsp-safe-area" />
       </div>
     </div>

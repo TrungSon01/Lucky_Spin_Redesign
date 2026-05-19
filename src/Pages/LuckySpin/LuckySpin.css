@@ -469,6 +469,19 @@
   padding: 20px;
   background: rgba(4, 6, 17, 0.68);
   backdrop-filter: blur(10px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.32s ease, visibility 0.32s ease;
+}
+
+.lucky-spin-popup.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lucky-spin-popup.is-hiding {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .lucky-spin-popup-content {
@@ -481,25 +494,22 @@
     radial-gradient(circle at top, rgba(245, 200, 66, 0.16), transparent 40%),
     linear-gradient(180deg, rgba(24, 27, 48, 0.98), rgba(12, 14, 28, 0.98));
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  transform: scale(0.82) translateY(24px);
+  transform-origin: center;
+  transition:
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.32s ease;
+  opacity: 0;
 }
 
-.lucky-spin-popup-close {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 36px;
-  height: 36px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
-  color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.lucky-spin-popup-content.is-visible {
+  transform: scale(1) translateY(0);
+  opacity: 1;
 }
 
-.lucky-spin-popup-badge {
-  margin-bottom: 12px;
+.lucky-spin-popup-content.is-hiding {
+  transform: scale(0.82) translateY(24px);
+  opacity: 0;
 }
 
 .lucky-spin-popup-title {
@@ -516,45 +526,11 @@
   margin-bottom: 18px;
 }
 
-.lucky-spin-popup-image {
-  border-radius: 22px;
-  overflow: hidden;
-  aspect-ratio: 1 / 1;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.lucky-spin-popup-image img,
-.lucky-spin-popup-image picture,
-.lucky-spin-popup-image > div {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-}
-
-.lucky-spin-popup-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgba(255, 255, 255, 0.72);
-  background: linear-gradient(
-    180deg,
-    rgba(245, 200, 66, 0.18),
-    rgba(124, 58, 237, 0.14)
-  );
-}
-
-.lucky-spin-popup-placeholder svg {
-  width: 40px;
-  height: 40px;
-}
-
 .lucky-spin-popup-info {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  text-align: center;
 }
 
 .lucky-spin-popup-product-title {
@@ -563,40 +539,6 @@
   line-height: 1.3;
 }
 
-.lucky-spin-popup-pricing {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.lucky-spin-popup-price {
-  font-size: 24px;
-  font-weight: 800;
-  color: #ffffff;
-}
-
-.lucky-spin-popup-compare {
-  font-size: 15px;
-  color: rgba(255, 255, 255, 0.45);
-  text-decoration: line-through;
-}
-
-.lucky-spin-popup-discount {
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: rgba(245, 200, 66, 0.14);
-  color: #f5c842;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-.lucky-spin-popup-savings {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.74);
-  font-size: 14px;
-  line-height: 1.5;
-}
 
 @keyframes lucky-spin-rotate {
   from {

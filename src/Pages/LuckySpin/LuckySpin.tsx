@@ -17,6 +17,9 @@ export default function LuckySpin() {
   const navigate = useNavigateWithTransition();
   const { navigateToProduct } = useShopNavigation();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const popupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const previousPhaseRef = useRef<string | null>(null);
 
   const {
@@ -28,37 +31,70 @@ export default function LuckySpin() {
     error,
     storageError,
     handleSpin,
-    handleSecondSpin,
   } = useLuckySpin();
 
   useEffect(() => {
     const previousPhase = previousPhaseRef.current;
+    const shouldShowPopup =
+      (phase === "first-shown" && previousPhase === "spinning-first") ||
+      (phase === "locked" && previousPhase === "spinning-second");
 
-    if (
-      phase === "first-shown" &&
-      activeWinner &&
-      previousPhase === "spinning-first"
-    ) {
+    if (shouldShowPopup && activeWinner) {
+      if (popupTimerRef.current) {
+        clearTimeout(popupTimerRef.current);
+      }
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
+      }
+
       setIsPopupOpen(true);
-    }
-
-    if (phase !== "first-shown") {
-      setIsPopupOpen(false);
+      popupTimerRef.current = setTimeout(() => {
+        setShowPopup(true);
+      }, 20);
     }
 
     previousPhaseRef.current = phase;
+
+    return () => {
+      if (popupTimerRef.current) {
+        clearTimeout(popupTimerRef.current);
+      }
+    };
   }, [activeWinner, phase]);
 
+  useEffect(() => {
+    return () => {
+      if (popupTimerRef.current) {
+        clearTimeout(popupTimerRef.current);
+      }
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
+      }
+    };
+  }, []);
+
   const handleGoHome = () => navigate("/main");
-  const handleClosePopup = () => setIsPopupOpen(false);
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+    }
+    closeTimerRef.current = setTimeout(() => setIsPopupOpen(false), 320);
+  };
 
   const handleBuyWinner = () => {
     if (!activeWinner?.id) return;
-    setIsPopupOpen(false);
-    navigateToProduct({ productId: String(activeWinner.id) });
+    setShowPopup(false);
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+    }
+    closeTimerRef.current = setTimeout(() => {
+      setIsPopupOpen(false);
+      navigateToProduct({ productId: String(activeWinner.id) });
+    }, 320);
   };
 
-  const canSecondSpin = phase === "first-shown" && Boolean(secondWinner);
   const isLocked = phase === "locked";
 
   const subtitle = useMemo(() => {
@@ -67,7 +103,7 @@ export default function LuckySpin() {
     }
     if (phase === "first-shown") {
       return secondWinner
-        ? "Nice pick. You can still try one more time today to reveal a different discounted product."
+        ? "Nice pick. Tap the center button to spin one more time and reveal another product."
         : "This is the only discounted winner available today.";
     }
     if (phase === "locked") {
@@ -93,7 +129,7 @@ export default function LuckySpin() {
         </div>
         <div className="lucky-spin-status">
           {isLocked ? <Lock size={14} /> : <Sparkles size={14} />}
-          <span>{isLocked ? "Come back tomorrow" : "1 spin today"}</span>
+          <span>{isLocked ? "Come back tomorrow" : "2 spins today"}</span>
         </div>
       </header>
 
@@ -122,27 +158,16 @@ export default function LuckySpin() {
       </main>
 
       <footer className="lucky-spin-footer">
-        {canSecondSpin && (
-          <Button className="lucky-spin-primary-btn" onClick={handleSecondSpin}>
-            Find another product
-          </Button>
-        )}
-
-        {(isLocked || phase === "error" || phase === "empty") && (
+        {(isLocked || phase === "error" || phase === "empty" || (!secondWinner && phase === "first-shown")) && (
           <Button className="lucky-spin-primary-btn" onClick={handleGoHome}>
             Back to home
           </Button>
-        )}
-
-        {!secondWinner && phase === "first-shown" && (
-          <button className="lucky-spin-secondary-btn" onClick={handleGoHome}>
-            Back to home
-          </button>
         )}
       </footer>
 
       <Popup
         open={isPopupOpen}
+        show={showPopup}
         product={activeWinner}
         onClose={handleClosePopup}
         onBuy={handleBuyWinner}

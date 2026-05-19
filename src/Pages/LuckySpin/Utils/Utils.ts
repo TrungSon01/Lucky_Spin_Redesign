@@ -52,6 +52,15 @@ export function sortByBestDiscount(a: SpinProduct, b: SpinProduct) {
   return String(a.id).localeCompare(String(b.id));
 }
 
+export function generateVoucherCode(product: SpinProduct): string {
+  const priceStr = Math.round(product.spinMeta.priceAmount).toString();
+  const discountStr = Math.round(product.spinMeta.discountPercent).toString();
+  const randomSuffix = Math.floor(Math.random() * 1000)
+    .toString()
+    .padStart(3, "0");
+  return `SAVE${discountStr}-${priceStr}-${randomSuffix}`;
+}
+
 export function shuffleArray<T>(items: T[]) {
   const cloned = [...items];
   for (let i = cloned.length - 1; i > 0; i -= 1) {

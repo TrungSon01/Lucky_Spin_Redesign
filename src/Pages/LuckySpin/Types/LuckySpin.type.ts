@@ -11,10 +11,18 @@ export type SpinPhase =
   | "empty"
   | "error";
 
+export type SpinVoucher = {
+  code: string;
+  percent: number;
+  productId: string;
+};
+
 export type DailyRecord = {
   dateKey: string;
   firstWinnerProductId: string;
+  firstVoucher: SpinVoucher;
   secondWinnerProductId?: string;
+  secondVoucher?: SpinVoucher;
   usedSecondSpin: boolean;
   completedAt: string;
 };

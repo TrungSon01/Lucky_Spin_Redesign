@@ -1,16 +1,16 @@
-import { Badge, Button, Image } from "@shopify/shop-minis-react";
+import { Button, Image } from "@shopify/shop-minis-react";
 import { X } from "lucide-react";
 import { SpinProduct } from "../Types/LuckySpin.type";
-import { formatCurrency } from "../Utils/Utils";
 
 type PopupProps = {
   open: boolean;
+  show: boolean;
   product: SpinProduct | null;
   onClose: () => void;
   onBuy: () => void;
 };
 
-export function Popup({ open, product, onClose, onBuy }: PopupProps) {
+export function Popup({ open, show, product, onClose, onBuy }: PopupProps) {
   if (!open || !product) return null;
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -30,15 +30,19 @@ export function Popup({ open, product, onClose, onBuy }: PopupProps) {
   };
 
   return (
-    <div className="lucky-spin-popup" onClick={handleBackdropClick}>
-      <div className="lucky-spin-popup-content" onClick={(e) => e.stopPropagation()}>
+    <div
+      className={`lucky-spin-popup${show ? " is-visible" : " is-hiding"}`}
+      onClick={handleBackdropClick}
+    >
+      <div
+        className={`lucky-spin-popup-content${show ? " is-visible" : " is-hiding"}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <button className="lucky-spin-popup-close" onClick={handleCloseClick}>
           <X size={20} />
         </button>
 
-        <Badge className="lucky-spin-popup-badge">Congratulations!</Badge>
-
-        <h2 className="lucky-spin-popup-title">Top Discount Winner</h2>
+        <h2 className="lucky-spin-popup-title">Congratulations!</h2>
 
         <div className="lucky-spin-popup-product">
           <div className="lucky-spin-popup-image">
@@ -57,22 +61,6 @@ export function Popup({ open, product, onClose, onBuy }: PopupProps) {
 
           <div className="lucky-spin-popup-info">
             <h3 className="lucky-spin-popup-product-title">{product.title}</h3>
-
-            <div className="lucky-spin-popup-pricing">
-              <div className="lucky-spin-popup-price">
-                {formatCurrency(product.spinMeta.priceAmount, product.price?.currencyCode)}
-              </div>
-              <div className="lucky-spin-popup-compare">
-                {formatCurrency(product.spinMeta.compareAtAmount, product.compareAtPrice?.currencyCode)}
-              </div>
-              <div className="lucky-spin-popup-discount">
-                -{Math.round(product.spinMeta.discountPercent)}%
-              </div>
-            </div>
-
-            <p className="lucky-spin-popup-savings">
-              Save {formatCurrency(product.spinMeta.savingsAmount, product.price?.currencyCode)} today!
-            </p>
           </div>
         </div>
 

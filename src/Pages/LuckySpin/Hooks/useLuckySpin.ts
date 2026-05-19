@@ -1,20 +1,34 @@
 import { useAsyncStorage, useProductSearch } from "@shopify/shop-minis-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BOARD_SIZE, SPIN_QUERY, STORAGE_KEY } from "../Constants/Constants";
-import { DailyRecord, SpinPhase, SpinProduct } from "../Types/LuckySpin.type";
 import {
+  DailyRecord,
+  SpinPhase,
+  SpinProduct,
+  SpinVoucher,
+} from "../Types/LuckySpin.type";
+import {
+  generateVoucherCode,
   getTodayKey,
   normalizeProduct,
   readRecord,
   shuffleArray,
-  sortByBestDiscount,
 } from "../Utils/Utils";
+
+function buildVoucher(product: SpinProduct): SpinVoucher {
+  return {
+    code: generateVoucherCode(product),
+    percent: Math.round(product.spinMeta.discountPercent),
+    productId: String(product.id),
+  };
+}
 
 export function useLuckySpin() {
   const { getItem, setItem } = useAsyncStorage();
   const [phase, setPhase] = useState<SpinPhase>("loading");
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
   const [activeWinner, setActiveWinner] = useState<SpinProduct | null>(null);
+  const [activeVoucher, setActiveVoucher] = useState<SpinVoucher | null>(null);
   const [dailyRecord, setDailyRecord] = useState<DailyRecord | null>(null);
   const [storageReady, setStorageReady] = useState(false);
   const [storageError, setStorageError] = useState<string | null>(null);
@@ -26,7 +40,7 @@ export function useLuckySpin() {
     error,
   } = useProductSearch({
     query: SPIN_QUERY,
-    first: 100,
+    first: 50,
     fetchPolicy: "network-only",
   });
 
@@ -35,18 +49,16 @@ export function useLuckySpin() {
   const eligibleProducts = useMemo<SpinProduct[]>(() => {
     return products
       .map(normalizeProduct)
-      .filter((product): product is SpinProduct => product !== null)
-      .sort(sortByBestDiscount);
+      .filter((product): product is SpinProduct => product !== null);
   }, [products]);
 
-  const firstWinner = eligibleProducts[0] ?? null;
+  const shuffledEligibleProducts = useMemo(
+    () => shuffleArray(eligibleProducts),
+    [eligibleProducts],
+  );
 
-  const secondWinner = useMemo(() => {
-    if (!firstWinner) return null;
-    return (
-      eligibleProducts.find((product) => product.id !== firstWinner.id) ?? null
-    );
-  }, [eligibleProducts, firstWinner]);
+  const firstWinner = shuffledEligibleProducts[0] ?? null;
+  const secondWinner = shuffledEligibleProducts[1] ?? null;
 
   const boardProducts = useMemo(() => {
     const mustInclude = [firstWinner, secondWinner].filter(
@@ -55,7 +67,7 @@ export function useLuckySpin() {
 
     const usedIds = new Set(mustInclude.map((product) => product.id));
 
-    const fillerDiscounted = eligibleProducts.filter(
+    const fillerDiscounted = shuffledEligibleProducts.filter(
       (product) => !usedIds.has(product.id),
     );
     fillerDiscounted.forEach((product) => usedIds.add(product.id));
@@ -79,7 +91,7 @@ export function useLuckySpin() {
     return shuffled.map(
       (_, index) => shuffled[(index + offset) % shuffled.length],
     );
-  }, [eligibleProducts, firstWinner, products, secondWinner]);
+  }, [firstWinner, products, secondWinner, shuffledEligibleProducts]);
 
   const firstWinnerIndex = useMemo(() => {
     if (!firstWinner) return -1;
@@ -96,6 +108,7 @@ export function useLuckySpin() {
       if (!record || record.dateKey !== getTodayKey()) {
         setDailyRecord(null);
         setActiveWinner(null);
+        setActiveVoucher(null);
         return false;
       }
 
@@ -104,23 +117,25 @@ export function useLuckySpin() {
       const resolvedFirst =
         eligibleProducts.find(
           (product) => product.id === record.firstWinnerProductId,
-        ) || firstWinner;
+        ) ?? null;
       const resolvedSecond =
         eligibleProducts.find(
           (product) => product.id === record.secondWinnerProductId,
-        ) || secondWinner;
+        ) ?? null;
 
       if (record.usedSecondSpin) {
         setActiveWinner(resolvedSecond ?? resolvedFirst ?? null);
+        setActiveVoucher(record.secondVoucher ?? record.firstVoucher);
         setPhase("locked");
       } else {
         setActiveWinner(resolvedFirst ?? null);
+        setActiveVoucher(record.firstVoucher);
         setPhase("first-shown");
       }
 
       return true;
     },
-    [eligibleProducts, firstWinner, secondWinner],
+    [eligibleProducts],
   );
 
   useEffect(() => {
@@ -177,12 +192,13 @@ export function useLuckySpin() {
   ]);
 
   const runSpinAnimation = useCallback(async (targetIndex: number) => {
-    const loops = BOARD_SIZE * 3 + targetIndex;
+    const loops = BOARD_SIZE * 4 + targetIndex;
     for (let step = 0; step <= loops; step += 1) {
       const nextIndex = step % BOARD_SIZE;
       setHighlightedIndex(nextIndex);
       const progress = step / loops;
-      const delay = 70 + Math.round(progress * 120);
+      const easeOut = 1 - (1 - progress) * (1 - progress);
+      const delay = 40 + Math.round(easeOut * 180);
       await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }, []);
@@ -196,48 +212,57 @@ export function useLuckySpin() {
   );
 
   const handleSpin = useCallback(async () => {
-    if (!firstWinner || firstWinnerIndex < 0 || phase !== "ready") return;
+    // First spin
+    if (phase === "ready" && firstWinner && firstWinnerIndex >= 0) {
+      setPhase("spinning-first");
+      setActiveWinner(null);
+      setActiveVoucher(null);
+      await runSpinAnimation(firstWinnerIndex);
 
-    setPhase("spinning-first");
-    setActiveWinner(null);
-    await runSpinAnimation(firstWinnerIndex);
+      const firstVoucher = buildVoucher(firstWinner);
+      const record: DailyRecord = {
+        dateKey: getTodayKey(),
+        firstWinnerProductId: String(firstWinner.id),
+        firstVoucher,
+        usedSecondSpin: false,
+        completedAt: new Date().toISOString(),
+      };
 
-    const record: DailyRecord = {
-      dateKey: getTodayKey(),
-      firstWinnerProductId: String(firstWinner.id),
-      usedSecondSpin: false,
-      completedAt: new Date().toISOString(),
-    };
-
-    await persistRecord(record);
-    setActiveWinner(firstWinner);
-    setPhase("first-shown");
-  }, [firstWinner, firstWinnerIndex, persistRecord, phase, runSpinAnimation]);
-
-  const handleSecondSpin = useCallback(async () => {
-    if (
-      !secondWinner ||
-      secondWinnerIndex < 0 ||
-      phase !== "first-shown" ||
-      !dailyRecord
-    )
+      await persistRecord(record);
+      setActiveWinner(firstWinner);
+      setActiveVoucher(firstVoucher);
+      setPhase("first-shown");
       return;
+    }
 
-    setPhase("spinning-second");
-    await runSpinAnimation(secondWinnerIndex);
+    // Second spin
+    if (
+      phase === "first-shown" &&
+      secondWinner &&
+      secondWinnerIndex >= 0 &&
+      dailyRecord
+    ) {
+      setPhase("spinning-second");
+      await runSpinAnimation(secondWinnerIndex);
 
-    const updatedRecord: DailyRecord = {
-      ...dailyRecord,
-      secondWinnerProductId: String(secondWinner.id),
-      usedSecondSpin: true,
-      completedAt: new Date().toISOString(),
-    };
+      const secondVoucher = buildVoucher(secondWinner);
+      const updatedRecord: DailyRecord = {
+        ...dailyRecord,
+        secondWinnerProductId: String(secondWinner.id),
+        secondVoucher,
+        usedSecondSpin: true,
+        completedAt: new Date().toISOString(),
+      };
 
-    await persistRecord(updatedRecord);
-    setActiveWinner(secondWinner);
-    setPhase("locked");
+      await persistRecord(updatedRecord);
+      setActiveWinner(secondWinner);
+      setActiveVoucher(secondVoucher);
+      setPhase("locked");
+    }
   }, [
     dailyRecord,
+    firstWinner,
+    firstWinnerIndex,
     persistRecord,
     phase,
     runSpinAnimation,
@@ -249,12 +274,12 @@ export function useLuckySpin() {
     phase,
     highlightedIndex,
     activeWinner,
+    activeVoucher,
     boardProducts,
     firstWinner,
     secondWinner,
     error,
     storageError,
     handleSpin,
-    handleSecondSpin,
   };
 }

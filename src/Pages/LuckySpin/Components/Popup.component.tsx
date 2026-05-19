@@ -1,5 +1,5 @@
 import { Button, Image } from "@shopify/shop-minis-react";
-import { X } from "lucide-react";
+import { PartyPopper, X } from "lucide-react";
 import { SpinProduct } from "../Types/LuckySpin.type";
 import { formatCurrency } from "../Utils/Utils";
 

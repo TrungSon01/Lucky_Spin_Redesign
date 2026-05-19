@@ -158,7 +158,7 @@ export default function LuckySpin() {
       </main>
 
       <footer className="lucky-spin-footer">
-        {(isLocked || phase === "error" || phase === "empty" || (!secondWinner && phase === "first-shown")) && (
+        {(phase === "error" || phase === "empty" || (!secondWinner && phase === "first-shown")) && (
           <Button className="lucky-spin-primary-btn" onClick={handleGoHome}>
             Back to home
           </Button>

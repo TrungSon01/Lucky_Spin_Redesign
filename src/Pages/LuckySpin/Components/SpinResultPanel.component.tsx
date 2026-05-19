@@ -1,4 +1,4 @@
-import { Badge, ProductCard, Skeleton } from "@shopify/shop-minis-react";
+import { Badge, ProductCard, Skeleton, useShopNavigation } from "@shopify/shop-minis-react";
 import { Gift, RefreshCw } from "lucide-react";
 import { SpinPhase, SpinProduct } from "../Types/LuckySpin.type";
 import { formatCurrency } from "../Utils/Utils";
@@ -18,10 +18,17 @@ export function SpinResultPanel({
   error,
   storageError,
 }: SpinResultPanelProps) {
+  const { navigateToProduct } = useShopNavigation();
+
   const winnerBadgeLabel =
     phase === "locked" && activeWinner?.id === secondWinner?.id
       ? "Your alternate pick"
       : "Best deal today";
+
+  const handleOpenWinner = () => {
+    if (!activeWinner?.id) return;
+    navigateToProduct({ productId: String(activeWinner.id) });
+  };
 
   return (
     <section className="lucky-spin-result-panel">
@@ -80,9 +87,13 @@ export function SpinResultPanel({
               with a curated discounted pick from your Lucky Spin.
             </p>
           </div>
-          <div className="lucky-spin-card-frame">
+          <button
+            type="button"
+            className="lucky-spin-card-frame lucky-spin-card-button"
+            onClick={handleOpenWinner}
+          >
             <ProductCard product={activeWinner} variant="priceOverlay" />
-          </div>
+          </button>
         </div>
       )}
     </section>

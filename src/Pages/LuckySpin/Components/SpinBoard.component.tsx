@@ -40,7 +40,8 @@ export function SpinBoard({
             if (isCenter) {
               const isSpinning =
                 phase === "spinning-first" || phase === "spinning-second";
-              const canSpin = phase === "ready";
+              const canSpin = phase === "ready" || phase === "first-shown";
+              const isDisabled = !canSpin || isSpinning;
               const hasWinner = activeWinner != null;
 
               return (
@@ -51,7 +52,7 @@ export function SpinBoard({
                     isSpinning ? " is-spinning" : ""
                   }`}
                   onClick={onSpin}
-                  disabled={!canSpin && !hasWinner}
+                  disabled={isDisabled}
                 >
                   <div className="lucky-spin-center-ring">
                     {isSpinning ? (
@@ -64,14 +65,18 @@ export function SpinBoard({
                     <strong>
                       {isSpinning
                         ? "Spinning..."
-                        : hasWinner
-                          ? `-${Math.round(activeWinner.spinMeta.discountPercent)}%`
-                          : "Spin now"}
+                        : phase === "first-shown"
+                          ? "Spin again"
+                          : hasWinner
+                            ? `-${Math.round(activeWinner.spinMeta.discountPercent)}%`
+                            : "Spin now"}
                     </strong>
                     <span>
-                      {hasWinner
-                        ? "Top discount"
-                        : "Tap to reveal your deal"}
+                      {phase === "first-shown"
+                        ? "Tap to reveal one more deal"
+                        : hasWinner
+                          ? "Top discount"
+                          : "Tap to reveal your deal"}
                     </span>
                   </div>
                 </button>

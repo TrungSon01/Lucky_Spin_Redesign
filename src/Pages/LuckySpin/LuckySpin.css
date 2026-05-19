@@ -423,6 +423,17 @@
   border-radius: 22px;
 }
 
+.lucky-spin-card-button {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: block;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+}
+
+
 .lucky-spin-footer {
   position: relative;
   z-index: 2;
@@ -433,112 +444,289 @@
 }
 
 .lucky-spin-primary-btn,
-.lucky-spin-secondary-btn,
-.lucky-spin-popup-btn {
-  width: 100%;
-  min-height: 52px;
-  border-radius: 18px;
-  font-size: 15px;
-  font-weight: 700;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.lucky-spin-primary-btn,
-.lucky-spin-popup-btn {
-  box-shadow: 0 16px 30px rgba(245, 200, 66, 0.16);
-}
-
-.lucky-spin-secondary-btn {
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.05);
-  color: #ffffff;
-}
-
-.lucky-spin-secondary-btn:active {
-  transform: scale(0.98);
-  opacity: 0.85;
-}
-
-.lucky-spin-popup {
+.lucky-spin-secondary-btn,/* ─── Backdrop ─────────────────────────────────────────── */
+.lsp-backdrop {
   position: fixed;
   inset: 0;
   z-index: 30;
   display: flex;
+  align-items: flex-end;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lsp-backdrop.is-visible {
+  background: rgba(4, 6, 17, 0.6);
+}
+
+.lsp-backdrop.is-hiding {
+  background: rgba(4, 6, 17, 0);
+}
+
+/* ─── Bottom Sheet ──────────────────────────────────────── */
+.lsp-sheet {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  border-radius: 28px 28px 0 0;
+  padding: 12px 20px 0;
+  background: linear-gradient(
+    180deg,
+    rgba(22, 24, 44, 0.99) 0%,
+    rgba(10, 12, 26, 0.99) 100%
+  );
+  border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+  transform: translateY(100%);
+  transition: transform 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+  will-change: transform;
+}
+
+.lsp-sheet.is-visible {
+  transform: translateY(0);
+}
+
+.lsp-sheet.is-hiding {
+  transform: translateY(100%);
+}
+
+/* ─── Drag Handle ───────────────────────────────────────── */
+.lsp-handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0 auto 20px;
+}
+
+/* ─── Close Button ──────────────────────────────────────── */
+.lsp-close {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  background: rgba(4, 6, 17, 0.68);
-  backdrop-filter: blur(10px);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.32s ease, visibility 0.32s ease;
-}
-
-.lucky-spin-popup.is-visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-.lucky-spin-popup.is-hiding {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.lucky-spin-popup-content {
-  position: relative;
-  width: min(100%, 380px);
-  border-radius: 28px;
-  padding: 22px 18px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background:
-    radial-gradient(circle at top, rgba(245, 200, 66, 0.16), transparent 40%),
-    linear-gradient(180deg, rgba(24, 27, 48, 0.98), rgba(12, 14, 28, 0.98));
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
-  transform: scale(0.82) translateY(24px);
-  transform-origin: center;
+  cursor: pointer;
   transition:
-    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.32s ease;
-  opacity: 0;
+    background 0.15s ease,
+    transform 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.lucky-spin-popup-content.is-visible {
-  transform: scale(1) translateY(0);
-  opacity: 1;
+.lsp-close:active {
+  background: rgba(255, 255, 255, 0.18);
+  transform: scale(0.92);
 }
 
-.lucky-spin-popup-content.is-hiding {
-  transform: scale(0.82) translateY(24px);
-  opacity: 0;
-}
-
-.lucky-spin-popup-title {
-  margin: 0 0 16px;
-  font-size: 24px;
-  line-height: 1.1;
-  letter-spacing: -0.5px;
-}
-
-.lucky-spin-popup-product {
+/* ─── Celebration Header ────────────────────────────────── */
+.lsp-celebration {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 14px;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
+  padding-right: 44px;
 }
 
-.lucky-spin-popup-info {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  text-align: center;
+.lsp-emoji {
+  font-size: 40px;
+  line-height: 1;
+  flex-shrink: 0;
 }
 
-.lucky-spin-popup-product-title {
+.lsp-eyebrow {
+  margin: 0 0 2px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #f5c842;
+  opacity: 0.9;
+}
+
+.lsp-title {
   margin: 0;
-  font-size: 18px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.15;
+  letter-spacing: -0.4px;
+}
+
+/* ─── Product Card ──────────────────────────────────────── */
+.lsp-card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: rgba(255, 255, 255, 0.055);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 14px;
+  margin-bottom: 20px;
+}
+
+/* ─── Product Image ─────────────────────────────────────── */
+.lsp-image-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.lsp-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.lsp-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Discount badge on image */
+.lsp-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: #f5c842;
+  color: #1a1200;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  padding: 3px 7px;
+  border-radius: 8px;
   line-height: 1.3;
 }
 
+/* ─── Product Info ──────────────────────────────────────── */
+.lsp-product-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lsp-product-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.35;
+  letter-spacing: -0.2px;
+
+  /* 2-line clamp */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.lsp-description {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.52);
+  line-height: 1.5;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ─── Pricing ───────────────────────────────────────────── */
+.lsp-pricing {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.lsp-sale-price {
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.4px;
+  line-height: 1;
+}
+
+.lsp-original-price {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.38);
+  text-decoration: line-through;
+}
+
+/* ─── Actions ───────────────────────────────────────────── */
+.lsp-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 8px;
+}
+
+/* Primary CTA */
+.lsp-buy-btn {
+  width: 100% !important;
+  min-height: 54px !important;
+  border-radius: 16px !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.1px;
+  background: #f5c842 !important;
+  color: #1a1200 !important;
+  border: none !important;
+  box-shadow: 0 0 0 0 rgba(245, 200, 66, 0.4);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    opacity 0.12s ease !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lsp-buy-btn:active {
+  transform: scale(0.97) !important;
+  opacity: 0.9 !important;
+}
+
+/* Secondary text button */
+.lsp-skip-btn {
+  width: 100%;
+  min-height: 44px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lsp-skip-btn:active {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ─── iOS Safe Area ─────────────────────────────────────── */
+.lsp-safe-area {
+  height: env(safe-area-inset-bottom, 16px);
+}
 
 @keyframes lucky-spin-rotate {
   from {

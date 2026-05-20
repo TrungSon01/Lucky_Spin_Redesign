@@ -31,7 +31,7 @@ interface AchievementCardProps {
     title: string;
     description: string;
     icon: string;
-    category: "rounds" | "streak" | "rank" | "tier";
+    category: "rounds" | "streak" | "rank" | "tier" | "purchase";
     target: number | string;
   };
   isUnlocked: boolean;
@@ -96,6 +96,7 @@ export default function AchievementCard({
   isUnlocked,
   progress,
   onLongPress,
+
   animationDelay = 0,
 }: AchievementCardProps) {
   const longPressAttrs = useLongPress(() => {

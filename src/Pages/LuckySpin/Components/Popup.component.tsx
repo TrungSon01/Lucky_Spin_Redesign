@@ -1,5 +1,6 @@
 import { Button, Image } from "@shopify/shop-minis-react";
-import { PartyPopper, X } from "lucide-react";
+import { Sparkles, X, ArrowRight } from "lucide-react";
+import { Gift } from "lucide-react";
 import { SpinProduct } from "../Types/LuckySpin.type";
 import { formatCurrency } from "../Utils/Utils";
 
@@ -61,20 +62,31 @@ export function Popup({ open, show, product, onClose, onBuy }: PopupProps) {
           <X size={16} strokeWidth={2.5} />
         </button>
 
+        {/* Celebration header */}
         <div className="lsp-celebration">
-          <span className="lsp-emoji" aria-hidden="true">
-            🎉
-          </span>
+          <div className="lsp-celebration-icon" aria-hidden="true">
+            <div className="lsp-celebration-icon-bg" />
+            <div className="lsp-celebration-icon-inner">
+              <Gift size={24} strokeWidth={2} />
+            </div>
+          </div>
           <div>
-            <p className="lsp-eyebrow">Chúc mừng bạn!</p>
-            <h2 className="lsp-title">Phần thưởng của bạn</h2>
+            <div className="lsp-eyebrow-pill">
+              <div className="lsp-eyebrow-dot" />
+              <p className="lsp-eyebrow">Lucky deal of the day</p>
+            </div>
+            <h2 className="lsp-title">Jackpot Deal Unlocked</h2>
           </div>
         </div>
 
+        {/* Product card */}
         <div className="lsp-card">
           <div className="lsp-image-wrap">
             {product.featuredImage?.url ? (
-              <Image src={product.featuredImage.url} alt={product.title} />
+              <>
+                <Image src={product.featuredImage.url} alt={product.title} />
+                <span className="lsp-image-badge">SALE</span>
+              </>
             ) : (
               <div className="lsp-image-placeholder">
                 <svg
@@ -106,12 +118,19 @@ export function Popup({ open, show, product, onClose, onBuy }: PopupProps) {
           </div>
         </div>
 
+        {/* Actions */}
         <div className="lsp-actions">
           <Button className="lsp-buy-btn" onClick={handleBuyClick}>
-            Mua ngay
+            <span className="lsp-buy-btn-icon">
+              <Sparkles size={16} strokeWidth={2} />
+            </span>
+            Buy this
+            <span className="lsp-buy-btn-icon">
+              <ArrowRight size={16} strokeWidth={2.5} />
+            </span>
           </Button>
           <button className="lsp-skip-btn" onClick={handleCloseClick}>
-            Để sau
+            Maybe later
           </button>
         </div>
 

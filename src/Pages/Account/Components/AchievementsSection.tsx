@@ -1,8 +1,8 @@
 import React from "react";
 import { X, Lock, Sparkles } from "lucide-react";
-import { useAsyncStorage } from "@shopify/shop-minis-react";
 import AchievementCard from "./AchievementCard";
 import { ACHIEVEMENTS, type Achievement } from "../Data/achievements";
+import { useLocalZustand } from "../../../zustand/app.useLocalZustand";
 
 type AchievementProgress = {
   current: number;
@@ -19,12 +19,14 @@ interface AchievementsSectionProps {
   rounds: number;
   streak: number;
   rank: number;
+  purchase: number;
 }
 
 const STORAGE_KEY_FALLBACKS: Record<string, string[]> = {
-  achievement_highest_tier: ["achivement_highest_tier"],
-  achievement_highest_rank_count: ["achivement_highest_rank_count"],
-  achievement_highest_streak: ["achivement_highest_streak"],
+  achievement_highest_tier: ["achievement_highest_tier"],
+  achievement_highest_rank_count: ["achievement_highest_rank_count"],
+  achievement_highest_streak: ["achievement_highest_streak"],
+  achievement_first_purchase: ["achievement_first_purchase"],
 };
 
 function getProgressValue(
@@ -32,6 +34,7 @@ function getProgressValue(
   streak: number,
   rounds: number,
   rank: number,
+  purchase: number,
 ): number {
   switch (achievement.category) {
     case "rounds":
@@ -42,6 +45,8 @@ function getProgressValue(
       return rank;
     case "tier":
       return rank;
+    case "purchase":
+      return purchase;
     default:
       return 0;
   }
@@ -59,17 +64,24 @@ function getNumericTarget(achievement: Achievement): number {
   return 1;
 }
 
-async function hasUnlockedStorageFlag(
-  getItem: ReturnType<typeof useAsyncStorage>["getItem"],
-  storageKey: string,
-): Promise<boolean> {
-  const keysToCheck = [storageKey, ...(STORAGE_KEY_FALLBACKS[storageKey] ?? [])];
-  const values = await Promise.all(keysToCheck.map((key) => getItem({ key })));
+function hasUnlockedStorageFlag(storageKey: string): boolean {
+  const zustandState = useLocalZustand.getState().state;
 
-  return values.some((value) => {
+  const keysToCheck = [
+    storageKey,
+    ...(STORAGE_KEY_FALLBACKS[storageKey] ?? []),
+  ];
+
+  return keysToCheck.some((key) => {
+    const value = zustandState[key];
+
     if (!value) return false;
+
     const normalized = value.toString().toLowerCase();
-    return normalized === "true" || normalized === "1" || normalized === "unlocked";
+
+    return (
+      normalized === "true" || normalized === "1" || normalized === "unlocked"
+    );
   });
 }
 
@@ -77,37 +89,50 @@ export default function AchievementsSection({
   rounds,
   streak,
   rank,
+  purchase,
 }: AchievementsSectionProps) {
-  const { getItem } = useAsyncStorage();
   const [items, setItems] = React.useState<AchievementItem[]>([]);
   const [selected, setSelected] = React.useState<AchievementItem | null>(null);
 
   React.useEffect(() => {
     let active = true;
 
-    async function loadAchievements() {
-      const resolved = await Promise.all(
-        ACHIEVEMENTS.map(async (achievement) => {
-          const current = getProgressValue(achievement, streak, rounds, rank);
-          const target = getProgressTarget(achievement);
-          const byCondition = achievement.condition(streak, rounds, rank);
-          const byStorage = await hasUnlockedStorageFlag(getItem, achievement.storageKey);
+    function loadAchievements() {
+      const resolved = ACHIEVEMENTS.map((achievement) => {
+        const current = getProgressValue(
+          achievement,
+          streak,
+          rounds,
+          rank,
+          purchase,
+        );
 
-          return {
-            achievement,
-            isUnlocked: byCondition || byStorage,
-            progress: {
-              current:
-                typeof target === "number"
-                  ? Math.min(current, getNumericTarget(achievement))
-                  : current,
-              target,
-            },
-          } satisfies AchievementItem;
-        }),
-      );
+        const target = getProgressTarget(achievement);
+
+        const byCondition = achievement.condition(
+          streak,
+          rounds,
+          rank,
+          purchase,
+        );
+
+        const byStorage = hasUnlockedStorageFlag(achievement.storageKey);
+
+        return {
+          achievement,
+          isUnlocked: byCondition || byStorage,
+          progress: {
+            current:
+              typeof target === "number"
+                ? Math.min(current, getNumericTarget(achievement))
+                : current,
+            target,
+          },
+        } satisfies AchievementItem;
+      });
 
       if (!active) return;
+
       setItems(resolved);
     }
 
@@ -116,7 +141,7 @@ export default function AchievementsSection({
     return () => {
       active = false;
     };
-  }, [getItem, rank, rounds, streak]);
+  }, [rank, rounds, streak, purchase]);
 
   const unlocked = React.useMemo(
     () => items.filter((item) => item.isUnlocked),
@@ -150,7 +175,10 @@ export default function AchievementsSection({
           </div>
         </div>
 
-        <div className="achievements-progress-wrap" aria-label="Achievements progress">
+        <div
+          className="achievements-progress-wrap"
+          aria-label="Achievements progress"
+        >
           <div className="achievements-progress-meta">
             <span>{progressPercent}% completed</span>
             <span>{locked.length} to go</span>
@@ -167,7 +195,10 @@ export default function AchievementsSection({
           <div className="achievement-group">
             <div className="achievement-group-header">
               <div className="achievement-group-title-wrap">
-                <Sparkles size={16} className="achievement-group-icon achievement-group-icon--unlocked" />
+                <Sparkles
+                  size={16}
+                  className="achievement-group-icon achievement-group-icon--unlocked"
+                />
                 <h3 className="achievement-group-title">Unlocked</h3>
               </div>
               <span className="achievement-group-count">{unlocked.length}</span>
@@ -191,12 +222,15 @@ export default function AchievementsSection({
           <div className="achievement-group">
             <div className="achievement-group-header">
               <div className="achievement-group-title-wrap">
-                <Lock size={16} className="achievement-group-icon achievement-group-icon--locked" />
+                <Lock
+                  size={16}
+                  className="achievement-group-icon achievement-group-icon--locked"
+                />
                 <h3 className="achievement-group-title">Locked</h3>
               </div>
               <span className="achievement-group-count">{locked.length}</span>
             </div>
-            <div className="achievements-grid">
+            {/* <div className="achievements-grid">
               {locked.map((item, index) => (
                 <AchievementCard
                   key={item.achievement.id}
@@ -207,7 +241,7 @@ export default function AchievementsSection({
                   onLongPress={() => setSelected(item)}
                 />
               ))}
-            </div>
+            </div> */}
           </div>
         )}
       </div>
@@ -231,7 +265,10 @@ export default function AchievementsSection({
                 <p className="achievement-sheet-label">
                   {selected.isUnlocked ? "Unlocked achievement" : "In progress"}
                 </p>
-                <h3 id="achievement-sheet-title" className="achievement-sheet-title">
+                <h3
+                  id="achievement-sheet-title"
+                  className="achievement-sheet-title"
+                >
                   {selected.achievement.title}
                 </h3>
               </div>

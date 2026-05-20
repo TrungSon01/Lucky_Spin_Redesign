@@ -1,55 +1,17 @@
-import {
-  Image,
-  useAsyncStorage,
-  useCurrentUser,
-  useNavigateWithTransition,
-} from "@shopify/shop-minis-react";
+import { Image, useNavigateWithTransition } from "@shopify/shop-minis-react";
 import useDataMainpage from "./Data/useDataMainpage";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import DefaultAvatar from "../../images/Avatar/DefaultAvatar.jpg";
 import "./Mainpage.css";
+import { useLocalZustand } from "../../zustand/app.useLocalZustand";
 export default function Mainpage() {
   const navigate = useNavigateWithTransition();
-  const { getItem, setItem } = useAsyncStorage();
   const CATEGORIES = useDataMainpage().CATEGORIES;
   const { TAG_STYLES, s, press, pressGrid, hoverShrink, hoverReset } =
     useDataMainpage();
   const [showAll, setShowAll] = useState(false);
-  const { currentUser } = useCurrentUser();
-  const user_infor = {
-    user_name: "",
-    user_avatar: "",
-  };
+  const { user_name, user_avatar } = useLocalZustand().state;
 
-  useEffect(() => {
-    async function fetchUserInfo() {
-      const userName = await getItem({ key: "user_name" });
-      const userAvatar = await getItem({ key: "user_avatar" });
-      user_infor.user_name = userName || currentUser?.displayName || "Guest";
-      user_infor.user_avatar =
-        userAvatar || currentUser?.avatarImage?.url || "";
-    }
-
-    fetchUserInfo();
-  }, [getItem]);
-
-  const handleTestStreak = async () => {
-    const [current_streak, rounds_played] = await Promise.all([
-      getItem({ key: "current_streak" }),
-      getItem({ key: "rounds_played" }),
-    ]);
-    const newStreak = (Number(current_streak) || 0) + 1;
-    const newRound = (Number(rounds_played) || 0) + 1;
-    await setItem({
-      key: "current_streak",
-      value: String(newStreak),
-    });
-    await setItem({
-      key: "rounds_played",
-      value: String(newRound),
-    });
-    navigate("/lucky-spin");
-  };
   return (
     <div style={s.root}>
       {/* Top bar */}
@@ -60,9 +22,9 @@ export default function Mainpage() {
           </div>
         </header>
         <button style={s.avatar} onClick={() => navigate("/account")}>
-          {user_infor.user_avatar ? (
+          {user_name ? (
             <Image
-              src={currentUser?.avatarImage?.url || user_infor.user_avatar}
+              src={user_avatar || DefaultAvatar}
               alt="avatar"
               style={{
                 width: "100%",
@@ -88,7 +50,7 @@ export default function Mainpage() {
       {/* Body */}
       <div style={s.body}>
         {/* LuckySpinner promo banner */}
-        <div style={s.banner} onClick={() => handleTestStreak()}>
+        <div style={s.banner} onClick={() => navigate("/lucky-spin")}>
           <div style={s.bannerRing}>
             <div style={s.bannerRingInner}>🎰</div>
           </div>
@@ -106,7 +68,7 @@ export default function Mainpage() {
         </div>
 
         <div style={s.list}>
-          {/* 5 item đầu — luôn hiển thị dạng list */}
+          {/* 5 item đầu - luôn hiển thị dạng list */}
           {CATEGORIES.slice(0, 5).map((item) => (
             <div
               key={item.label}

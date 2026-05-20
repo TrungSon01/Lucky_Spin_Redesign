@@ -3,13 +3,13 @@ export interface Achievement {
   title: string;
   description: string;
   icon: string; // lucide icon name
-  category: "rounds" | "streak" | "rank" | "tier";
+  category: "rounds" | "streak" | "rank" | "tier" | "purchase"; // type of achievement
   target: number | string; // target value (e.g., 10 rounds, 20 streak, rank >= 50)
   condition: (
     streak: number,
     rounds: number,
     rank: number,
-    purchase?: number,
+    purchase: number,
   ) => boolean;
   storageKey: string; // key to track if unlocked
 }
@@ -22,19 +22,8 @@ export const ACHIEVEMENTS: Achievement[] = [
     icon: "Play",
     category: "rounds",
     target: 1,
-    condition: (_streak, rounds) => rounds >= 1,
+    condition: (_streak, rounds, _rank, _purchase) => rounds >= 1,
     storageKey: "achievement_first_spin",
-  },
-  {
-    id: "rounds_100",
-    title: "100 Rounds Played",
-    description: "Complete 100 Lucky Spin rounds",
-    icon: "Play",
-    category: "rounds",
-    target: 100,
-
-    condition: (_streak, rounds) => rounds >= 100,
-    storageKey: "achievement_rounds_100",
   },
 
   {
@@ -45,8 +34,70 @@ export const ACHIEVEMENTS: Achievement[] = [
     category: "streak",
     target: 1,
 
-    condition: (streak) => streak >= 3,
+    condition: (streak, _rounds, _rank, _purchase) => streak >= 1,
     storageKey: "achievement_first_streak",
+  },
+  {
+    id: "Buy first product",
+    title: "First Purchase",
+    description: "Buy your first product from the shop",
+    icon: "ShoppingCart",
+    category: "purchase",
+    target: 1,
+    condition: (_streak, _rounds, _rank, purchase) => purchase >= 1,
+    storageKey: "achievement_first_purchase",
+  },
+  {
+    id: "Buy 10 products",
+    title: "Top Collector",
+    description: "Buy 10 products from the shop",
+    icon: "ShoppingCart",
+    category: "purchase",
+    target: 10,
+    condition: (_streak, _rounds, _rank, purchase) => purchase >= 2,
+    storageKey: "achievement_first_purchase",
+  },
+
+  {
+    id: "highest_streak",
+    title: "Longest Streak",
+    description: "Reach a winning streak of 30 or more.",
+    icon: "Fire",
+    category: "streak",
+    target: 30,
+    condition: (_streak, _rounds, rank, _purchase) => rank >= 30,
+    storageKey: "achievement_highest_streak",
+  },
+  {
+    id: "highest_rank_count",
+    title: "Top Rank Climber",
+    description: "Reach a rank count of 50 or higher.",
+    icon: "TrendingUp",
+    category: "rank",
+    target: 50,
+    condition: (_streak, _rounds, rank, _purchase) => rank >= 50,
+    storageKey: "achievement_highest_rank_count",
+  },
+  {
+    id: "Buy 50 products",
+    title: "Whale King",
+    description: "Buy 50 products from the shop",
+    icon: "ShoppingCart",
+    category: "rounds",
+    target: 50,
+    condition: (_streak, _rounds, _rank, purchase) => purchase >= 50,
+    storageKey: "achievement_first_purchase",
+  },
+  {
+    id: "rounds_100",
+    title: "100 Rounds Played",
+    description: "Complete 100 Lucky Spin rounds",
+    icon: "Play",
+    category: "rounds",
+    target: 100,
+
+    condition: (_streak, rounds, _rank, _purchase) => rounds >= 100,
+    storageKey: "achievement_rounds_100",
   },
   {
     id: "streak_100",
@@ -56,10 +107,9 @@ export const ACHIEVEMENTS: Achievement[] = [
     category: "streak",
     target: 100,
 
-    condition: (streak) => streak >= 10,
+    condition: (streak, _rounds, _rank, _purchase) => streak >= 10,
     storageKey: "achievement_streak_10",
   },
-
   {
     id: "highest_tier",
     title: "Ultimate Diamond",
@@ -67,38 +117,8 @@ export const ACHIEVEMENTS: Achievement[] = [
     icon: "Award",
     category: "tier",
     target: "Ultimate Diamond",
-    condition: (_streak, _rounds, rank) => rank > 100,
+    condition: (_streak, _rounds, rank, _purchase) => rank > 100,
     storageKey: "achievement_highest_tier",
-  },
-  {
-    id: "highest_rank_count",
-    title: "Top Rank Climber",
-    description: "Reach a rank count of 50 or higher.",
-    icon: "TrendingUp",
-    category: "rank",
-    target: 50,
-    condition: (_streak, _rounds, rank) => rank >= 50,
-    storageKey: "achievement_highest_rank_count",
-  },
-  {
-    id: "highest_streak",
-    title: "Longest Streak",
-    description: "Reach a winning streak of 20 or more.",
-    icon: "Fire",
-    category: "streak",
-    target: 20,
-    condition: (streak) => streak >= 20,
-    storageKey: "achievement_highest_streak",
-  },
-  {
-    id: "Buy first product",
-    title: "First Purchase",
-    description: "Buy your first product from the shop",
-    icon: "ShoppingCart",
-    category: "rounds",
-    target: 1,
-    condition: (_streak, rounds) => rounds >= 1,
-    storageKey: "achievement_first_purchase",
   },
 ];
 

@@ -1,16 +1,10 @@
-import {
-  useAsyncStorage,
-  useCurrentUser,
-  useSavedProducts,
-} from "@shopify/shop-minis-react";
+import { useSavedProducts } from "@shopify/shop-minis-react";
 import { useEffect, useMemo, useState } from "react";
 import { getTierByRank } from "../../../lib/function";
-
+import { useLocalZustand } from "../../../zustand/app.useLocalZustand";
 export default function useDataAccount() {
-  const { currentUser } = useCurrentUser();
-  const { getItem } = useAsyncStorage();
   const { products: wishlist } = useSavedProducts({
-    first: 9999,
+    first: 999,
     fetchPolicy: "network-only",
   });
 
@@ -19,43 +13,39 @@ export default function useDataAccount() {
   const [roundsPlayed, setRoundsPlayed] = useState<string>("0");
   const [isLoading, setIsLoading] = useState(true);
   const [showAllWishlist, setShowAllWishlist] = useState(false);
+  const zustandData = useLocalZustand((s) => s.state);
+  const { user_name, user_avatar } = useLocalZustand().state;
 
   useEffect(() => {
-    async function fetchAllUserData() {
-      setIsLoading(true);
-      try {
-        const [streak, rounds] = await Promise.all([
-          getItem({ key: "current_streak" }),
-          getItem({ key: "rounds_played" }),
-          getItem({ key: "achivement_highest_tier" }),
-          getItem({ key: "achivement_highest_rank_count" }),
-          getItem({ key: "achivement_highest_streak" }),
-        ]);
+    setIsLoading(true);
 
-        // parse số
-        const streakVal = streak ? parseInt(streak, 10) : 0;
-        const roundsVal = rounds ? parseInt(rounds, 10) : 0;
+    try {
+      const streakVal = zustandData.current_streak
+        ? parseInt(zustandData.current_streak, 10)
+        : 0;
 
-        const safeStreak = isNaN(streakVal) ? 0 : streakVal;
-        const safeRounds = isNaN(roundsVal) ? 0 : roundsVal;
+      const roundsVal = zustandData.rounds_played
+        ? parseInt(zustandData.rounds_played, 10)
+        : 0;
 
-        setCurrentStreak(String(safeStreak));
-        setRoundsPlayed(String(safeRounds));
+      const safeStreak = isNaN(streakVal) ? 0 : streakVal;
+      const safeRounds = isNaN(roundsVal) ? 0 : roundsVal;
 
-        const rank = Math.floor(
-          safeStreak < 100 ? safeStreak / 10 + safeRounds : 15 + safeRounds,
-        );
+      setCurrentStreak(String(safeStreak));
+      setRoundsPlayed(String(safeRounds));
 
-        setUserRank(rank);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      } finally {
-        setIsLoading(false);
-      }
+      const rank = Math.floor(
+        safeStreak < 100 ? safeStreak / 10 + safeRounds : 15 + safeRounds,
+      );
+
+      setUserRank(rank);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setIsLoading(false);
     }
+  }, [zustandData]);
 
-    fetchAllUserData();
-  }, [getItem]);
   const tier = useMemo(() => getTierByRank(userRank), [userRank]);
 
   // Calculate points needed for next tier
@@ -164,8 +154,8 @@ export default function useDataAccount() {
   }, [roundsPlayed]);
 
   // Avatar display
-  const displayName = currentUser?.displayName || "Guest";
-  const avatarUrl = currentUser?.avatarImage?.url;
+  const displayName = user_name || "Guest";
+  const avatarUrl = user_avatar;
 
   return {
     tier,

@@ -14,7 +14,7 @@ import {
   readRecord,
   shuffleArray,
 } from "../Utils/Utils";
-
+import { useLocalZustand } from "../../../zustand/app.useLocalZustand";
 function buildVoucher(product: SpinProduct): SpinVoucher {
   return {
     code: generateVoucherCode(product),
@@ -25,6 +25,7 @@ function buildVoucher(product: SpinProduct): SpinVoucher {
 
 export function useLuckySpin() {
   const { getItem, setItem } = useAsyncStorage();
+
   const [phase, setPhase] = useState<SpinPhase>("loading");
   const [highlightedIndex, setHighlightedIndex] = useState<number | null>(null);
   const [activeWinner, setActiveWinner] = useState<SpinProduct | null>(null);
@@ -218,7 +219,19 @@ export function useLuckySpin() {
       setActiveWinner(null);
       setActiveVoucher(null);
       await runSpinAnimation(firstWinnerIndex);
-
+      // tăng round lên 1 đơn vị
+      await setItem({
+        key: "rounds_played",
+        value: String(
+          Number((await getItem({ key: "rounds_played" })) ?? "0") + 1,
+        ),
+      });
+      useLocalZustand.setState((state) => ({
+        state: {
+          ...state.state,
+          rounds_played: String(Number(state.state.rounds_played ?? "0") + 1),
+        },
+      }));
       const firstVoucher = buildVoucher(firstWinner);
       const record: DailyRecord = {
         dateKey: getTodayKey(),
@@ -253,6 +266,32 @@ export function useLuckySpin() {
         usedSecondSpin: true,
         completedAt: new Date().toISOString(),
       };
+      // tăng round lên 1 đơn vị nếu người dùng sử dụng lượt quay thứ 2 đồng thời update zustand
+      await setItem({
+        key: "rounds_played",
+        value: String(
+          Number((await getItem({ key: "rounds_played" })) ?? "0") + 1,
+        ),
+      });
+      useLocalZustand.setState((state) => ({
+        state: {
+          ...state.state,
+          rounds_played: String(Number(state.state.rounds_played ?? "0") + 1),
+        },
+      }));
+      // tăng day streak lên 1 đơn vị chỉ khi người dùng sử dụng vòng quay thứ 2
+      await setItem({
+        key: "current_streak",
+        value: String(
+          Number((await getItem({ key: "current_streak" })) ?? "0") + 1,
+        ),
+      });
+      useLocalZustand.setState((state) => ({
+        state: {
+          ...state.state,
+          current_streak: String(Number(state.state.current_streak ?? "0") + 1),
+        },
+      }));
 
       await persistRecord(updatedRecord);
       setActiveWinner(secondWinner);

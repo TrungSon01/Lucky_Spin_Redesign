@@ -1,4 +1,8 @@
-import { Badge, ProductCard, Skeleton, useShopNavigation } from "@shopify/shop-minis-react";
+import {
+  ProductCard,
+  Skeleton,
+  useShopNavigation,
+} from "@shopify/shop-minis-react";
 import { Gift, RefreshCw } from "lucide-react";
 import { SpinPhase, SpinProduct } from "../Types/LuckySpin.type";
 import { formatCurrency } from "../Utils/Utils";
@@ -64,7 +68,10 @@ export function SpinResultPanel({
       {activeWinner && (phase === "first-shown" || phase === "locked") && (
         <div className="lucky-spin-winner-card">
           <div className="lucky-spin-winner-head">
-            <Badge>{winnerBadgeLabel}</Badge>
+            <span className="inline-flex items-center gap-2 rounded-full border border-yellow-400/25 bg-yellow-400/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-yellow-400">
+              <div className="h-1.5 w-1.5 rounded-full bg-yellow-400" />
+              <span>{winnerBadgeLabel}</span>
+            </span>
             <div className="lucky-spin-pricing">
               <strong>
                 {formatCurrency(
@@ -82,8 +89,12 @@ export function SpinResultPanel({
           </div>
           <div className="lucky-spin-winner-copy">
             <h2>{activeWinner.title}</h2>
+
             <p>
-              Save {Math.round(activeWinner.spinMeta.discountPercent)}% today
+              Save{" "}
+              <span className="text-yellow-300">
+                {Math.round(activeWinner.spinMeta.discountPercent)}%
+              </span>{" "}
               with a curated discounted pick from your Lucky Spin.
             </p>
           </div>

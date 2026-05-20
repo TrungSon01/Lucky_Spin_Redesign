@@ -1,20 +1,22 @@
 import "./LuckySpin.css";
 import {
-  Badge,
   Button,
   SafeArea,
   useNavigateWithTransition,
   useShopNavigation,
 } from "@shopify/shop-minis-react";
 import { Lock, Sparkles } from "lucide-react";
+import { useAsyncStorage } from "@shopify/shop-minis-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Popup } from "./Components/Popup.component";
 import { SpinBoard } from "./Components/SpinBoard.component";
 import { SpinResultPanel } from "./Components/SpinResultPanel.component";
 import { useLuckySpin } from "./Hooks/useLuckySpin";
+import { useLocalZustand } from "../../zustand/app.useLocalZustand";
 
 export default function LuckySpin() {
   const navigate = useNavigateWithTransition();
+  const { setItem, getItem } = useAsyncStorage();
   const { navigateToProduct } = useShopNavigation();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -83,7 +85,23 @@ export default function LuckySpin() {
     closeTimerRef.current = setTimeout(() => setIsPopupOpen(false), 320);
   };
 
-  const handleBuyWinner = () => {
+  const handleBuyWinner = async () => {
+    await setItem({
+      key: "achievement_first_purchase",
+      value: String(
+        (await Number(getItem({ key: "achievement_first_purchase" }))) ?? 0 + 1,
+      ),
+    });
+    // cập nhật zustand
+    useLocalZustand.setState((state) => ({
+      state: {
+        ...state.state,
+        achievement_first_purchase: String(
+          Number(state.state.achievement_first_purchase ?? "0") + 1,
+        ),
+      },
+    }));
+
     if (!activeWinner?.id) return;
     setShowPopup(false);
     if (closeTimerRef.current) {
@@ -103,7 +121,7 @@ export default function LuckySpin() {
     }
     if (phase === "first-shown") {
       return secondWinner
-        ? "Nice pick. Tap the center button to spin one more time and reveal another product."
+        ? ""
         : "This is the only discounted winner available today.";
     }
     if (phase === "locked") {
@@ -135,8 +153,12 @@ export default function LuckySpin() {
 
       <main className="lucky-spin-main">
         <section className="lucky-spin-hero">
-          <Badge>Daily Lucky Spin</Badge>
+          <span className="inline-flex items-center gap-2 rounded-full border border-yellow-400/25 bg-yellow-400/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-yellow-400">
+            <div className="h-1.5 w-1.5 rounded-full bg-yellow-400" />
+            <span>Daily Lucky Spin</span>
+          </span>
           <h1>Spin for your best deal</h1>
+
           <p>{subtitle}</p>
         </section>
 
@@ -158,7 +180,9 @@ export default function LuckySpin() {
       </main>
 
       <footer className="lucky-spin-footer">
-        {(phase === "error" || phase === "empty" || (!secondWinner && phase === "first-shown")) && (
+        {(phase === "error" ||
+          phase === "empty" ||
+          (!secondWinner && phase === "first-shown")) && (
           <Button className="lucky-spin-primary-btn" onClick={handleGoHome}>
             Back to home
           </Button>

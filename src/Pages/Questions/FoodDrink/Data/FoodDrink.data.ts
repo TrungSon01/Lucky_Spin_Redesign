@@ -5,7 +5,7 @@ const transfer_to_vnd = (amount: number) => {
 export const Data_FoodDrink = [
   {
     question: "What type of food or drink are you interested in?",
-    options: ["Pizza", "Sushi", "Coffee", "Burger", "Dessert", "Healthy Food"],
+    options: ["Whey", "Tea", "Coffee", "Milk", "Snacking", "Juice"],
   },
   {
     question: "How much are you willing to spend?",

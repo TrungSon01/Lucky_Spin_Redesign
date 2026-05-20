@@ -23,7 +23,9 @@ export default function useDataMainpage() {
       bg: "#28180D",
       tag: "Elegant",
     },
-    {
+
+
+     {
       label: "Beauty",
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -113,129 +115,6 @@ export default function useDataMainpage() {
       tag: "Technology",
     },
     {
-      label: "Food & Drink",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M18 8h1a4 4 0 0 1 0 8h-1"
-            stroke="#F87171"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M3 8h15v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"
-            stroke="#F87171"
-            strokeWidth="1.8"
-            strokeLinejoin="round"
-          />
-          <line
-            x1="6"
-            y1="2"
-            x2="6"
-            y2="6"
-            stroke="#F87171"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-          />
-          <line
-            x1="10"
-            y1="2"
-            x2="10"
-            y2="6"
-            stroke="#F87171"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-          />
-          <line
-            x1="14"
-            y1="2"
-            x2="14"
-            y2="6"
-            stroke="#F87171"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-          />
-        </svg>
-      ),
-      bg: "#280E0E",
-      tag: null,
-    },
-    {
-      label: "Home Essentials",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"
-            stroke="#C8A84B"
-            strokeWidth="1.8"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M9 21V12h6v9"
-            stroke="#C8A84B"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      ),
-      bg: "#1C1A0E",
-      tag: "Popular",
-    },
-    {
-      label: "Pets",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="13" r="5" stroke="#FBBF24" strokeWidth="1.8" />
-          <path
-            d="M8 9.5L7 5.5l3.5 3"
-            stroke="#FBBF24"
-            strokeWidth="1.7"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M16 9.5l1-4-3.5 3"
-            stroke="#FBBF24"
-            strokeWidth="1.7"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <circle cx="10" cy="12.5" r="0.8" fill="#FBBF24" />
-          <circle cx="14" cy="12.5" r="0.8" fill="#FBBF24" />
-          <path
-            d="M11 14.5h2"
-            stroke="#FBBF24"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-          <path
-            d="M10.5 15.5c.5.6 1 .8 1.5.8s1-.2 1.5-.8"
-            stroke="#FBBF24"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-          <path
-            d="M7 13.5l3 .5"
-            stroke="#FBBF24"
-            strokeWidth="1.3"
-            strokeLinecap="round"
-            opacity="0.7"
-          />
-          <path
-            d="M17 13.5l-3 .5"
-            stroke="#FBBF24"
-            strokeWidth="1.3"
-            strokeLinecap="round"
-            opacity="0.7"
-          />
-        </svg>
-      ),
-      bg: "#28200A",
-      tag: null,
-    },
-    {
       label: "Sport",
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -261,8 +140,132 @@ export default function useDataMainpage() {
           />
         </svg>
       ),
-      bg: "#0A1A28",
+      bg: "#07131f",
       tag: "Healthy",
+    },
+
+    {
+      label: "Home",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"
+            stroke="#C8A84B"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M9 21V12h6v9"
+            stroke="#C8A84B"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      ),
+      bg: "#1C1A0E",
+      tag: null,
+    },
+    // {
+    //   label: "Pets",
+    //   icon: (
+    //     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+    //       <circle cx="12" cy="13" r="5" stroke="#FBBF24" strokeWidth="1.8" />
+    //       <path
+    //         d="M8 9.5L7 5.5l3.5 3"
+    //         stroke="#FBBF24"
+    //         strokeWidth="1.7"
+    //         strokeLinecap="round"
+    //         strokeLinejoin="round"
+    //       />
+    //       <path
+    //         d="M16 9.5l1-4-3.5 3"
+    //         stroke="#FBBF24"
+    //         strokeWidth="1.7"
+    //         strokeLinecap="round"
+    //         strokeLinejoin="round"
+    //       />
+    //       <circle cx="10" cy="12.5" r="0.8" fill="#FBBF24" />
+    //       <circle cx="14" cy="12.5" r="0.8" fill="#FBBF24" />
+    //       <path
+    //         d="M11 14.5h2"
+    //         stroke="#FBBF24"
+    //         strokeWidth="1.5"
+    //         strokeLinecap="round"
+    //       />
+    //       <path
+    //         d="M10.5 15.5c.5.6 1 .8 1.5.8s1-.2 1.5-.8"
+    //         stroke="#FBBF24"
+    //         strokeWidth="1.5"
+    //         strokeLinecap="round"
+    //       />
+    //       <path
+    //         d="M7 13.5l3 .5"
+    //         stroke="#FBBF24"
+    //         strokeWidth="1.3"
+    //         strokeLinecap="round"
+    //         opacity="0.7"
+    //       />
+    //       <path
+    //         d="M17 13.5l-3 .5"
+    //         stroke="#FBBF24"
+    //         strokeWidth="1.3"
+    //         strokeLinecap="round"
+    //         opacity="0.7"
+    //       />
+    //     </svg>
+    //   ),
+    //   bg: "#28200A",
+    //   tag: null,
+    // },
+    {
+      label: "Food",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M18 8h1a4 4 0 0 1 0 8h-1"
+            stroke="#4ADE80"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M3 8h15v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"
+            stroke="#4ADE80"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+          />
+          <line
+            x1="6"
+            y1="2"
+            x2="6"
+            y2="6"
+            stroke="#4ADE80"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+          <line
+            x1="10"
+            y1="2"
+            x2="10"
+            y2="6"
+            stroke="#4ADE80"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+          <line
+            x1="14"
+            y1="2"
+            x2="14"
+            y2="6"
+            stroke="#4ADE80"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+        </svg>
+      ),
+      bg: "#0B1F14",
+      tag: null,
     },
     {
       label: "Toy",
@@ -367,20 +370,48 @@ export default function useDataMainpage() {
       border: "1px solid #1E3A8A",
     },
     Elegant: {
-      backgroundColor: "#28180D",
-      color: "#C8A84B",
-      border: "1px solid #3A3010",
+      backgroundColor: "#33200F",
+      color: "#E7C96A",
+      border: "1px solid #4A3A16",
     },
   };
   const press = (e: React.MouseEvent<HTMLDivElement>, to: string) => {
     const el = e.currentTarget;
-    el.style.transform = "scale(0.97)";
-    el.style.opacity = "0.75";
+    el.style.transform = "scale(0.95)";
+    el.style.opacity = "0.7";
     setTimeout(() => {
       el.style.transform = "";
       el.style.opacity = "";
       navigate(to);
-    }, 110);
+    }, 120);
+  };
+  const pressGrid = (e: React.MouseEvent<HTMLDivElement>, to: string) => {
+    const el = e.currentTarget;
+    el.style.transform = "scale(0.92)";
+    el.style.opacity = "0.65";
+    setTimeout(() => {
+      el.style.transform = "";
+      el.style.opacity = "";
+      navigate(to);
+    }, 120);
+  };
+  const hoverShrink = (
+    e:
+      | React.MouseEvent<HTMLButtonElement | HTMLDivElement>
+      | React.TouchEvent<HTMLButtonElement | HTMLDivElement>,
+  ) => {
+    const el = e.currentTarget;
+    el.style.transform = "scale(0.95)";
+    el.style.opacity = "0.7";
+  };
+  const hoverReset = (
+    e:
+      | React.MouseEvent<HTMLButtonElement | HTMLDivElement>
+      | React.TouchEvent<HTMLButtonElement | HTMLDivElement>,
+  ) => {
+    const el = e.currentTarget;
+    el.style.transform = "";
+    el.style.opacity = "";
   };
   const s: Record<string, React.CSSProperties> = {
     root: {
@@ -511,6 +542,11 @@ export default function useDataMainpage() {
     },
     sectionCount: { fontSize: "13px", color: "#6B7280", fontWeight: 500 },
     list: { display: "flex", flexDirection: "column", gap: "10px" },
+    grid: {
+      display: "grid",
+      gridTemplateColumns: "repeat(3, 1fr)",
+      gap: "10px",
+    },
     card: {
       display: "flex",
       alignItems: "center",
@@ -523,6 +559,49 @@ export default function useDataMainpage() {
       WebkitTapHighlightColor: "transparent" as any,
       transition: "transform 0.1s ease, opacity 0.1s ease",
       userSelect: "none" as any,
+    },
+    gridCard: {
+      display: "flex",
+      flexDirection: "column" as any,
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "8px",
+      backgroundColor: "#16152A",
+      border: "1px solid #252340",
+      borderRadius: "16px",
+      padding: "16px 8px 14px",
+      cursor: "pointer",
+      WebkitTapHighlightColor: "transparent" as any,
+      transition: "transform 0.15s ease, opacity 0.15s ease",
+      userSelect: "none" as any,
+      minHeight: "100px",
+    },
+    gridIconWrap: {
+      width: "48px",
+      height: "48px",
+      borderRadius: "14px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      flexShrink: 0 as any,
+    },
+    gridCardLabel: {
+      fontSize: "12px",
+      fontWeight: 600,
+      color: "#FFFFFF",
+      letterSpacing: "-0.1px",
+      textAlign: "center" as any,
+      lineHeight: "1.2",
+    },
+    gridTag: {
+      fontSize: "9px",
+      fontWeight: 700,
+      letterSpacing: "0.5px",
+      padding: "2px 6px",
+      borderRadius: "6px",
+      position: "absolute" as any,
+      top: "8px",
+      right: "8px",
     },
     iconWrap: {
       width: "44px",
@@ -560,5 +639,8 @@ export default function useDataMainpage() {
     TAG_STYLES,
     s,
     press,
+    pressGrid,
+    hoverShrink,
+    hoverReset,
   };
 }

@@ -45,7 +45,7 @@ export default function ResultTemplate({
   const { saveProduct, unsaveProduct } = useSavedProductsActions();
   const handleStartOver = () => {
     resetAnswers();
-    navigate(`/questions/${category}`);
+    navigate(`/main`);
   };
 
   const handleRetry = () => {
@@ -93,7 +93,6 @@ export default function ResultTemplate({
         </div>
       </section>
 
-      {/* Main Content */}
       <main className="result-main">
         {isLoading && <ResultSkeleton />}
 
@@ -146,7 +145,6 @@ export default function ResultTemplate({
         )}
       </main>
 
-      {/* Footer CTA */}
       <div className="result-footer">
         <button className="result-start-over" onClick={handleStartOver}>
           <RefreshCw size={16} />
@@ -156,10 +154,6 @@ export default function ResultTemplate({
     </div>
   );
 }
-
-// ─────────────────────────────────────────────
-// Sub-components
-// ─────────────────────────────────────────────
 
 function ResultSkeleton() {
   return (

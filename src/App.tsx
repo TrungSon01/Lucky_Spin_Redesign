@@ -21,6 +21,7 @@ import Toy from "./Pages/Questions/Toy/Toy";
 import ToyResult from "./Pages/Questions/Toy/ToyResult/ToyResult";
 import Pets from "./Pages/Questions/Pets/Pets";
 import PetsResult from "./Pages/Questions/Pets/PetsResult/PetsResult";
+import LuckySpin from "./Pages/LuckySpin/LuckySpin";
 
 export function App() {
   return (
@@ -51,30 +52,27 @@ export function App() {
           <Route path="/clothing/result" element={<ClothingResult />} />
 
           {/* HomeEssentials path  */}
-          <Route
-            path="/questions/home-essentials"
-            element={<HomeEssentials />}
-          />
-          <Route
-            path="/home-essentials/result"
-            element={<HomeEssentialsResult />}
-          />
+          <Route path="/questions/home" element={<HomeEssentials />} />
+          <Route path="/home/result" element={<HomeEssentialsResult />} />
 
           {/* FoodDrink path  */}
-          <Route path="/questions/food-drink" element={<FoodDrink />} />
-          <Route path="/fooddrink/result" element={<FoodDrinkResult />} />
+          <Route path="/questions/food" element={<FoodDrink />} />
+          <Route path="/food/result" element={<FoodDrinkResult />} />
 
           {/* Sport path  */}
           <Route path="/questions/sport" element={<Sport />} />
           <Route path="/sport/result" element={<SportResult />} />
 
-          {/* Jewelry path  */}
+          {/* Toy path  */}
           <Route path="/questions/toy" element={<Toy />} />
           <Route path="/toy/result" element={<ToyResult />} />
 
           {/* Pets path  */}
           <Route path="/questions/pets" element={<Pets />} />
           <Route path="/pets/result" element={<PetsResult />} />
+
+          <Route path="/lucky-spin" element={<LuckySpin />} />
+          <Route path="*" element={<div>Page Not Found</div>} />
         </Routes>
       </MinisRouter>
     </div>

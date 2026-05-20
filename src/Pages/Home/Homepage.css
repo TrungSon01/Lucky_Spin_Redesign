@@ -1,7 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500&display=swap");
 
 .homepage {
-  min-height: 100vh;
+  min-height: 100%;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -18,10 +19,10 @@
   filter: blur(80px);
 }
 .orb--top {
-  width: 288px;
-  height: 288px;
-  top: 0;
-  right: 0;
+  width: clamp(200px, 55vw, 320px);
+  height: clamp(200px, 55vw, 320px);
+  top: clamp(-60px, -12vw, -40px);
+  right: clamp(-40px, -8vw, -20px);
   background: radial-gradient(
     circle,
     rgba(123, 92, 240, 0.35) 0%,
@@ -30,10 +31,10 @@
   transform: translate(30%, -30%);
 }
 .orb--bottom {
-  width: 256px;
-  height: 256px;
-  bottom: 128px;
-  left: 0;
+  width: clamp(180px, 50vw, 280px);
+  height: clamp(180px, 50vw, 280px);
+  bottom: clamp(80px, 18vw, 140px);
+  left: clamp(-30px, -6vw, -20px);
   background: radial-gradient(
     circle,
     rgba(245, 200, 66, 0.18) 0%,
@@ -44,16 +45,17 @@
 
 /* ── Header ── */
 .header {
-  padding: 16px 24px 8px;
+  padding: clamp(12px, 3vw, 16px) clamp(16px, 4vw, 24px) clamp(6px, 2vw, 8px);
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: relative;
   z-index: 10;
+  gap: clamp(8px, 2vw, 12px);
 }
 .logo {
   font-family: "Sora", sans-serif;
-  font-size: 24px;
+  font-size: clamp(20px, 5.5vw, 24px);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: #f4f0ff;
@@ -63,43 +65,46 @@
 }
 
 .live-badge {
-  font-size: 11px;
+  font-size: clamp(10px, 2.8vw, 11px);
   font-weight: 600;
-  padding: 4px 12px;
+  padding: clamp(3px, 1vw, 4px) clamp(10px, 3vw, 12px);
   border-radius: 9999px;
   background: rgba(245, 200, 66, 0.12);
   border: 1px solid rgba(245, 200, 66, 0.3);
   color: #f5c842;
   letter-spacing: 0.06em;
+  min-height: 24px;
+  flex-shrink: 0;
 }
 
 /* ── Main ── */
 .main {
   flex: 1;
-  padding: 0 24px;
+  padding: 0 clamp(16px, 4vw, 24px);
   display: flex;
   flex-direction: column;
   position: relative;
   z-index: 10;
+  gap: clamp(12px, 3vw, 20px);
 }
 
 /* ── Spinner Visual ── */
 .spinner-wrap {
   display: flex;
   justify-content: center;
-  margin-top: 24px;
-  margin-bottom: 24px;
+  margin-top: clamp(18px, 5vw, 24px);
+  margin-bottom: clamp(18px, 5vw, 24px);
 }
 .spinner {
   position: relative;
-  width: 128px;
-  height: 128px;
+  width: clamp(100px, 28vw, 140px);
+  height: clamp(100px, 28vw, 140px);
 }
 .spinner__ring {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  padding: 3px;
+  padding: clamp(2px, 0.6vw, 3px);
   background: conic-gradient(
     #f5c842 0deg,
     #7b5cf0 120deg,
@@ -116,7 +121,7 @@
 }
 .spinner__center {
   position: absolute;
-  inset: 16px;
+  inset: clamp(12px, 3.5vw, 16px);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -125,7 +130,7 @@
   box-shadow:
     0 0 40px rgba(123, 92, 240, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  font-size: 34px;
+  font-size: clamp(24px, 8vw, 34px);
 }
 @keyframes spin {
   to {
@@ -137,35 +142,37 @@
 .hero-tag {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: clamp(5px, 1.5vw, 8px);
   align-self: flex-start;
-  margin-bottom: 12px;
-  padding: 4px 12px;
+  margin-bottom: clamp(8px, 2.5vw, 12px);
+  padding: clamp(3px, 1vw, 4px) clamp(10px, 3vw, 12px);
   border-radius: 9999px;
   background: rgba(245, 200, 66, 0.1);
   border: 1px solid rgba(245, 200, 66, 0.25);
   color: #f5c842;
-  font-size: 11px;
+  font-size: clamp(10px, 2.8vw, 11px);
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  min-height: 24px;
 }
 .hero-tag__dot {
   display: inline-block;
-  width: 6px;
-  height: 6px;
+  width: clamp(5px, 1.5vw, 6px);
+  height: clamp(5px, 1.5vw, 6px);
   border-radius: 50%;
   background: #f5c842;
+  flex-shrink: 0;
 }
 
 .hero-title {
   font-family: "Sora", sans-serif;
-  font-size: 30px;
+  font-size: clamp(24px, 7vw, 32px);
   font-weight: 800;
   line-height: 1.15;
   letter-spacing: -0.03em;
   color: #f4f0ff;
-  margin-bottom: 12px;
+  margin-bottom: clamp(8px, 2vw, 12px);
 }
 .hero-title__highlight {
   background: linear-gradient(135deg, #ffe27a, #d4a017);
@@ -175,37 +182,38 @@
 }
 
 .hero-subtitle {
-  font-size: 14px;
+  font-size: clamp(13px, 3.6vw, 15px);
   line-height: 1.6;
   color: #8b85a8;
-  margin-bottom: 24px;
+  margin-bottom: clamp(18px, 5vw, 24px);
 }
 
 /* ── Step cards ── */
 .steps {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: clamp(8px, 2.5vw, 12px);
 }
 
 .step-card {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px;
-  border-radius: 20px;
+  gap: clamp(10px, 3vw, 14px);
+  padding: clamp(14px, 4vw, 18px);
+  border-radius: clamp(16px, 5vw, 22px);
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
+  min-height: 64px;
 }
 
 .step-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
+  width: clamp(40px, 11vw, 48px);
+  height: clamp(40px, 11vw, 48px);
+  border-radius: clamp(12px, 3.5vw, 16px);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: clamp(16px, 4.5vw, 22px);
   flex-shrink: 0;
 }
 .step-icon--time {
@@ -223,24 +231,28 @@
 
 .step-info {
   flex: 1;
+  min-width: 0;
 }
 .step-label {
-  font-size: 11px;
+  font-size: clamp(10px, 2.8vw, 11px);
   font-weight: 600;
   color: #8b85a8;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  margin-bottom: 2px;
+  margin-bottom: clamp(1px, 0.5vw, 2px);
 }
 .step-value {
   font-family: "Sora", sans-serif;
-  font-size: 14px;
+  font-size: clamp(13px, 3.8vw, 15px);
   font-weight: 700;
   color: #f4f0ff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .step-num {
   font-family: "Sora", sans-serif;
-  font-size: 28px;
+  font-size: clamp(22px, 7vw, 28px);
   font-weight: 900;
   line-height: 1;
   color: rgba(255, 255, 255, 0.06);
@@ -248,7 +260,7 @@
 
 /* ── CTA ── */
 .cta-area {
-  padding: 20px 24px 32px;
+  padding: clamp(16px, 4vw, 20px) clamp(16px, 4vw, 24px) clamp(24px, 6vw, 32px);
   position: relative;
   z-index: 10;
 }
@@ -257,11 +269,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: clamp(12px, 3.5vw, 16px);
+  margin-bottom: clamp(12px, 3vw, 16px);
+  flex-wrap: wrap;
 }
 .trust-item {
-  font-size: 11px;
+  font-size: clamp(10px, 2.8vw, 11px);
   font-weight: 500;
   color: #8b85a8;
 }
@@ -271,8 +284,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
-  border-radius: 20px;
+  padding: clamp(14px, 4vw, 18px) clamp(16px, 4.5vw, 22px);
+  border-radius: clamp(16px, 5vw, 22px);
   border: none;
   background: linear-gradient(135deg, #8b6ff0 0%, #6b4fd8 50%, #5a3fc7 100%);
   box-shadow: 0 8px 32px rgba(107, 79, 216, 0.45);
@@ -280,6 +293,8 @@
   transition:
     transform 0.15s ease,
     box-shadow 0.15s ease;
+  min-height: 54px;
+  -webkit-tap-highlight-color: transparent;
 }
 .cta-btn:active {
   transform: scale(0.97) translateY(1px);
@@ -290,28 +305,32 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  min-width: 0;
 }
 .cta-sub {
-  font-size: 11px;
+  font-size: clamp(10px, 2.8vw, 11px);
   color: rgba(255, 255, 255, 0.65);
-  margin-bottom: 2px;
+  margin-bottom: clamp(1px, 0.5vw, 2px);
 }
 .cta-label {
   font-family: "Sora", sans-serif;
-  font-size: 17px;
+  font-size: clamp(15px, 4.2vw, 17px);
   font-weight: 800;
   color: #fff;
   letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .cta-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
+  width: clamp(36px, 10vw, 44px);
+  height: clamp(36px, 10vw, 44px);
+  border-radius: clamp(10px, 3vw, 14px);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: clamp(16px, 4.5vw, 20px);
   background: rgba(255, 255, 255, 0.18);
   border: 1px solid rgba(255, 255, 255, 0.15);
   flex-shrink: 0;

@@ -2,17 +2,10 @@ const transfer_to_vnd = (amount: number) => {
   return amount * 26400;
 };
 
-export const Data_Jewelry = [
+export const Data_Toy = [
   {
     question: "What toy are you interested in?",
-    options: [
-      "Gun",
-      "Doll",
-      "Education Toy",
-      "Digital Toy",
-      "Figures",
-      "Fidget Toy",
-    ],
+    options: ["Lego", "Dolls", "Education", "Digital", "Figures", "Fidget"],
   },
   {
     question: "How much are you willing to spend?",

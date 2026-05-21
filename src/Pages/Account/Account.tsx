@@ -30,7 +30,9 @@ export default function Account() {
     showAllWishlist,
     tier,
     wishlist,
+    purchase,
   } = useDataAccount();
+
   return (
     <div className="account-root">
       {/* Header */}
@@ -274,8 +276,8 @@ export default function Account() {
           rounds={formattedRounds}
           streak={formattedStreak}
           rank={rankProgress.currentRank}
+          purchase={+purchase}
         />
-
         {/* Wishlist Section */}
         <section className="wishlist-section">
           <div className="section-header">

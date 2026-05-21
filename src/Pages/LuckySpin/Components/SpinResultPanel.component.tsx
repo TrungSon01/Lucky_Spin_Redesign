@@ -68,8 +68,8 @@ export function SpinResultPanel({
       {activeWinner && (phase === "first-shown" || phase === "locked") && (
         <div className="lucky-spin-winner-card">
           <div className="lucky-spin-winner-head">
-            <span className="inline-flex items-center gap-2 rounded-full border border-yellow-400/25 bg-yellow-400/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-yellow-400">
-              <div className="h-1.5 w-1.5 rounded-full bg-yellow-400" />
+            <span className="winner-badge">
+              <div className="winner-badge-dot" />
               <span>{winnerBadgeLabel}</span>
             </span>
             <div className="lucky-spin-pricing">

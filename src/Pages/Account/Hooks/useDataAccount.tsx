@@ -4,7 +4,7 @@ import { getTierByRank } from "../../../lib/function";
 import { useLocalZustand } from "../../../zustand/app.useLocalZustand";
 export default function useDataAccount() {
   const { products: wishlist } = useSavedProducts({
-    first: 999,
+    first: 499,
     fetchPolicy: "network-only",
   });
 
@@ -14,7 +14,8 @@ export default function useDataAccount() {
   const [isLoading, setIsLoading] = useState(true);
   const [showAllWishlist, setShowAllWishlist] = useState(false);
   const zustandData = useLocalZustand((s) => s.state);
-  const { user_name, user_avatar } = useLocalZustand().state;
+  const { user_name, user_avatar, achievement_first_purchase } =
+    useLocalZustand().state;
 
   useEffect(() => {
     setIsLoading(true);
@@ -169,5 +170,6 @@ export default function useDataAccount() {
     wishlist: wishlist || [],
     showAllWishlist,
     setShowAllWishlist,
+    purchase: achievement_first_purchase || 0,
   };
 }

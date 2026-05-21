@@ -54,7 +54,7 @@ export const ACHIEVEMENTS: Achievement[] = [
     icon: "ShoppingCart",
     category: "purchase",
     target: 10,
-    condition: (_streak, _rounds, _rank, purchase) => purchase >= 2,
+    condition: (_streak, _rounds, _rank, purchase) => purchase >= 10,
     storageKey: "achievement_first_purchase",
   },
 
@@ -65,7 +65,7 @@ export const ACHIEVEMENTS: Achievement[] = [
     icon: "Fire",
     category: "streak",
     target: 30,
-    condition: (_streak, _rounds, rank, _purchase) => rank >= 30,
+    condition: (streak, _rounds, _rank, _purchase) => streak >= 30,
     storageKey: "achievement_highest_streak",
   },
   {
@@ -76,14 +76,14 @@ export const ACHIEVEMENTS: Achievement[] = [
     category: "rank",
     target: 50,
     condition: (_streak, _rounds, rank, _purchase) => rank >= 50,
-    storageKey: "achievement_highest_rank_count",
+    storageKey: "achievement_high_rank_count",
   },
   {
     id: "Buy 50 products",
     title: "Whale King",
     description: "Buy 50 products from the shop",
     icon: "ShoppingCart",
-    category: "rounds",
+    category: "purchase",
     target: 50,
     condition: (_streak, _rounds, _rank, purchase) => purchase >= 50,
     storageKey: "achievement_first_purchase",
@@ -107,8 +107,8 @@ export const ACHIEVEMENTS: Achievement[] = [
     category: "streak",
     target: 100,
 
-    condition: (streak, _rounds, _rank, _purchase) => streak >= 10,
-    storageKey: "achievement_streak_10",
+    condition: (streak, _rounds, _rank, _purchase) => streak >= 100,
+    storageKey: "achievement_streak",
   },
   {
     id: "highest_tier",
@@ -118,7 +118,7 @@ export const ACHIEVEMENTS: Achievement[] = [
     category: "tier",
     target: "Ultimate Diamond",
     condition: (_streak, _rounds, rank, _purchase) => rank > 100,
-    storageKey: "achievement_highest_tier",
+    storageKey: "achievement_highest_rank",
   },
 ];
 

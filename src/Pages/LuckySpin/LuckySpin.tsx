@@ -153,11 +153,9 @@ export default function LuckySpin() {
 
       <main className="lucky-spin-main">
         <section className="lucky-spin-hero">
-          <span className="inline-flex items-center gap-2 rounded-full border border-yellow-400/25 bg-yellow-400/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wide text-yellow-400">
-            <div className="h-1.5 w-1.5 rounded-full bg-yellow-400" />
-            <span>Daily Lucky Spin</span>
-          </span>
-          <h1>Spin for your best deal</h1>
+          <div>
+            <span className="lucky-spin-header-badge">Exclusive Offer</span>
+          </div>
 
           <p>{subtitle}</p>
         </section>

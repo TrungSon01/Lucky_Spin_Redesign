@@ -34,6 +34,7 @@ interface AchievementCardProps {
     category: "rounds" | "streak" | "rank" | "tier" | "purchase";
     target: number | string;
   };
+  highest_rank_count?: number;
   isUnlocked: boolean;
   progress?: { current: number; target: number | string };
   onLongPress?: () => void;
@@ -97,6 +98,7 @@ export default function AchievementCard({
   progress,
   onLongPress,
 
+  highest_rank_count,
   animationDelay = 0,
 }: AchievementCardProps) {
   const longPressAttrs = useLongPress(() => {
@@ -120,6 +122,11 @@ export default function AchievementCard({
       <div className="achievement-info">
         <div className="achievement-title">{achievement.title}</div>
         <div className="achievement-description">{achievement.description}</div>
+        {highest_rank_count !== undefined && (
+          <div className="achievement-progress">
+            {`Highest Rank Count: ${highest_rank_count}`}
+          </div>
+        )}
         {!isUnlocked && progress && (
           <div className="achievement-progress">
             {progress.current} / {progress.target}

@@ -22,13 +22,6 @@ interface AchievementsSectionProps {
   purchase: number;
 }
 
-const STORAGE_KEY_FALLBACKS: Record<string, string[]> = {
-  achievement_highest_tier: ["achievement_highest_tier"],
-  achievement_highest_rank_count: ["achievement_highest_rank_count"],
-  achievement_highest_streak: ["achievement_highest_streak"],
-  achievement_first_purchase: ["achievement_first_purchase"],
-};
-
 function getProgressValue(
   achievement: Achievement,
   streak: number,
@@ -64,27 +57,6 @@ function getNumericTarget(achievement: Achievement): number {
   return 1;
 }
 
-function hasUnlockedStorageFlag(storageKey: string): boolean {
-  const zustandState = useLocalZustand.getState().state;
-
-  const keysToCheck = [
-    storageKey,
-    ...(STORAGE_KEY_FALLBACKS[storageKey] ?? []),
-  ];
-
-  return keysToCheck.some((key) => {
-    const value = zustandState[key];
-
-    if (!value) return false;
-
-    const normalized = value.toString().toLowerCase();
-
-    return (
-      normalized === "true" || normalized === "1" || normalized === "unlocked"
-    );
-  });
-}
-
 export default function AchievementsSection({
   rounds,
   streak,
@@ -116,11 +88,9 @@ export default function AchievementsSection({
           purchase,
         );
 
-        const byStorage = hasUnlockedStorageFlag(achievement.storageKey);
-
         return {
           achievement,
-          isUnlocked: byCondition || byStorage,
+          isUnlocked: byCondition,
           progress: {
             current:
               typeof target === "number"
@@ -155,7 +125,8 @@ export default function AchievementsSection({
   const progressPercent = items.length
     ? Math.round((unlocked.length / items.length) * 100)
     : 0;
-
+  const highest_rank_count =
+    useLocalZustand().state.achievement_highest_rank_count;
   return (
     <section className="achievements-section">
       <div className="achievements-card-shell">
@@ -204,6 +175,11 @@ export default function AchievementsSection({
               <span className="achievement-group-count">{unlocked.length}</span>
             </div>
             <div className="achievements-grid achievements-grid--featured">
+              <AchievementCard
+                achievement={items[0].achievement}
+                isUnlocked={true}
+                highest_rank_count={Number(highest_rank_count)}
+              ></AchievementCard>
               {unlocked.map((item, index) => (
                 <AchievementCard
                   key={item.achievement.id}

@@ -20,6 +20,7 @@ export default function Homepage() {
   useEffect(() => {
     async function handleStorageOperations() {
       const check_first_join = await getItem({ key: "first_join" });
+      // có phải người dùng mới hay không ?
       if (!check_first_join) {
         const [
           check_user_name,
@@ -29,6 +30,7 @@ export default function Homepage() {
           achievement_highest_tier,
           achievement_highest_rank_count,
           achievement_highest_streak,
+          achievement_first_purchase,
         ] = await Promise.all([
           getItem({ key: "user_name" }),
           getItem({ key: "user_avatar" }),
@@ -37,6 +39,7 @@ export default function Homepage() {
           getItem({ key: "achievement_highest_tier" }),
           getItem({ key: "achievement_highest_rank_count" }),
           getItem({ key: "achievement_highest_streak" }),
+          getItem({ key: "achievement_first_purchase" }),
         ]);
         if (!check_user_avatar && !check_user_name) {
           await setItem({
@@ -82,6 +85,12 @@ export default function Homepage() {
           key: "first_join",
           value: "false",
         });
+        if (!achievement_first_purchase) {
+          await setItem({
+            key: "achievement_first_purchase",
+            value: "0",
+          });
+        }
         // đẩy lên zustand
         useLocalZustand.getState().setState({
           user_name: user_data.name,
@@ -91,8 +100,10 @@ export default function Homepage() {
           achievement_highest_tier: "Bronze",
           achievement_highest_rank_count: "0",
           achievement_highest_streak: "0",
+          achievement_first_purchase: "0",
         });
       } else {
+        // không là người dùng mới thì cần data đẩy lên zustand để làm việc
         const [
           check_user_name,
           check_user_avatar,
@@ -101,6 +112,7 @@ export default function Homepage() {
           achievement_highest_tier,
           achievement_highest_rank_count,
           achievement_highest_streak,
+          achievement_first_purchase,
         ] = await Promise.all([
           getItem({ key: "user_name" }),
           getItem({ key: "user_avatar" }),
@@ -109,16 +121,31 @@ export default function Homepage() {
           getItem({ key: "achievement_highest_tier" }),
           getItem({ key: "achievement_highest_rank_count" }),
           getItem({ key: "achievement_highest_streak" }),
+          getItem({ key: "achievement_first_purchase" }),
         ]);
         // đẩy lên zustand dữ liệu có sẵn
+        const streakBonus = Math.min(
+          Math.floor((Number(check_current_streak) || 0) / 10),
+          15,
+        );
+        const highest_rank_count = Math.max(
+          Number(achievement_highest_rank_count) || 0,
+
+          (Number(check_rounds_played) || 0) + streakBonus,
+        );
+        await setItem({
+          key: "achievement_highest_rank_count",
+          value: String(highest_rank_count),
+        });
         useLocalZustand.getState().setState({
           user_name: check_user_name || user_data.name,
           user_avatar: check_user_avatar || user_data.avatar,
           current_streak: check_current_streak || "0",
           rounds_played: check_rounds_played || "0",
           achievement_highest_tier: achievement_highest_tier || "Bronze",
-          achievement_highest_rank_count: achievement_highest_rank_count || "0",
+          achievement_highest_rank_count: `${highest_rank_count}` || "0",
           achievement_highest_streak: achievement_highest_streak || "0",
+          achievement_first_purchase: achievement_first_purchase || "0",
         });
       }
     }

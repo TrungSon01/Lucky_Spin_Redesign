@@ -8,10 +8,9 @@ import { STEPS, TRUST } from "./Data/Data";
 import { useEffect } from "react";
 import { useLocalZustand } from "../../zustand/app.useLocalZustand";
 export default function Homepage() {
-  const navigateWithTransition = useNavigateWithTransition();
   const { currentUser } = useCurrentUser();
   const { setItem, getItem } = useAsyncStorage();
-
+  const navigate = useNavigateWithTransition();
   const user_data = {
     name: currentUser?.displayName || "Guest",
     avatar: currentUser?.avatarImage?.url || "",
@@ -153,6 +152,14 @@ export default function Homepage() {
     handleStorageOperations();
   }, [setItem]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate("/main");
+    }, 4100);
+
+    alert(currentUser?.displayName);
+    return () => clearTimeout(timer);
+  }, []);
   return (
     <div className="homepage">
       <div className="orb orb--top" />
@@ -215,7 +222,7 @@ export default function Homepage() {
             </span>
           ))}
         </div>
-        <button
+        {/* <button
           className="cta-btn"
           onClick={() => navigateWithTransition("/main")}
         >
@@ -224,7 +231,7 @@ export default function Homepage() {
             <span className="cta-label">Get Started →</span>
           </div>
           <div className="cta-icon">🎲</div>
-        </button>
+        </button> */}
       </div>
     </div>
   );

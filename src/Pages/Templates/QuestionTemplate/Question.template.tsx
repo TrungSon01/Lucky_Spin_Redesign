@@ -4,11 +4,11 @@ import "./Question.template.css";
 
 export type RawAnswer =
   | string
-  | { label: string; value_min: number; value_max: number };
+  | { id?: number; label: string; value_min?: number; value_max?: number };
 
 export interface QuizQuestion {
   question: string;
-  options: RawAnswer[];
+  options: RawAnswer[] | string;
 }
 
 export interface QuizTemplateProps {
@@ -151,7 +151,11 @@ export default function QuestionTemplate({
           <div key={ri} className="quiz-row">
             {row.map((option) => {
               const label = getLabel(option);
-              const img = optionImages[label] || genderImages[label] || budgetImages[label] || null;
+              const img =
+                optionImages[label] ||
+                genderImages[label] ||
+                budgetImages[label] ||
+                null;
               const isSelecting = picking === label;
 
               return (

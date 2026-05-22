@@ -50,7 +50,7 @@ export default function Mainpage() {
       {/* Body */}
       <div style={s.body}>
         {/* LuckySpinner promo banner */}
-        <div style={s.banner} onClick={() => navigate("/lucky-spin")}>
+        <div style={s.banner} onClick={() => navigate("/questions/lucky-spin")}>
           <div style={s.bannerRing}>
             <div style={s.bannerRingInner}>🎰</div>
           </div>

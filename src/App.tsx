@@ -22,6 +22,7 @@ import ToyResult from "./Pages/Questions/Toy/ToyResult/ToyResult";
 import Pets from "./Pages/Questions/Pets/Pets";
 import PetsResult from "./Pages/Questions/Pets/PetsResult/PetsResult";
 import LuckySpin from "./Pages/LuckySpin/LuckySpin";
+import QuestionLuckySpin from "./Pages/LuckySpin/Components/Question.component";
 
 export function App() {
   return (
@@ -71,6 +72,7 @@ export function App() {
           <Route path="/questions/pets" element={<Pets />} />
           <Route path="/pets/result" element={<PetsResult />} />
 
+          <Route path="/questions/lucky-spin" element={<QuestionLuckySpin />} />
           <Route path="/lucky-spin" element={<LuckySpin />} />
           <Route path="*" element={<div>Page Not Found</div>} />
         </Routes>

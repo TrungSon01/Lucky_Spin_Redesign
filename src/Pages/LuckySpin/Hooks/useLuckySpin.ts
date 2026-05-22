@@ -15,6 +15,7 @@ import {
   shuffleArray,
 } from "../Utils/Utils";
 import { useLocalZustand } from "../../../zustand/app.useLocalZustand";
+import { useLuckySpinStore } from "../../../zustand/useLuckySpinZustand";
 function buildVoucher(product: SpinProduct): SpinVoucher {
   return {
     code: generateVoucherCode(product),
@@ -34,14 +35,14 @@ export function useLuckySpin() {
   const [storageReady, setStorageReady] = useState(false);
   const [storageError, setStorageError] = useState<string | null>(null);
   const boardSeedRef = useRef(Math.random());
-
+  const { question } = useLuckySpinStore.getState();
   const {
     products: rawProducts,
     loading,
     error,
   } = useProductSearch({
-    query: SPIN_QUERY,
-    first: 50,
+    query: question?.option || "Random Pick",
+    first: 70,
     fetchPolicy: "network-only",
   });
 

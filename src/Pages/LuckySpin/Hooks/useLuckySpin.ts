@@ -1,6 +1,6 @@
 import { useAsyncStorage, useProductSearch } from "@shopify/shop-minis-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { BOARD_SIZE, SPIN_QUERY, STORAGE_KEY } from "../Constants/Constants";
+import { BOARD_SIZE, STORAGE_KEY } from "../Constants/Constants";
 import {
   DailyRecord,
   SpinPhase,
@@ -16,6 +16,9 @@ import {
 } from "../Utils/Utils";
 import { useLocalZustand } from "../../../zustand/app.useLocalZustand";
 import { useLuckySpinStore } from "../../../zustand/useLuckySpinZustand";
+import { useShopCategoryConfig } from "./useShopCategoryConfig";
+import { useMultiShopProducts } from "./useMultiShopProducts";
+
 function buildVoucher(product: SpinProduct): SpinVoucher {
   return {
     code: generateVoucherCode(product),
@@ -35,19 +38,61 @@ export function useLuckySpin() {
   const [storageReady, setStorageReady] = useState(false);
   const [storageError, setStorageError] = useState<string | null>(null);
   const boardSeedRef = useRef(Math.random());
+
   const { question } = useLuckySpinStore.getState();
+  const category = question?.option || "Shoes";
+
   const {
-    products: rawProducts,
-    loading,
-    error,
+    shops,
+    loading: shopsLoading,
+    error: shopsError,
+  } = useShopCategoryConfig(category);
+
+  const {
+    products: fallbackRaw,
+    loading: fallbackLoading,
+    error: fallbackError,
   } = useProductSearch({
-    query: question?.option || "Random Pick",
-    first: 70,
+    query: category,
+    first: 63,
     fetchPolicy: "network-only",
+    skip: shopsLoading || shops.length > 0,
   });
 
-  const products = rawProducts ?? [];
+  const fallbackProducts = useMemo(() => {
+    if (!fallbackRaw) return null;
 
+    const TARGET = 9;
+
+    const discounted = fallbackRaw.filter((p) => {
+      if (!p.compareAtPrice) return false;
+      return p.compareAtPrice.amount !== p.price.amount;
+    });
+
+    if (discounted.length >= TARGET) return discounted.slice(0, TARGET);
+
+    const discountedIds = new Set(discounted.map((p) => p.id));
+    const fallback = fallbackRaw
+      .filter((p) => !discountedIds.has(p.id))
+      .slice(0, TARGET - discounted.length);
+
+    return [...discounted, ...fallback];
+  }, [fallbackRaw]);
+
+  const {
+    products: multiShopProducts,
+    loading: productsLoading,
+    error: productsError,
+  } = useMultiShopProducts(shops, category);
+
+  // gộp lại: ưu tiên multiShop, fallback nếu shops rỗng
+  const rawProducts = shops.length > 0 ? multiShopProducts : fallbackProducts;
+  const loading =
+    shopsLoading || (shops.length > 0 ? productsLoading : fallbackLoading);
+  const error =
+    shopsError ?? (shops.length > 0 ? productsError : fallbackError);
+  //kk
+  const products = rawProducts ?? [];
   const eligibleProducts = useMemo<SpinProduct[]>(() => {
     return products
       .map(normalizeProduct)
@@ -214,13 +259,11 @@ export function useLuckySpin() {
   );
 
   const handleSpin = useCallback(async () => {
-    // First spin
     if (phase === "ready" && firstWinner && firstWinnerIndex >= 0) {
       setPhase("spinning-first");
       setActiveWinner(null);
       setActiveVoucher(null);
       await runSpinAnimation(firstWinnerIndex);
-      // tăng round lên 1 đơn vị
       await setItem({
         key: "rounds_played",
         value: String(
@@ -249,7 +292,6 @@ export function useLuckySpin() {
       return;
     }
 
-    // Second spin
     if (
       phase === "first-shown" &&
       secondWinner &&
@@ -267,7 +309,6 @@ export function useLuckySpin() {
         usedSecondSpin: true,
         completedAt: new Date().toISOString(),
       };
-      // tăng round lên 1 đơn vị nếu người dùng sử dụng lượt quay thứ 2 đồng thời update zustand
       await setItem({
         key: "rounds_played",
         value: String(
@@ -280,7 +321,6 @@ export function useLuckySpin() {
           rounds_played: String(Number(state.state.rounds_played ?? "0") + 1),
         },
       }));
-      // tăng day streak lên 1 đơn vị chỉ khi người dùng sử dụng vòng quay thứ 2
       await setItem({
         key: "current_streak",
         value: String(

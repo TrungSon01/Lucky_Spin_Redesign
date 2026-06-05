@@ -8,8 +8,7 @@ export default function SportResult() {
     first: 12,
   });
 
-  const resetAnswers = () =>
-    useQuizStore.getState().resetCategory("sport");
+  const resetAnswers = () => useQuizStore.getState().resetCategory("sport");
 
   return (
     <ResultTemplate

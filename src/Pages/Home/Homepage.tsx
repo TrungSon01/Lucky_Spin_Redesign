@@ -7,6 +7,7 @@ import {
 import { STEPS, TRUST } from "./Data/Data";
 import { useEffect } from "react";
 import { useLocalZustand } from "../../zustand/app.useLocalZustand";
+import { registerNewUser } from "../../apis/app.api";
 export default function Homepage() {
   const { currentUser } = useCurrentUser();
   const { setItem, getItem } = useAsyncStorage();
@@ -17,15 +18,17 @@ export default function Homepage() {
   };
 
   useEffect(() => {
-    async function handleStorageOperations() {
-      const check_first_join = await getItem({ key: "first_join" });
-      // có phải người dùng mới hay không ?
-      if (!check_first_join) {
+    const handleStorageOperations = async () => {
+      try {
+        const check_first_join = await getItem({
+          key: "is_first_join",
+        });
+
         const [
-          check_user_name,
-          check_user_avatar,
-          check_current_streak,
-          check_rounds_played,
+          user_name,
+          user_avatar,
+          current_streak,
+          rounds_played,
           achievement_highest_tier,
           achievement_highest_rank_count,
           achievement_highest_streak,
@@ -40,114 +43,144 @@ export default function Homepage() {
           getItem({ key: "achievement_highest_streak" }),
           getItem({ key: "achievement_first_purchase" }),
         ]);
-        if (!check_user_avatar && !check_user_name) {
-          await setItem({
-            key: "user_name",
-            value: user_data.name,
-          });
-          await setItem({
-            key: "user_avatar",
-            value: user_data.avatar,
-          });
+
+        // ===== USER MỚI =====
+        if (!check_first_join) {
+          const defaultData = {
+            user_name: user_name || user_data.name,
+            user_avatar: user_avatar || user_data.avatar,
+            current_streak: current_streak || "0",
+            rounds_played: rounds_played || "0",
+            achievement_highest_tier: achievement_highest_tier || "Bronze",
+            achievement_highest_rank_count:
+              achievement_highest_rank_count || "0",
+            achievement_highest_streak: achievement_highest_streak || "0",
+            achievement_first_purchase: achievement_first_purchase || "0",
+          };
+
+          const storageTasks: Promise<any>[] = [];
+
+          if (!user_name) {
+            storageTasks.push(
+              setItem({
+                key: "user_name",
+                value: user_data.name,
+              }),
+            );
+          }
+
+          if (!user_avatar) {
+            storageTasks.push(
+              setItem({
+                key: "user_avatar",
+                value: user_data.avatar,
+              }),
+            );
+          }
+
+          if (!current_streak) {
+            storageTasks.push(
+              setItem({
+                key: "current_streak",
+                value: "0",
+              }),
+            );
+          }
+
+          if (!rounds_played) {
+            storageTasks.push(
+              setItem({
+                key: "rounds_played",
+                value: "0",
+              }),
+            );
+          }
+
+          if (!achievement_highest_tier) {
+            storageTasks.push(
+              setItem({
+                key: "achievement_highest_tier",
+                value: "Bronze",
+              }),
+            );
+          }
+
+          if (!achievement_highest_rank_count) {
+            storageTasks.push(
+              setItem({
+                key: "achievement_highest_rank_count",
+                value: "0",
+              }),
+            );
+          }
+
+          if (!achievement_highest_streak) {
+            storageTasks.push(
+              setItem({
+                key: "achievement_highest_streak",
+                value: "0",
+              }),
+            );
+          }
+
+          if (!achievement_first_purchase) {
+            storageTasks.push(
+              setItem({
+                key: "achievement_first_purchase",
+                value: "0",
+              }),
+            );
+          }
+
+          storageTasks.push(
+            setItem({
+              key: "is_first_join",
+              value: "true",
+            }),
+          );
+
+          await Promise.all(storageTasks);
+          await registerNewUser(user_data.name);
+          useLocalZustand.getState().setState(defaultData);
+
+          return;
         }
-        if (!check_current_streak) {
-          await setItem({
-            key: "current_streak",
-            value: "0",
-          });
-        }
-        if (!check_rounds_played) {
-          await setItem({
-            key: "rounds_played",
-            value: "0",
-          });
-        }
-        if (!achievement_highest_tier) {
-          await setItem({
-            key: "achievement_highest_tier",
-            value: "Bronze",
-          });
-        }
-        if (!achievement_highest_rank_count) {
-          await setItem({
-            key: "achievement_highest_rank_count",
-            value: "0",
-          });
-        }
-        if (!achievement_highest_streak) {
-          await setItem({
-            key: "achievement_highest_streak",
-            value: "0",
-          });
-        }
-        setItem({
-          key: "first_join",
-          value: "false",
-        });
-        if (!achievement_first_purchase) {
-          await setItem({
-            key: "achievement_first_purchase",
-            value: "0",
-          });
-        }
-        // đẩy lên zustand
-        useLocalZustand.getState().setState({
-          user_name: user_data.name,
-          user_avatar: user_data.avatar,
-          current_streak: "0",
-          rounds_played: "0",
-          achievement_highest_tier: "Bronze",
-          achievement_highest_rank_count: "0",
-          achievement_highest_streak: "0",
-          achievement_first_purchase: "0",
-        });
-      } else {
-        // không là người dùng mới thì cần data đẩy lên zustand để làm việc
-        const [
-          check_user_name,
-          check_user_avatar,
-          check_current_streak,
-          check_rounds_played,
-          achievement_highest_tier,
-          achievement_highest_rank_count,
-          achievement_highest_streak,
-          achievement_first_purchase,
-        ] = await Promise.all([
-          getItem({ key: "user_name" }),
-          getItem({ key: "user_avatar" }),
-          getItem({ key: "current_streak" }),
-          getItem({ key: "rounds_played" }),
-          getItem({ key: "achievement_highest_tier" }),
-          getItem({ key: "achievement_highest_rank_count" }),
-          getItem({ key: "achievement_highest_streak" }),
-          getItem({ key: "achievement_first_purchase" }),
-        ]);
-        // đẩy lên zustand dữ liệu có sẵn
+
+        // ===== USER CŨ =====
+
         const streakBonus = Math.min(
-          Math.floor((Number(check_current_streak) || 0) / 10),
+          Math.floor((Number(current_streak) || 0) / 10),
           15,
         );
+
         const highest_rank_count = Math.max(
           Number(achievement_highest_rank_count) || 0,
-
-          (Number(check_rounds_played) || 0) + streakBonus,
+          (Number(rounds_played) || 0) + streakBonus,
         );
-        await setItem({
-          key: "achievement_highest_rank_count",
-          value: String(highest_rank_count),
-        });
+
+        if (
+          highest_rank_count > (Number(achievement_highest_rank_count) || 0)
+        ) {
+          await setItem({
+            key: "achievement_highest_rank_count",
+            value: String(highest_rank_count),
+          });
+        }
+
         useLocalZustand.getState().setState({
-          user_name: check_user_name || user_data.name,
-          user_avatar: check_user_avatar || user_data.avatar,
-          current_streak: check_current_streak || "0",
-          rounds_played: check_rounds_played || "0",
+          user_name: user_name || user_data.name,
+          user_avatar: user_avatar || user_data.avatar,
+          current_streak: current_streak || "0",
+          rounds_played: rounds_played || "0",
           achievement_highest_tier: achievement_highest_tier || "Bronze",
-          achievement_highest_rank_count: `${highest_rank_count}` || "0",
+          achievement_highest_rank_count: String(highest_rank_count),
           achievement_highest_streak: achievement_highest_streak || "0",
           achievement_first_purchase: achievement_first_purchase || "0",
         });
+      } catch (error) {
+        console.error("handleStorageOperations error:", error);
       }
-    }
+    };
 
     handleStorageOperations();
   }, [setItem]);

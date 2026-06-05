@@ -12,24 +12,22 @@ export function parseAmount(value: unknown) {
 
 export function normalizeProduct(product: Product): SpinProduct | null {
   const priceAmount = parseAmount(product?.price?.amount);
+  if (priceAmount <= 0) return null;
+
   const compareAtAmount = parseAmount(product?.compareAtPrice?.amount);
+  const hasRealDiscount = compareAtAmount > priceAmount;
 
-  if (
-    priceAmount <= 0 ||
-    compareAtAmount <= 0 ||
-    compareAtAmount <= priceAmount
-  ) {
-    return null;
-  }
-
-  const savingsAmount = compareAtAmount - priceAmount;
-  const discountPercent = (savingsAmount / compareAtAmount) * 100;
+  const effectiveCompare = hasRealDiscount ? compareAtAmount : priceAmount;
+  const savingsAmount = hasRealDiscount ? effectiveCompare - priceAmount : 0;
+  const discountPercent = hasRealDiscount
+    ? (savingsAmount / effectiveCompare) * 100
+    : 0;
 
   return {
     ...product,
     spinMeta: {
       priceAmount,
-      compareAtAmount,
+      compareAtAmount: effectiveCompare,
       discountPercent,
       savingsAmount,
     },
